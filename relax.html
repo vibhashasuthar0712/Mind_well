@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Relax & Reset | MindWell</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        header {
+            background: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .header-title {
+            color: #6b7280;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .intro h1 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .intro p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .activities {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-4px);
+            border-color: #6366f1;
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .activity-card h2 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .activity-card p {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .activity-screen {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        .activity-screen h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .activity-description {
+            color: #6b7280;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* BREATHING */
+
+        .breathing-circle {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: #c7d2fe;
+            margin: 35px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .breathe-animation {
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+
+            0% {
+                transform: scale(0.75);
+            }
+
+            50% {
+                transform: scale(1.25);
+            }
+
+            100% {
+                transform: scale(0.75);
+            }
+
+        }
+
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px;
+        }
+
+        /* GROUNDING */
+
+        .grounding-step {
+            font-size: 22px;
+            margin: 30px auto;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .progress {
+            color: #6366f1;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* CALM */
+
+        .calm-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #ddd6fe;
+            margin: 40px auto;
+            animation: calmPulse 4s infinite ease-in-out;
+        }
+
+        @keyframes calmPulse {
+
+            0% {
+                transform: scale(0.9);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(0.9);
+            }
+
+        }
+
+        /* FOCUS */
+
+        .focus-dot {
+            width: 35px;
+            height: 35px;
+            background: #6366f1;
+            border-radius: 50%;
+            margin: 50px auto;
+            animation: focusMove 5s infinite ease-in-out;
+        }
+
+        @keyframes focusMove {
+
+            0% {
+                transform: translateX(-100px);
+            }
+
+            50% {
+                transform: translateX(100px);
+            }
+
+            100% {
+                transform: translateX(-100px);
+            }
+
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 24px;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 7px;
+        }
+
+        .secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .message {
+            margin-top: 20px;
+            min-height: 25px;
+            font-weight: bold;
+        }
+
+        .completion {
+            display: none;
+        }
+
+        .completion h2 {
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 650px) {
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .activities {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-screen {
+                padding: 25px 15px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🧠 MindWell
+    </div>
+
+    <div class="header-title">
+        Relax & Reset
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <!-- MAIN MENU -->
+
+    <div id="menu">
+
+        <div class="intro">
+
+            <h1>🌿 Relax & Reset</h1>
+
+            <p>
+                Take a small pause from your day.
+                Choose whatever feels right for you.
+            </p>
+
+        </div>
+
+
+        <div class="activities">
+
+            <div class="activity-card"
+                 onclick="openActivity('breathing')">
+
+                <div class="icon">🫁</div>
+
+                <h2>Breathing Reset</h2>
+
+                <p>
+                    Follow a simple breathing rhythm
+                    for a few moments.
+                </p>
+
+            </div>
+
+
+            <div class="activity-card"
+                 onclick="openActivity('grounding')">
+
+                <div class="icon">🌱</div>
+
+                <h2>5-4-3-2-1 Grounding</h2>
+
+                <p>
+                    Bring your attention back to
+                    the present moment.
+                </p>
+
+            </div>
+
+
+            <div class="activity-card"
+                 onclick="openActivity('calm')">
+
+                <div class="icon">🧘</div>
+
+                <h2>1-Minute Calm</h2>
+
+                <p>
+                    Take one quiet minute to slow
+                    down and reset.
+                </p>
+
+            </div>
+
+
+            <div class="activity-card"
+                 onclick="openActivity('focus')">
+
+                <div class="icon">🎯</div>
+
+                <h2>Focus Reset</h2>
+
+                <p>
+                    Follow a moving point and gently
+                    bring your attention back.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div style="text-align:center; margin-top:30px;">
+
+            <button class="btn secondary"
+                    onclick="goBack()">
+
+                ← Back to Dashboard
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- BREATHING -->
+
+    <div class="activity-screen" id="breathing">
+
+        <h2>🫁 Breathing Reset</h2>
+
+        <p class="activity-description">
+            Slowly breathe in as the circle expands
+            and breathe out as it contracts.
+        </p>
+
+        <div class="breathing-circle"
+             id="breathingCircle">
+
+            Breathe
+
+        </div>
+
+        <div class="timer" id="breathingTimer">
+            30
+        </div>
+
+        <button class="btn"
+                onclick="startBreathing()">
+
+            Start
+
+        </button>
+
+        <button class="btn secondary"
+                onclick="backToMenu()">
+
+            ← Back
+
+        </button>
+
+        <div class="message"
+             id="breathingMessage">
+        </div>
+
+    </div>
+
+
+    <!-- GROUNDING -->
+
+    <div class="activity-screen" id="grounding">
+
+        <h2>🌱 5-4-3-2-1 Grounding</h2>
+
+        <p class="activity-description">
+            Gently notice things around you.
+            There is no need to rush.
+        </p>
+
+        <div class="progress"
+             id="groundingProgress">
+
+            Step 1 of 5
+
+        </div>
+
+        <div class="grounding-step"
+             id="groundingText">
+
+            Notice 5 things you can see around you.
+
+        </div>
+
+        <button class="btn"
+                onclick="nextGrounding()">
+
+            Done ✓
+
+        </button>
+
+        <button class="btn secondary"
+                onclick="backToMenu()">
+
+            ← Back
+
+        </button>
+
+    </div>
+
+
+    <!-- CALM -->
+
+    <div class="activity-screen" id="calm">
+
+        <h2>🧘 1-Minute Calm</h2>
+
+        <p class="activity-description">
+            Sit comfortably and follow the gentle
+            movement of the circle.
+        </p>
+
+        <div class="calm-circle"></div>
+
+        <div class="timer" id="calmTimer">
+            60
+        </div>
+
+        <button class="btn"
+                onclick="startCalm()">
+
+            Start
+
+        </button>
+
+        <button class="btn secondary"
+                onclick="backToMenu()">
+
+            ← Back
+
+        </button>
+
+        <div class="message"
+             id="calmMessage">
+        </div>
+
+    </div>
+
+
+    <!-- FOCUS -->
+
+    <div class="activity-screen" id="focus">
+
+        <h2>🎯 Focus Reset</h2>
+
+        <p class="activity-description">
+            Gently follow the moving point with
+            your attention for 30 seconds.
+        </p>
+
+        <div class="focus-dot"></div>
+
+        <div class="timer" id="focusTimer">
+            30
+        </div>
+
+        <button class="btn"
+                onclick="startFocus()">
+
+            Start
+
+        </button>
+
+        <button class="btn secondary"
+                onclick="backToMenu()">
+
+            ← Back
+
+        </button>
+
+        <div class="message"
+             id="focusMessage">
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETION -->
+
+    <div class="activity-screen completion"
+         id="completion">
+
+        <h2>✨ Nice Reset!</h2>
+
+        <p class="activity-description">
+            You completed the activity.
+            Take this moment with you into the rest
+            of your day.
+        </p>
+
+        <button class="btn"
+                onclick="backToMenu()">
+
+            Try Another Activity
+
+        </button>
+
+        <button class="btn secondary"
+                onclick="goBack()">
+
+            ← Dashboard
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    let timerInterval = null;
+
+    let groundingStep = 0;
+
+
+    /*
+        Hide all activities
+    */
+
+    function hideAll() {
+
+        const screens =
+            document.querySelectorAll(".activity-screen");
+
+        screens.forEach(screen => {
+
+            screen.style.display = "none";
+
+        });
+
+        document.getElementById("menu")
+            .style.display = "none";
+
+    }
+
+
+    /*
+        Open selected activity
+    */
+
+    function openActivity(activity) {
+
+        hideAll();
+
+        document.getElementById(activity)
+            .style.display = "block";
+
+    }
+
+
+    /*
+        Back to activity menu
+    */
+
+    function backToMenu() {
+
+        clearInterval(timerInterval);
+
+        document.getElementById("menu")
+            .style.display = "block";
+
+        const screens =
+            document.querySelectorAll(".activity-screen");
+
+        screens.forEach(screen => {
+
+            screen.style.display = "none";
+
+        });
+
+    }
+
+
+    /*
+        BREATHING RESET
+    */
+
+    function startBreathing() {
+
+        clearInterval(timerInterval);
+
+        let timeLeft = 30;
+
+        const timer =
+            document.getElementById("breathingTimer");
+
+        const circle =
+            document.getElementById("breathingCircle");
+
+        const message =
+            document.getElementById("breathingMessage");
+
+
+        timer.textContent = timeLeft;
+
+        circle.classList.add("breathe-animation");
+
+        message.textContent =
+            "Follow the circle and breathe slowly.";
+
+
+        timerInterval = setInterval(() => {
+
+            timeLeft--;
+
+            timer.textContent = timeLeft;
+
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                circle.classList.remove(
+                    "breathe-animation"
+                );
+
+                message.textContent =
+                    "✨ Breathing reset complete.";
+
+                saveActivity("Breathing Reset");
+
+            }
+
+        }, 1000);
+
+    }
+
+
+    /*
+        5-4-3-2-1 GROUNDING
+    */
+
+    const groundingSteps = [
+
+        "Notice 5 things you can see around you.",
+
+        "Notice 4 things you can physically feel.",
+
+        "Notice 3 things you can hear.",
+
+        "Notice 2 things you can smell.",
+
+        "Notice 1 thing you appreciate right now."
+
+    ];
+
+
+    function nextGrounding() {
+
+        groundingStep++;
+
+        if (groundingStep >= groundingSteps.length) {
+
+            document.getElementById("groundingProgress")
+                .textContent = "Complete ✓";
+
+            document.getElementById("groundingText")
+                .textContent =
+                "✨ Grounding exercise complete.";
+
+            saveActivity("5-4-3-2-1 Grounding");
+
+            return;
+        }
+
+
+        document.getElementById("groundingProgress")
+            .textContent =
+            `Step ${groundingStep + 1} of 5`;
+
+
+        document.getElementById("groundingText")
+            .textContent =
+            groundingSteps[groundingStep];
+
+    }
+
+
+    /*
+        Reset grounding when opened
+    */
+
+    function resetGrounding() {
+
+        groundingStep = 0;
+
+        document.getElementById("groundingProgress")
+            .textContent = "Step 1 of 5";
+
+        document.getElementById("groundingText")
+            .textContent =
+            groundingSteps[0];
+
+    }
+
+
+    /*
+        1-MINUTE CALM
+    */
+
+    function startCalm() {
+
+        clearInterval(timerInterval);
+
+        let timeLeft = 60;
+
+        const timer =
+            document.getElementById("calmTimer");
+
+        const message =
+            document.getElementById("calmMessage");
+
+
+        timer.textContent = timeLeft;
+
+        message.textContent =
+            "Stay comfortable and follow the circle.";
+
+
+        timerInterval = setInterval(() => {
+
+            timeLeft--;
+
+            timer.textContent = timeLeft;
+
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                message.textContent =
+                    "✨ One-minute calm complete.";
+
+                saveActivity("1-Minute Calm");
+
+            }
+
+        }, 1000);
+
+    }
+
+
+    /*
+        FOCUS RESET
+    */
+
+    function startFocus() {
+
+        clearInterval(timerInterval);
+
+        let timeLeft = 30;
+
+        const timer =
+            document.getElementById("focusTimer");
+
+        const message =
+            document.getElementById("focusMessage");
+
+
+        timer.textContent = timeLeft;
+
+        message.textContent =
+            "Gently keep your attention on the point.";
+
+
+        timerInterval = setInterval(() => {
+
+            timeLeft--;
+
+            timer.textContent = timeLeft;
+
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                message.textContent =
+                    "✨ Focus reset complete.";
+
+                saveActivity("Focus Reset");
+
+            }
+
+        }, 1000);
+
+    }
+
+
+    /*
+        Save relaxation activity
+        for future wellbeing tracking.
+    */
+
+    function saveActivity(activityName) {
+
+        const data = {
+
+            activity:
+                activityName,
+
+            completed:
+                true,
+
+            date:
+                new Date().toISOString()
+
+        };
+
+
+        const previous =
+            JSON.parse(
+                localStorage.getItem(
+                    "mindwell_relax_activities"
+                )
+            ) || [];
+
+
+        previous.push(data);
+
+
+        localStorage.setItem(
+            "mindwell_relax_activities",
+            JSON.stringify(previous)
+        );
+
+    }
+
+
+    /*
+        Dashboard
+    */
+
+    function goBack() {
+
+        window.location.href =
+            "employee.html";
+
+    }
+
+
+    /*
+        Start with menu
+    */
+
+    document.getElementById("menu")
+        .style.display = "block";
+
+</script>
+
+</body>
+</html>
