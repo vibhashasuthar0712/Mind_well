@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>MindWell - Memory Match</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f7f8fc;
+            color: #222;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        header {
+
+            height: 70px;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            box-shadow:
+                0 2px 12px rgba(0,0,0,0.05);
+
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+        }
+
+
+        .moves {
+
+            color: #555;
+
+            font-size: 14px;
+
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+
+            max-width: 750px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+
+        }
+
+
+        .game-header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .game-header h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .instruction {
+
+            color: #666;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .stat {
+
+            background: white;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.05);
+
+        }
+
+
+        .stat-number {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* ================= GAME BOARD ================= */
+
+        .game-board {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.06);
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        /* ================= CARD ================= */
+
+        .card {
+
+            height: 110px;
+
+            perspective: 800px;
+
+            cursor: pointer;
+
+        }
+
+
+        .card-inner {
+
+            width: 100%;
+
+            height: 100%;
+
+            position: relative;
+
+            transition:
+                transform 0.5s;
+
+            transform-style: preserve-3d;
+
+        }
+
+
+        .card.flipped .card-inner {
+
+            transform:
+                rotateY(180deg);
+
+        }
+
+
+        .card-front,
+        .card-back {
+
+            position: absolute;
+
+            width: 100%;
+
+            height: 100%;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            backface-visibility: hidden;
+
+        }
+
+
+        /* CARD BACK */
+
+        .card-back {
+
+            background: #5f5bd8;
+
+            color: white;
+
+            font-size: 30px;
+
+        }
+
+
+        /* CARD FRONT */
+
+        .card-front {
+
+            background: #f0f1ff;
+
+            transform:
+                rotateY(180deg);
+
+            font-size: 38px;
+
+        }
+
+
+        .card.matched {
+
+            cursor: default;
+
+        }
+
+
+        .card.matched .card-front {
+
+            background: #e8f7ef;
+
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        .button-section {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+        }
+
+
+        .start-btn {
+
+            padding: 12px 25px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #5f5bd8;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .start-btn:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result {
+
+            display: none;
+
+            text-align: center;
+
+            background: white;
+
+            padding: 35px;
+
+            margin-top: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.06);
+
+        }
+
+
+        .result h2 {
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .result-score {
+
+            font-size: 42px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+            margin: 15px 0;
+
+        }
+
+
+        .result p {
+
+            color: #666;
+
+            line-height: 1.6;
+
+        }
+
+
+        .result button {
+
+            border: none;
+
+            padding: 12px 22px;
+
+            border-radius: 10px;
+
+            background: #5f5bd8;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin: 15px 5px 0;
+
+        }
+
+
+        .result button:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 600px) {
+
+            .game-board {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+
+            .card {
+
+                height: 90px;
+
+            }
+
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            header {
+
+                padding: 0 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🧠 MindWell
+        </div>
+
+
+        <div class="moves">
+
+            Moves:
+            <span id="moveCount">
+                0
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <div class="game-header">
+
+            <h1>
+                🧩 Memory Match
+            </h1>
+
+
+            <p class="instruction">
+
+                Flip the cards and find all
+                matching pairs.
+
+                <br>
+
+                Try to complete the game
+                with fewer moves.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= STATS ================= -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <div>
+                    Pairs Found
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="pairsFound">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div>
+                    Moves
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="movesStat">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div>
+                    Attempts
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="attempts">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= GAME BOARD ================= -->
+
+        <div
+            class="game-board"
+            id="gameBoard">
+
+        </div>
+
+
+
+        <!-- ================= BUTTON ================= -->
+
+        <div class="button-section">
+
+            <button
+                class="start-btn"
+                onclick="startGame()">
+
+                Restart Game
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ================= RESULT ================= -->
+
+        <div
+            class="result"
+            id="result">
+
+
+            <h2>
+                🎉 Memory Match Complete!
+            </h2>
+
+
+            <p>
+                You found all the matching pairs.
+            </p>
+
+
+            <div
+                class="result-score"
+                id="finalScore">
+
+                0
+
+            </div>
+
+
+            <p id="resultDetails">
+            </p>
+
+
+            <button
+                onclick="startGame()">
+
+                Play Again
+
+            </button>
+
+
+            <button
+                onclick="goBack()">
+
+                Back to Activities
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ============================================
+           GAME DATA
+        ============================================ */
+
+
+        const emojis = [
+
+            "🌟",
+            "🌈",
+            "🌱",
+            "☀️",
+            "🌙",
+            "🍀",
+            "🦋",
+            "🌸"
+
+        ];
+
+
+        let cards = [];
+
+        let firstCard = null;
+
+        let secondCard = null;
+
+        let lockBoard = false;
+
+        let moves = 0;
+
+        let pairsFound = 0;
+
+        let attempts = 0;
+
+        let startTime;
+
+        let timer;
+
+
+
+        /* ============================================
+           START GAME
+        ============================================ */
+
+
+        function startGame() {
+
+
+            /*
+            Reset values
+            */
+
+            firstCard = null;
+
+            secondCard = null;
+
+            lockBoard = false;
+
+            moves = 0;
+
+            pairsFound = 0;
+
+            attempts = 0;
+
+
+            /*
+            Hide result
+            */
+
+            document.getElementById(
+                "result"
+            ).style.display =
+                "none";
+
+
+            /*
+            Create pairs
+            */
+
+            cards = [
+                ...emojis,
+                ...emojis
+            ];
+
+
+            /*
+            Shuffle cards
+            */
+
+            shuffle(cards);
+
+
+            /*
+            Create board
+            */
+
+            createBoard();
+
+
+            /*
+            Start timer
+            */
+
+            startTime =
+                Date.now();
+
+
+            clearInterval(timer);
+
+
+            timer =
+                setInterval(
+                    updateTime,
+                    1000
+                );
+
+
+            updateStats();
+
+        }
+
+
+
+        /* ============================================
+           SHUFFLE
+        ============================================ */
+
+
+        function shuffle(array) {
+
+
+            for (
+                let i =
+                    array.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() *
+                        (i + 1)
+                    );
+
+
+                [
+                    array[i],
+                    array[j]
+                ] =
+                [
+                    array[j],
+                    array[i]
+                ];
+
+            }
+
+        }
+
+
+
+        /* ============================================
+           CREATE BOARD
+        ============================================ */
+
+
+        function createBoard() {
+
+
+            const board =
+                document.getElementById(
+                    "gameBoard"
+                );
+
+
+            board.innerHTML = "";
+
+
+            cards.forEach(
+                function(
+                    emoji,
+                    index
+                ) {
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.classList.add(
+                        "card"
+                    );
+
+
+                    card.dataset.value =
+                        emoji;
+
+
+                    card.dataset.index =
+                        index;
+
+
+                    card.innerHTML = `
+
+                        <div class="card-inner">
+
+                            <div class="card-back">
+                                ?
+                            </div>
+
+                            <div class="card-front">
+                                ${emoji}
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    card.addEventListener(
+                        "click",
+                        function() {
+
+                            flipCard(card);
+
+                        }
+                    );
+
+
+                    board.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* ============================================
+           FLIP CARD
+        ============================================ */
+
+
+        function flipCard(card) {
+
+
+            /*
+            Don't allow invalid clicks
+            */
+
+            if (
+                lockBoard ||
+                card === firstCard ||
+                card.classList.contains(
+                    "matched"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+            Flip card
+            */
+
+            card.classList.add(
+                "flipped"
+            );
+
+
+            /*
+            First card
+            */
+
+            if (
+                firstCard === null
+            ) {
+
+                firstCard = card;
+
+                return;
+
+            }
+
+
+            /*
+            Second card
+            */
+
+            secondCard = card;
+
+
+            moves++;
+
+            attempts++;
+
+
+            updateStats();
+
+
+            checkMatch();
+
+        }
+
+
+
+        /* ============================================
+           CHECK MATCH
+        ============================================ */
+
+
+        function checkMatch() {
+
+
+            const isMatch =
+                firstCard.dataset.value ===
+                secondCard.dataset.value;
+
+
+            if (isMatch) {
+
+                handleMatch();
+
+            } else {
+
+                handleMismatch();
+
+            }
+
+        }
+
+
+
+        /* ============================================
+           MATCH
+        ============================================ */
+
+
+        function handleMatch() {
+
+
+            firstCard.classList.add(
+                "matched"
+            );
+
+
+            secondCard.classList.add(
+                "matched"
+            );
+
+
+            pairsFound++;
+
+
+            updateStats();
+
+
+            resetTurn();
+
+
+            /*
+            Check completion
+            */
+
+            if (
+                pairsFound ===
+                emojis.length
+            ) {
+
+                finishGame();
+
+            }
+
+        }
+
+
+
+        /* ============================================
+           MISMATCH
+        ============================================ */
+
+
+        function handleMismatch() {
+
+
+            lockBoard = true;
+
+
+            setTimeout(
+                function() {
+
+
+                    firstCard.classList.remove(
+                        "flipped"
+                    );
+
+
+                    secondCard.classList.remove(
+                        "flipped"
+                    );
+
+
+                    resetTurn();
+
+
+                },
+                900
+            );
+
+        }
+
+
+
+        /* ============================================
+           RESET TURN
+        ============================================ */
+
+
+        function resetTurn() {
+
+
+            firstCard = null;
+
+            secondCard = null;
+
+            lockBoard = false;
+
+        }
+
+
+
+        /* ============================================
+           UPDATE STATS
+        ============================================ */
+
+
+        function updateStats() {
+
+
+            document.getElementById(
+                "moveCount"
+            ).innerText =
+                moves;
+
+
+            document.getElementById(
+                "movesStat"
+            ).innerText =
+                moves;
+
+
+            document.getElementById(
+                "pairsFound"
+            ).innerText =
+                pairsFound;
+
+
+            document.getElementById(
+                "attempts"
+            ).innerText =
+                attempts;
+
+        }
+
+
+
+        /* ============================================
+           TIMER
+        ============================================ */
+
+
+        function updateTime() {
+
+
+            /*
+            Timer is intentionally not
+            displayed separately in this
+            version.
+
+            It is used for activity data.
+            */
+
+        }
+
+
+
+        /* ============================================
+           FINISH GAME
+        ============================================ */
+
+
+        function finishGame() {
+
+
+            clearInterval(timer);
+
+
+            const completionTime =
+                Math.round(
+                    (
+                        Date.now() -
+                        startTime
+                    ) / 1000
+                );
+
+
+            /*
+            Calculate activity score
+
+            This is NOT a mental health score.
+            */
+
+            let score = 100;
+
+
+            /*
+            Extra moves reduce score
+            */
+
+            const extraMoves =
+                Math.max(
+                    0,
+                    moves - emojis.length
+                );
+
+
+            score -=
+                extraMoves * 3;
+
+
+            /*
+            Time penalty
+            */
+
+            if (
+                completionTime > 60
+            ) {
+
+                score -= 10;
+
+            }
+
+
+            score =
+                Math.max(
+                    0,
+                    Math.round(score)
+                );
+
+
+            /*
+            Store data
+            */
+
+            const gameData = {
+
+                game:
+                    "Memory Match",
+
+                pairs:
+                    emojis.length,
+
+                pairsFound:
+                    pairsFound,
+
+                moves:
+                    moves,
+
+                attempts:
+                    attempts,
+
+                completionTime:
+                    completionTime,
+
+                score:
+                    score,
+
+                date:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+
+                "mindwell_memory_match",
+
+                JSON.stringify(
+                    gameData
+                )
+
+            );
+
+
+            /*
+            Show result
+            */
+
+            document.getElementById(
+                "finalScore"
+            ).innerText =
+                score;
+
+
+            document.getElementById(
+                "resultDetails"
+            ).innerText =
+
+                "Moves: " +
+                moves +
+
+                " · Completion time: " +
+                completionTime +
+                "s";
+
+
+            document.getElementById(
+                "result"
+            ).style.display =
+                "block";
+
+        }
+
+
+
+        /* ============================================
+           BACK
+        ============================================ */
+
+
+        function goBack() {
+
+
+            window.location.href =
+                "employee.html";
+
+        }
+
+
+
+        /* ============================================
+           START
+        ============================================ */
+
+
+        startGame();
+
+
+    </script>
+
+
+</body>
+
+</html>
