@@ -94,6 +94,37 @@
     </style>
 </head>
 
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+
+    if (!email || !password || !role) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    if (role === "employee") {
+        window.location.href = "employee.html";
+    }
+
+    else if (role === "responder") {
+        window.location.href = "responder.html";
+    }
+
+    else if (role === "hr") {
+        window.location.href = "hr.html";
+    }
+
+});
+
+</script>
+
 <body>
 
     <div class="login-container">
@@ -104,42 +135,44 @@
             Your wellbeing. Your privacy. Your support.
         </p>
 
-        <form>
+        <form id="loginForm">
 
-            <div class="input-group">
-                <label>Email</label>
-                <input
-                    type="email"
-                    placeholder="Enter your email"
-                    required
-                >
-            </div>
+    <div class="input-group">
+        <label>Email</label>
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+        >
+    </div>
 
-            <div class="input-group">
-                <label>Password</label>
-                <input
-                    type="password"
-                    placeholder="Enter your password"
-                    required
-                >
-            </div>
+    <div class="input-group">
+        <label>Password</label>
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+        >
+    </div>
 
-            <div class="input-group">
-                <label>Login as</label>
+    <div class="input-group">
+        <label>Login as</label>
 
-                <select required>
-                    <option value="">Select role</option>
-                    <option value="employee">Employee</option>
-                    <option value="responder">Responder</option>
-                    <option value="hr">HR / Admin</option>
-                </select>
-            </div>
+        <select id="role" required>
+            <option value="">Select role</option>
+            <option value="employee">Employee</option>
+            <option value="responder">Responder</option>
+            <option value="hr">HR / Admin</option>
+        </select>
+    </div>
 
-            <button type="submit">
-                Login
-            </button>
+    <button type="submit">
+        Login
+    </button>
 
-        </form>
+</form>
 
         <div class="footer">
             🔒 Your personal wellbeing information stays private.
