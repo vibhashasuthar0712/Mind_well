@@ -5,8 +5,9 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>MindWell - Focus Hunt</title>
 
@@ -14,50 +15,60 @@
     <style>
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
 
+
         body {
-            min-height: 100vh;
-            background: #f6f8fc;
+
+            background: #f7f8fc;
+
             color: #222;
+
         }
 
 
         /* ================= HEADER ================= */
 
-        .header {
+        header {
 
             height: 70px;
+
             background: white;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             padding: 0 40px;
 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow:
+                0 2px 12px rgba(0,0,0,0.05);
+
         }
 
 
         .logo {
 
             font-size: 24px;
+
             font-weight: bold;
+
+            color: #5f5bd8;
 
         }
 
 
         .timer {
 
-            font-size: 18px;
             font-weight: bold;
 
-            color: #6c63ff;
+            color: #555;
 
         }
 
@@ -72,84 +83,119 @@
 
             padding: 0 20px;
 
+        }
+
+
+        .game-header {
+
             text-align: center;
+
+            margin-bottom: 25px;
 
         }
 
 
-        .game-info h1 {
-
-            font-size: 30px;
+        .game-header h1 {
 
             margin-bottom: 10px;
 
         }
 
 
-        .game-info p {
+        .instruction {
 
-            color: #777;
+            font-size: 18px;
+
+            color: #555;
+
+        }
+
+
+        #targetColorText {
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
 
             margin-bottom: 25px;
 
         }
 
 
-        /* ================= INSTRUCTION ================= */
+        .stat {
 
-        .instruction {
-
-            background: #eef0ff;
+            background: white;
 
             padding: 15px;
 
             border-radius: 12px;
 
-            margin-bottom: 25px;
+            text-align: center;
 
-            color: #5148c8;
-
-            font-weight: bold;
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.05);
 
         }
 
 
-        /* ================= GAME BOARD ================= */
+        .stat-number {
 
-        .game-board {
+            font-size: 25px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* ================= GAME AREA ================= */
+
+        .game-area {
 
             background: white;
 
-            min-height: 450px;
+            padding: 30px;
 
             border-radius: 20px;
 
-            padding: 30px;
-
             box-shadow:
-                0 8px 25px rgba(0,0,0,0.06);
+                0 5px 25px rgba(0,0,0,0.06);
+
+        }
+
+
+        .objects {
 
             display: grid;
 
             grid-template-columns:
                 repeat(5, 1fr);
 
-            gap: 20px;
-
-            align-items: center;
-
-            justify-items: center;
+            gap: 18px;
 
         }
 
 
-        /* ================= OBJECTS ================= */
-
         .object {
 
-            width: 60px;
-
-            height: 60px;
+            height: 75px;
 
             border-radius: 50%;
 
@@ -162,113 +208,44 @@
 
         .object:hover {
 
-            transform: scale(1.12);
+            transform: scale(1.08);
 
         }
 
 
+        /* COLORS */
+
         .blue {
-            background: #3b82f6;
+
+            background: #4f7cff;
+
         }
 
 
         .red {
-            background: #ef4444;
+
+            background: #ff5c5c;
+
         }
 
 
         .green {
-            background: #22c55e;
+
+            background: #4caf70;
+
         }
 
 
         .yellow {
-            background: #facc15;
+
+            background: #f5c542;
+
         }
 
 
         .purple {
-            background: #a855f7;
-        }
 
-
-        /* ================= STATS ================= */
-
-        .stats {
-
-            display: flex;
-
-            justify-content: center;
-
-            gap: 40px;
-
-            margin-top: 25px;
-
-        }
-
-
-        .stat {
-
-            background: white;
-
-            padding: 15px 25px;
-
-            border-radius: 12px;
-
-            box-shadow:
-                0 4px 15px rgba(0,0,0,0.05);
-
-        }
-
-
-        .stat span {
-
-            display: block;
-
-            color: #777;
-
-            font-size: 13px;
-
-            margin-bottom: 5px;
-
-        }
-
-
-        .stat strong {
-
-            font-size: 22px;
-
-        }
-
-
-        /* ================= BUTTON ================= */
-
-        .start-button {
-
-            margin-top: 25px;
-
-            padding: 14px 30px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background: #6c63ff;
-
-            color: white;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-        }
-
-
-        .start-button:hover {
-
-            opacity: 0.9;
+            background: #9b6cff;
 
         }
 
@@ -279,16 +256,18 @@
 
             display: none;
 
+            text-align: center;
+
             background: white;
 
             padding: 35px;
 
-            margin-top: 30px;
+            margin-top: 25px;
 
-            border-radius: 20px;
+            border-radius: 18px;
 
             box-shadow:
-                0 8px 25px rgba(0,0,0,0.06);
+                0 5px 25px rgba(0,0,0,0.06);
 
         }
 
@@ -302,54 +281,71 @@
 
         .result-score {
 
-            font-size: 45px;
+            font-size: 42px;
 
             font-weight: bold;
 
-            color: #6c63ff;
+            color: #5f5bd8;
 
-            margin: 15px;
+            margin: 15px 0;
 
         }
 
 
-        .continue-button {
-
-            padding: 12px 25px;
+        .result button {
 
             border: none;
 
+            padding: 12px 25px;
+
             border-radius: 10px;
 
-            background: #20a36a;
+            background: #5f5bd8;
 
             color: white;
 
+            cursor: pointer;
+
             font-weight: bold;
 
-            cursor: pointer;
+            margin: 5px;
 
         }
 
 
-        /* ================= MOBILE ================= */
+        .result button:hover {
+
+            opacity: 0.9;
+
+        }
+
 
         @media (max-width: 700px) {
 
-            .game-board {
-
-                grid-template-columns:
-                    repeat(3, 1fr);
-
-            }
-
             .stats {
 
-                flex-wrap: wrap;
+                grid-template-columns:
+                    repeat(2, 1fr);
 
             }
 
-            .header {
+
+            .objects {
+
+                grid-template-columns:
+                    repeat(4, 1fr);
+
+            }
+
+
+            .object {
+
+                height: 60px;
+
+            }
+
+
+            header {
 
                 padding: 0 20px;
 
@@ -362,22 +358,28 @@
 </head>
 
 
+
 <body>
 
 
     <!-- ================= HEADER ================= -->
 
-    <div class="header">
+    <header>
 
         <div class="logo">
             🧠 MindWell
         </div>
 
         <div class="timer">
-            ⏱️ <span id="timer">0.0</span>s
+
+            ⏱️ Time:
+            <span id="timer">
+                0
+            </span>s
+
         </div>
 
-    </div>
+    </header>
 
 
 
@@ -386,33 +388,23 @@
     <div class="container">
 
 
-        <div class="game-info">
+        <div class="game-header">
 
             <h1>
                 🎯 Focus Hunt
             </h1>
 
-            <p>
-                A quick 2-minute attention challenge.
+            <p class="instruction">
+
+                Find and click all the
+
+                <span id="targetColorText">
+                    target
+                </span>
+
+                circles.
+
             </p>
-
-        </div>
-
-
-        <div class="instruction">
-
-            Find and click all the
-            <strong>BLUE circles</strong>
-
-        </div>
-
-
-
-        <!-- ================= GAME BOARD ================= -->
-
-        <div
-            class="game-board"
-            id="gameBoard">
 
         </div>
 
@@ -422,41 +414,74 @@
 
         <div class="stats">
 
+
             <div class="stat">
 
-                <span>
+                <div>
                     Targets
-                </span>
+                </div>
 
-                <strong id="targetCount">
+                <div
+                    class="stat-number"
+                    id="targetCount">
+
                     0
-                </strong>
+
+                </div>
 
             </div>
 
 
+
             <div class="stat">
 
-                <span>
+                <div>
                     Correct
-                </span>
+                </div>
 
-                <strong id="correctCount">
+                <div
+                    class="stat-number"
+                    id="correctCount">
+
                     0
-                </strong>
+
+                </div>
 
             </div>
 
 
+
             <div class="stat">
 
-                <span>
+                <div>
                     Mistakes
-                </span>
+                </div>
 
-                <strong id="wrongCount">
+                <div
+                    class="stat-number"
+                    id="wrongCount">
+
                     0
-                </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div>
+                    Accuracy
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="accuracy">
+
+                    0%
+
+                </div>
 
             </div>
 
@@ -464,14 +489,17 @@
 
 
 
-        <button
-            class="start-button"
-            id="startButton"
-            onclick="startGame()">
+        <!-- ================= GAME ================= -->
 
-            Start Challenge
+        <div class="game-area">
 
-        </button>
+            <div
+                class="objects"
+                id="objects">
+
+            </div>
+
+        </div>
 
 
 
@@ -481,39 +509,46 @@
             class="result"
             id="result">
 
+
             <h2>
-                🎉 Challenge Complete!
+                🎉 Activity Complete!
             </h2>
 
+
             <p>
-                Here's your activity summary.
+                You completed the Focus Hunt.
             </p>
 
 
             <div
                 class="result-score"
-                id="resultScore">
+                id="finalScore">
 
-                0%
+                0
 
             </div>
 
 
-            <p id="resultText">
-                Good job!
+            <p id="resultDetails">
             </p>
 
 
             <br>
 
 
-            <button
-                class="continue-button"
-                onclick="goToDashboard()">
+            <button onclick="playAgain()">
 
-                Back to MindWell →
+                Play Again
 
             </button>
+
+
+            <button onclick="goBack()">
+
+                Back to Activities
+
+            </button>
+
 
         </div>
 
@@ -527,287 +562,646 @@
     <script>
 
 
-        /* ================= VARIABLES ================= */
-
-        let startTime;
-
-        let timerInterval;
-
-        let correct = 0;
-
-        let wrong = 0;
-
-        let totalTargets = 0;
+        /* ============================================
+           GAME SETTINGS
+        ============================================ */
 
 
         const colors = [
+
             "blue",
             "red",
             "green",
             "yellow",
             "purple"
+
         ];
 
 
+        let targetColor;
 
-        /* ================= START GAME ================= */
+
+        let totalTargets = 0;
+
+        let correct = 0;
+
+        let wrong = 0;
+
+        let time = 0;
+
+        let timerInterval;
+
+
+        /* ============================================
+           GET SELECTED GAME
+        ============================================ */
+
+
+        const selectedGame =
+            localStorage.getItem(
+                "selectedGame"
+            );
+
+
+        /*
+        For now only Focus Hunt is implemented.
+
+        Other games will be added one by one.
+        */
+
+
+        if (
+            selectedGame &&
+            selectedGame !== "focus"
+        ) {
+
+            alert(
+                "This activity is coming next. For now, let's play Focus Hunt 🎯"
+            );
+
+        }
+
+
+        /* ============================================
+           START GAME
+        ============================================ */
+
 
         function startGame() {
 
+
+            /*
+            Random target color
+            */
+
+            targetColor =
+                colors[
+                    Math.floor(
+                        Math.random() *
+                        colors.length
+                    )
+                ];
+
+
+            /*
+            Reset values
+            */
 
             correct = 0;
 
             wrong = 0;
 
-
-            document.getElementById("correctCount")
-                .textContent = correct;
+            time = 0;
 
 
-            document.getElementById("wrongCount")
-                .textContent = wrong;
+            /*
+            Update instruction
+            */
+
+            const targetText =
+                document.getElementById(
+                    "targetColorText"
+                );
 
 
-            document.getElementById("result")
-                .style.display = "none";
+            targetText.innerText =
+                targetColor;
 
 
-            document.getElementById("startButton")
-                .style.display = "none";
+            targetText.style.color =
+                targetColor === "yellow"
+                    ? "#d39e00"
+                    : targetColor;
 
+
+            /*
+            Generate objects
+            */
 
             createObjects();
 
 
-            startTime = Date.now();
+            /*
+            Start timer
+            */
+
+            clearInterval(timerInterval);
 
 
-            timerInterval = setInterval(function() {
+            timerInterval =
+                setInterval(
+                    function () {
 
-                const elapsed =
-                    (Date.now() - startTime) / 1000;
+                        time++;
 
-                document.getElementById("timer")
-                    .textContent =
-                    elapsed.toFixed(1);
+                        document.getElementById(
+                            "timer"
+                        ).innerText = time;
 
-            }, 100);
+                    },
+                    1000
+                );
+
+
+            updateStats();
 
         }
 
 
 
-        /* ================= CREATE OBJECTS ================= */
+        /* ============================================
+           CREATE OBJECTS
+        ============================================ */
+
 
         function createObjects() {
 
 
-            const board =
-                document.getElementById("gameBoard");
+            const container =
+                document.getElementById(
+                    "objects"
+                );
 
 
-            board.innerHTML = "";
+            container.innerHTML = "";
 
 
-            totalTargets = 0;
+            /*
+            Total objects
+            */
+
+            const totalObjects = 20;
 
 
-            for (let i = 0; i < 20; i++) {
+            /*
+            Random number of target circles
+            */
+
+            totalTargets =
+                Math.floor(
+                    Math.random() * 5
+                ) + 5;
+
+
+            let targetPlaced = 0;
+
+
+            for (
+                let i = 0;
+                i < totalObjects;
+                i++
+            ) {
 
 
                 const object =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
 
-                object.classList.add("object");
+                object.classList.add(
+                    "object"
+                );
 
 
-                const randomColor =
-                    colors[
-                        Math.floor(
-                            Math.random() *
-                            colors.length
-                        )
-                    ];
+                let color;
 
 
-                object.classList.add(randomColor);
+                /*
+                Make sure required number
+                of target colors are created.
+                */
+
+                if (
+                    targetPlaced <
+                    totalTargets
+                ) {
+
+                    color = targetColor;
+
+                    targetPlaced++;
+
+                } else {
+
+                    /*
+                    Pick random non-target color
+                    */
+
+                    const otherColors =
+                        colors.filter(
+                            c =>
+                                c !== targetColor
+                        );
 
 
-                if (randomColor === "blue") {
-
-                    totalTargets++;
+                    color =
+                        otherColors[
+                            Math.floor(
+                                Math.random() *
+                                otherColors.length
+                            )
+                        ];
 
                 }
 
 
+                object.classList.add(
+                    color
+                );
+
+
+                object.dataset.color =
+                    color;
+
+
                 object.addEventListener(
                     "click",
-                    function() {
+                    function () {
 
                         handleClick(
-                            object,
-                            randomColor
+                            object
                         );
 
                     }
                 );
 
 
-                board.appendChild(object);
+                container.appendChild(
+                    object
+                );
 
             }
 
 
-            document.getElementById("targetCount")
-                .textContent = totalTargets;
+            /*
+            Shuffle positions
+            */
+
+            shuffleObjects();
 
         }
 
 
 
-        /* ================= HANDLE CLICK ================= */
-
-        function handleClick(
-            object,
-            color
-        ) {
+        /* ============================================
+           HANDLE CLICK
+        ============================================ */
 
 
-            if (object.dataset.clicked) {
+        function handleClick(object) {
+
+
+            /*
+            Prevent clicking the same
+            object multiple times.
+            */
+
+            if (
+                object.dataset.clicked ===
+                "true"
+            ) {
 
                 return;
 
             }
 
 
-            object.dataset.clicked = "true";
+            object.dataset.clicked =
+                "true";
 
 
-            if (color === "blue") {
+            const clickedColor =
+                object.dataset.color;
 
+
+            /*
+            Check whether clicked color
+            is the target color.
+            */
+
+            if (
+                clickedColor ===
+                targetColor
+            ) {
 
                 correct++;
 
 
-                object.style.opacity = "0.3";
+                /*
+                Hide correct object
+                */
+
+                object.style.visibility =
+                    "hidden";
 
 
-                document.getElementById(
-                    "correctCount"
-                ).textContent = correct;
+                /*
+                Check if all targets
+                have been found.
+                */
 
-
-                if (correct === totalTargets) {
+                if (
+                    correct ===
+                    totalTargets
+                ) {
 
                     finishGame();
 
                 }
 
-
             } else {
-
 
                 wrong++;
 
 
-                object.style.opacity = "0.3";
+                /*
+                Small visual feedback
+                */
 
-
-                document.getElementById(
-                    "wrongCount"
-                ).textContent = wrong;
+                object.style.opacity =
+                    "0.35";
 
             }
+
+
+            updateStats();
 
         }
 
 
 
-        /* ================= FINISH GAME ================= */
-
-        function finishGame() {
-
-
-            clearInterval(timerInterval);
+        /* ============================================
+           SHUFFLE OBJECTS
+        ============================================ */
 
 
-            const timeTaken =
-                (Date.now() - startTime) / 1000;
+        function shuffleObjects() {
 
 
-            const accuracy =
-                (correct /
-                (correct + wrong)) * 100;
-
-
-            const finalScore =
-                Math.max(
-                    0,
-                    Math.round(
-                        accuracy -
-                        (timeTaken * 0.5)
-                    )
+            const container =
+                document.getElementById(
+                    "objects"
                 );
 
 
-            document.getElementById(
-                "resultScore"
-            ).textContent =
-                finalScore + "%";
+            const objects =
+                Array.from(
+                    container.children
+                );
 
 
-            document.getElementById(
-                "resultText"
-            ).textContent =
-                `Time: ${timeTaken.toFixed(1)} seconds • ` +
-                `Accuracy: ${accuracy.toFixed(1)}% • ` +
-                `Mistakes: ${wrong}`;
+            objects.sort(
+                () =>
+                    Math.random() -
+                    0.5
+            );
 
 
-            document.getElementById(
-                "result"
-            ).style.display = "block";
-
-
-            /* Store game data */
-
-            const gameData = {
-
-                game: "Focus Hunt",
-
-                time: timeTaken,
-
-                correct: correct,
-
-                wrong: wrong,
-
-                accuracy: accuracy,
-
-                score: finalScore,
-
-                date: new Date().toISOString()
-
-            };
-
-
-            localStorage.setItem(
-                "mindwell_focus_hunt",
-                JSON.stringify(gameData)
+            objects.forEach(
+                object =>
+                    container.appendChild(
+                        object
+                    )
             );
 
         }
 
 
 
-        /* ================= DASHBOARD ================= */
+        /* ============================================
+           UPDATE STATS
+        ============================================ */
 
-        function goToDashboard() {
+
+        function updateStats() {
+
+
+            document.getElementById(
+                "targetCount"
+            ).innerText =
+                totalTargets;
+
+
+            document.getElementById(
+                "correctCount"
+            ).innerText =
+                correct;
+
+
+            document.getElementById(
+                "wrongCount"
+            ).innerText =
+                wrong;
+
+
+            const attempts =
+                correct + wrong;
+
+
+            let accuracyValue = 0;
+
+
+            if (
+                attempts > 0
+            ) {
+
+                accuracyValue =
+                    Math.round(
+                        (correct /
+                            attempts) *
+                        100
+                    );
+
+            }
+
+
+            document.getElementById(
+                "accuracy"
+            ).innerText =
+                accuracyValue + "%";
+
+        }
+
+
+
+        /* ============================================
+           FINISH GAME
+        ============================================ */
+
+
+        function finishGame() {
+
+
+            clearInterval(
+                timerInterval
+            );
+
+
+            const attempts =
+                correct + wrong;
+
+
+            let accuracyValue = 0;
+
+
+            if (
+                attempts > 0
+            ) {
+
+                accuracyValue =
+                    Math.round(
+                        (correct /
+                            attempts) *
+                        100
+                    );
+
+            }
+
+
+            /*
+            Demo score
+
+            This is NOT a mental health score.
+            It is only an activity performance score.
+            */
+
+            let finalScore =
+                Math.max(
+                    0,
+                    Math.round(
+                        accuracyValue -
+                        (time * 0.5) -
+                        (wrong * 2)
+                    )
+                );
+
+
+            /*
+            Store activity data
+            */
+
+            const gameData = {
+
+                game: "Focus Hunt",
+
+                targetColor:
+                    targetColor,
+
+                time:
+                    time,
+
+                correct:
+                    correct,
+
+                wrong:
+                    wrong,
+
+                accuracy:
+                    accuracyValue,
+
+                score:
+                    finalScore,
+
+                date:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+
+                "mindwell_focus_hunt",
+
+                JSON.stringify(
+                    gameData
+                )
+
+            );
+
+
+            /*
+            Show result
+            */
+
+            document.getElementById(
+                "finalScore"
+            ).innerText =
+                finalScore;
+
+
+            document.getElementById(
+                "resultDetails"
+            ).innerText =
+
+                "Time: " +
+                time +
+                "s · Accuracy: " +
+                accuracyValue +
+                "% · Target: " +
+                targetColor;
+
+
+            document.getElementById(
+                "result"
+            ).style.display =
+                "block";
+
+
+            document.querySelector(
+                ".game-area"
+            ).style.display =
+                "none";
+
+        }
+
+
+
+        /* ============================================
+           PLAY AGAIN
+        ============================================ */
+
+
+        function playAgain() {
+
+
+            document.getElementById(
+                "result"
+            ).style.display =
+                "none";
+
+
+            document.querySelector(
+                ".game-area"
+            ).style.display =
+                "block";
+
+
+            startGame();
+
+        }
+
+
+
+        /* ============================================
+           BACK
+        ============================================ */
+
+
+        function goBack() {
 
             window.location.href =
                 "employee.html";
 
         }
+
+
+
+        /* ============================================
+           START
+        ============================================ */
+
+
+        startGame();
 
 
     </script>

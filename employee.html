@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>MindWell - Employee Dashboard</title>
@@ -17,55 +18,38 @@
         }
 
         body {
-            background: #f6f8fc;
+            background: #f7f8fc;
             color: #222;
         }
 
+
         /* ================= NAVBAR ================= */
 
-        .navbar {
+        nav {
             height: 70px;
+
             background: white;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 45px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+            padding: 0 50px;
+
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
         }
+
 
         .logo {
             font-size: 25px;
             font-weight: bold;
+            color: #5f5bd8;
         }
+
 
         .user {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-info {
-            text-align: right;
-        }
-
-        .user-info strong {
-            font-size: 15px;
-        }
-
-        .user-info small {
-            color: #777;
-        }
-
-        .avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #6c63ff;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            color: #555;
+            font-size: 14px;
         }
 
 
@@ -73,21 +57,23 @@
 
         .container {
             max-width: 1200px;
-            margin: 35px auto;
+
+            margin: 40px auto;
+
             padding: 0 25px;
         }
 
 
-        /* ================= WELCOME ================= */
-
         .welcome {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
+
 
         .welcome h1 {
             font-size: 30px;
             margin-bottom: 8px;
         }
+
 
         .welcome p {
             color: #777;
@@ -98,199 +84,403 @@
 
         .overview {
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 20px;
-            margin-bottom: 25px;
+
+            margin-bottom: 30px;
         }
 
-        .score-card {
+
+        .score-card,
+        .status-card {
+
             background: white;
+
             padding: 25px;
+
             border-radius: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
         }
 
-        .score-title {
-            color: #777;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
 
         .score {
             font-size: 42px;
+
             font-weight: bold;
-            color: #20a36a;
+
+            color: #5f5bd8;
+
+            margin: 10px 0;
         }
 
-        .trend {
-            color: #20a36a;
-            margin-top: 5px;
+
+        .small-text {
+            color: #777;
+
             font-size: 14px;
         }
 
 
-        /* ================= MAIN CHOICES ================= */
+        .status {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            background: #e8f7ef;
+
+            color: #258a50;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= CHOICES ================= */
 
         .section-title {
-            margin: 30px 0 18px;
+            margin-bottom: 18px;
+
             font-size: 22px;
         }
 
-        .choice-grid {
+
+        .choices {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 20px;
+
+            margin-bottom: 35px;
         }
 
+
         .choice-card {
+
             background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
+
             transition: 0.2s;
         }
 
+
         .choice-card:hover {
+
             transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.09);
         }
+
 
         .choice-icon {
+
             font-size: 38px;
-            margin-bottom: 18px;
+
+            margin-bottom: 15px;
         }
+
 
         .choice-card h3 {
+
             margin-bottom: 10px;
-            font-size: 20px;
         }
 
+
         .choice-card p {
+
             color: #777;
-            line-height: 1.5;
+
             font-size: 14px;
+
+            line-height: 1.5;
+
             min-height: 65px;
         }
 
+
         .choice-btn {
+
             width: 100%;
-            margin-top: 18px;
-            padding: 13px;
+
+            padding: 12px;
+
+            margin-top: 15px;
+
             border: none;
+
             border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            background: #6c63ff;
+
+            background: #5f5bd8;
+
             color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            font-size: 14px;
         }
 
+
         .choice-btn:hover {
+
             opacity: 0.9;
         }
 
 
-        /* ================= DAILY ACTIVITY ================= */
+        /* ================= GAME SELECTION ================= */
 
-        .daily-card {
-            background: linear-gradient(135deg, #eef0ff, #f3f1ff);
-            padding: 25px;
-            border-radius: 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
+        #gameSelection {
+
+            display: none;
+
+            margin-top: 35px;
+
+            margin-bottom: 40px;
         }
 
-        .daily-card h3 {
-            margin-bottom: 7px;
+
+        .selection-header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
         }
 
-        .daily-card p {
-            color: #666;
+
+        .selection-header h2 {
+
+            font-size: 25px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .selection-header p {
+
+            color: #777;
+
             font-size: 14px;
         }
 
-        .start-btn {
-            padding: 13px 22px;
+
+        .game-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .game-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.06);
+
+            transition: 0.2s;
+        }
+
+
+        .game-card:hover {
+
+            transform: translateY(-4px);
+        }
+
+
+        .game-icon {
+
+            font-size: 35px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .game-card h3 {
+
+            margin-bottom: 10px;
+        }
+
+
+        .game-card p {
+
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            min-height: 75px;
+        }
+
+
+        .game-card button {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
             border: none;
-            border-radius: 10px;
-            background: #6c63ff;
+
+            border-radius: 9px;
+
+            background: #5f5bd8;
+
             color: white;
+
             font-weight: bold;
+
             cursor: pointer;
+        }
+
+
+        .game-card button:hover {
+
+            opacity: 0.9;
+        }
+
+
+        .not-today {
+
+            background: #eef8f5;
         }
 
 
         /* ================= TREND ================= */
 
         .trend-card {
+
             background: white;
+
             padding: 25px;
+
             border-radius: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
+
+            margin-bottom: 30px;
+        }
+
+
+        .bars {
+
+            height: 180px;
+
+            display: flex;
+
+            align-items: end;
+
+            justify-content: space-around;
+
             margin-top: 25px;
         }
 
-        .chart {
-            display: flex;
-            align-items: end;
-            justify-content: space-around;
-            height: 150px;
-            margin-top: 20px;
+
+        .bar-wrapper {
+
+            text-align: center;
+
+            width: 50px;
         }
 
-        .bar-container {
-            text-align: center;
-        }
 
         .bar {
+
             width: 35px;
-            background: #6c63ff;
-            border-radius: 7px 7px 0 0;
-            margin-bottom: 8px;
+
+            margin: auto;
+
+            border-radius: 8px 8px 0 0;
+
+            background: #8b87ed;
         }
 
-        .bar-label {
+
+        .day {
+
             font-size: 12px;
+
             color: #777;
+
+            margin-top: 8px;
         }
 
 
         /* ================= PRIVACY ================= */
 
         .privacy {
-            margin-top: 30px;
-            padding: 18px;
-            background: #eef8f5;
-            color: #28755d;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 14px;
+
+            background: #f0f1ff;
+
+            padding: 18px 20px;
+
+            border-radius: 14px;
+
+            color: #555;
+
+            font-size: 13px;
+
+            line-height: 1.5;
         }
 
 
         /* ================= MOBILE ================= */
 
-        @media (max-width: 800px) {
+        @media (max-width: 850px) {
 
-            .choice-grid,
             .overview {
+
                 grid-template-columns: 1fr;
             }
 
-            .daily-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 18px;
+
+            .choices {
+
+                grid-template-columns: 1fr;
             }
 
-            .navbar {
+
+            .game-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            nav {
+
                 padding: 0 20px;
             }
 
         }
 
     </style>
+
 </head>
 
 
@@ -299,31 +489,21 @@
 
     <!-- ================= NAVBAR ================= -->
 
-    <div class="navbar">
+    <nav>
 
         <div class="logo">
             🧠 MindWell
         </div>
 
         <div class="user">
-
-            <div class="user-info">
-                <strong>Alex</strong>
-                <br>
-                <small>Employee</small>
-            </div>
-
-            <div class="avatar">
-                A
-            </div>
-
+            Alex · Employee
         </div>
 
-    </div>
+    </nav>
 
 
 
-    <!-- ================= MAIN CONTENT ================= -->
+    <!-- ================= MAIN CONTAINER ================= -->
 
     <div class="container">
 
@@ -333,12 +513,11 @@
         <div class="welcome">
 
             <h1>
-                Good morning, Alex 👋
+                Welcome back, Alex 👋
             </h1>
 
             <p>
-                There’s no right way to check in.
-                Choose what feels right today.
+                Take a moment for yourself. Choose whatever feels right today.
             </p>
 
         </div>
@@ -349,36 +528,38 @@
 
         <div class="overview">
 
+
             <div class="score-card">
 
-                <div class="score-title">
-                    YOUR WELLBEING TREND
-                </div>
+                <h3>
+                    Your Wellbeing Trend
+                </h3>
 
                 <div class="score">
                     78
                 </div>
 
-                <div class="trend">
-                    ↑ Stable compared with your baseline
-                </div>
+                <p class="small-text">
+                    Based on your recent voluntary activities
+                </p>
 
             </div>
 
 
-            <div class="score-card">
 
-                <div class="score-title">
-                    TODAY'S STATUS
-                </div>
+            <div class="status-card">
 
-                <div class="score">
-                    🌱
-                </div>
+                <h3>
+                    Current Status
+                </h3>
 
-                <div class="trend">
-                    You're doing well today
-                </div>
+                <span class="status">
+                    ● Looking Good
+                </span>
+
+                <p class="small-text" style="margin-top: 15px;">
+                    Keep taking small moments to reset and recharge.
+                </p>
 
             </div>
 
@@ -386,14 +567,14 @@
 
 
 
-        <!-- ================= CHOICES ================= -->
+        <!-- ================= THREE CHOICES ================= -->
 
         <h2 class="section-title">
-            How would you like to spend a few minutes today?
+            How can we support you?
         </h2>
 
 
-        <div class="choice-grid">
+        <div class="choices">
 
 
             <!-- PLAY -->
@@ -409,16 +590,16 @@
                 </h3>
 
                 <p>
-                    Try one quick interactive activity.
-                    Your performance helps MindWell understand
-                    changes in your wellbeing pattern.
+                    Try a short fun activity. Your interaction
+                    patterns can help us understand wellbeing
+                    changes over time.
                 </p>
 
                 <button
                     class="choice-btn"
-                    onclick="startGame()">
+                    onclick="showGames()">
 
-                    Start Activity →
+                    Choose Activity →
 
                 </button>
 
@@ -439,9 +620,9 @@
                 </h3>
 
                 <p>
-                    Something on your mind?
-                    Talk with MindWell's AI assistant
-                    and get supportive suggestions.
+                    Want to talk about something on your mind?
+                    You can have a private conversation with
+                    our AI support assistant.
                 </p>
 
                 <button
@@ -469,15 +650,15 @@
                 </h3>
 
                 <p>
-                    Take a short break with breathing,
-                    grounding and relaxation activities.
+                    Take a short breathing, grounding or
+                    relaxation activity whenever you need it.
                 </p>
 
                 <button
                     class="choice-btn"
                     onclick="relax()">
 
-                    Explore →
+                    Relax →
 
                 </button>
 
@@ -487,29 +668,198 @@
 
 
 
-        <!-- ================= DAILY ACTIVITY ================= -->
+        <!-- ================= GAME SELECTION ================= -->
 
-        <div class="daily-card">
+        <div id="gameSelection">
 
-            <div>
 
-                <h3>
-                    🎯 Today's Mind Check
-                </h3>
+            <div class="selection-header">
+
+                <h2>
+                    🎮 Choose Your Activity
+                </h2>
 
                 <p>
-                    Today's activity: Focus Hunt · about 2 minutes
+                    Pick whatever feels right for you today.
+                    There is no right or wrong choice.
                 </p>
 
             </div>
 
-            <button
-                class="start-btn"
-                onclick="startGame()">
 
-                Start →
 
-            </button>
+            <div class="game-grid">
+
+
+                <!-- FOCUS HUNT -->
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Focus Hunt
+                    </h3>
+
+                    <p>
+                        Find the target among different
+                        objects as quickly and accurately
+                        as you can.
+                    </p>
+
+                    <button
+                        onclick="playGame('focus')">
+
+                        Play →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- REACTION RUSH -->
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        ⚡
+                    </div>
+
+                    <h3>
+                        Reaction Rush
+                    </h3>
+
+                    <p>
+                        Test your reaction by tapping
+                        the target when it appears.
+                    </p>
+
+                    <button
+                        onclick="playGame('reaction')">
+
+                        Play →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- MEMORY MATCH -->
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        🧩
+                    </div>
+
+                    <h3>
+                        Memory Match
+                    </h3>
+
+                    <p>
+                        Remember the cards and find
+                        matching pairs.
+                    </p>
+
+                    <button
+                        onclick="playGame('memory')">
+
+                        Play →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- COLOR FLOW -->
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        🌈
+                    </div>
+
+                    <h3>
+                        Color Flow
+                    </h3>
+
+                    <p>
+                        Follow changing rules and see
+                        how quickly you can adapt.
+                    </p>
+
+                    <button
+                        onclick="playGame('color')">
+
+                        Play →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- CHOICE QUEST -->
+
+                <div class="game-card">
+
+                    <div class="game-icon">
+                        🎮
+                    </div>
+
+                    <h3>
+                        Choice Quest
+                    </h3>
+
+                    <p>
+                        Explore everyday scenarios and
+                        choose what feels most natural.
+                    </p>
+
+                    <button
+                        onclick="playGame('choice')">
+
+                        Play →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- NOT TODAY -->
+
+                <div class="game-card not-today">
+
+                    <div class="game-icon">
+                        🌿
+                    </div>
+
+                    <h3>
+                        Not in the mood?
+                    </h3>
+
+                    <p>
+                        That's completely okay.
+                        You can relax or simply come
+                        back later.
+                    </p>
+
+                    <button
+                        onclick="relax()">
+
+                        Relax Instead →
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -519,87 +869,86 @@
 
         <div class="trend-card">
 
-            <h2>
-                Your Recent Wellbeing Pattern
-            </h2>
+            <h3>
+                Recent Wellbeing Pattern
+            </h3>
 
-            <p style="color:#777; margin-top:7px;">
-                Based on your recent interactions
+            <p class="small-text">
+                Example activity trend
             </p>
 
 
-            <div class="chart">
+            <div class="bars">
 
 
-                <div class="bar-container">
+                <div class="bar-wrapper">
 
                     <div
                         class="bar"
-                        style="height:75px;">
+                        style="height: 70px;">
                     </div>
 
-                    <div class="bar-label">
+                    <div class="day">
                         Mon
                     </div>
 
                 </div>
 
 
-                <div class="bar-container">
+                <div class="bar-wrapper">
 
                     <div
                         class="bar"
-                        style="height:90px;">
+                        style="height: 100px;">
                     </div>
 
-                    <div class="bar-label">
+                    <div class="day">
                         Tue
                     </div>
 
                 </div>
 
 
-                <div class="bar-container">
+                <div class="bar-wrapper">
 
                     <div
                         class="bar"
-                        style="height:80px;">
+                        style="height: 85px;">
                     </div>
 
-                    <div class="bar-label">
+                    <div class="day">
                         Wed
                     </div>
 
                 </div>
 
 
-                <div class="bar-container">
+                <div class="bar-wrapper">
 
                     <div
                         class="bar"
-                        style="height:105px;">
+                        style="height: 125px;">
                     </div>
 
-                    <div class="bar-label">
+                    <div class="day">
                         Thu
                     </div>
 
                 </div>
 
 
-                <div class="bar-container">
+                <div class="bar-wrapper">
 
                     <div
                         class="bar"
-                        style="height:115px;">
+                        style="height: 115px;">
                     </div>
 
-                    <div class="bar-label">
+                    <div class="day">
                         Fri
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -613,8 +962,11 @@
 
             🔒 <strong>Your privacy matters.</strong>
 
-            Your personal conversations and activity responses
-            are private and are not visible to HR.
+            Your personal conversations and reflections
+            remain private. Organization-level insights
+            are designed to use aggregated wellbeing
+            information rather than exposing private
+            conversations.
 
         </div>
 
@@ -627,25 +979,66 @@
 
     <script>
 
-        function startGame() {
 
-            window.location.href = "game.html";
+        function showGames() {
+
+            const games =
+                document.getElementById("gameSelection");
+
+            games.style.display = "block";
+
+
+            games.scrollIntoView({
+
+                behavior: "smooth"
+
+            });
 
         }
+
+
+
+        function playGame(game) {
+
+            /*
+             Store which game the employee selected.
+            */
+
+            localStorage.setItem(
+                "selectedGame",
+                game
+            );
+
+
+            /*
+             Open game page.
+            */
+
+            window.location.href =
+                "game.html";
+
+        }
+
 
 
         function talkToAI() {
 
-            alert("AI Support will be available here.");
+            alert(
+                "AI Support is coming next 💬"
+            );
 
         }
+
 
 
         function relax() {
 
-            alert("Relax & Reset activities will be available here.");
+            alert(
+                "Relax & Reset activities are coming next 🌿"
+            );
 
         }
+
 
     </script>
 
