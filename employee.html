@@ -1000,47 +1000,43 @@
 
         function playGame(game) {
 
-    localStorage.setItem(
-        "selectedGame",
-        game
-    );
+    localStorage.setItem("selectedGame", game);
 
     if (game === "focus") {
 
-        window.location.href =
-            "game.html";
+        window.location.href = "game.html";
 
     }
 
     else if (game === "reaction") {
 
-        window.location.href =
-            "reaction.html";
+        window.location.href = "reaction.html";
 
     }
 
     else if (game === "memory") {
 
-        window.location.href =
-            "memory.html";
+        window.location.href = "memory.html";
 
     }
 
     else if (game === "color") {
 
-        window.location.href =
-            "color.html";
+        window.location.href = "color.html";
+
+    }
+
+    else if (game === "choice") {
+
+        window.location.href = "choice.html";
 
     }
 
     else {
 
-        alert(
-            "This activity is coming next 🎮"
-        );
+        alert("This activity is coming next 🎮");
 
     }
-
 }
 
 

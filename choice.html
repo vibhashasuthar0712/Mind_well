@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choice Quest | MindWell</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        header {
+            background: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .title {
+            color: #6b7280;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .scenario {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .scenario-number {
+            color: #6366f1;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .question {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            gap: 14px;
+        }
+
+        .option {
+            padding: 18px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .option:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        #feedback {
+            margin-top: 20px;
+            min-height: 25px;
+            font-weight: bold;
+        }
+
+        .result {
+            display: none;
+        }
+
+        .result-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .btn {
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 7px;
+        }
+
+        .secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🧠 MindWell</div>
+    <div class="title">Choice Quest</div>
+</header>
+
+
+<div class="container">
+
+    <!-- GAME -->
+    <div class="card" id="gameScreen">
+
+        <h1>🎮 Choice Quest</h1>
+
+        <p class="subtitle">
+            There is no right or wrong answer.
+            Choose the option that feels most natural to you.
+        </p>
+
+        <div class="scenario">
+
+            <div class="scenario-number">
+                Scenario <span id="scenarioNumber">1</span> / 5
+            </div>
+
+            <div class="question" id="question">
+                Loading...
+            </div>
+
+        </div>
+
+        <div class="options" id="options"></div>
+
+        <div id="feedback"></div>
+
+    </div>
+
+
+    <!-- RESULT -->
+    <div class="card result" id="resultScreen">
+
+        <h1>🎉 Quest Complete!</h1>
+
+        <p class="subtitle">
+            Thanks for sharing your choices.
+        </p>
+
+        <div class="result-box">
+
+            <div class="result-row">
+                <span>Scenarios Completed</span>
+                <strong id="finalQuestions">0</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Average Response Time</span>
+                <strong id="finalTime">0 ms</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Choices Made</span>
+                <strong id="finalChoices">0</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Activity Score</span>
+                <strong id="finalScore">0</strong>
+            </div>
+
+        </div>
+
+        <p class="subtitle">
+            This activity does not diagnose stress, anxiety,
+            depression, or any other mental-health condition.
+        </p>
+
+        <button class="btn" onclick="restartGame()">
+            🔄 Play Again
+        </button>
+
+        <button class="btn secondary" onclick="goBack()">
+            ← Back to Activities
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const scenarios = [
+
+    {
+        question:
+        "You have an important presentation tomorrow and you feel that your preparation is incomplete. What would you most likely do?",
+
+        options: [
+            "Break the work into small tasks and start preparing.",
+            "Ask a teammate for help or feedback.",
+            "Take a short break and then continue preparing.",
+            "Avoid thinking about it until later."
+        ]
+    },
+
+    {
+        question:
+        "You receive several tasks at the same time and everything feels urgent. What would you do?",
+
+        options: [
+            "Prioritize the most important tasks first.",
+            "Ask someone to help clarify priorities.",
+            "Start with whichever task looks easiest.",
+            "Try to do everything simultaneously."
+        ]
+    },
+
+    {
+        question:
+        "A teammate gives you unexpected critical feedback about your work. What would you most likely do?",
+
+        options: [
+            "Listen and ask how I can improve.",
+            "Take some time before responding.",
+            "Discuss the feedback with someone I trust.",
+            "Ignore it and continue working."
+        ]
+    },
+
+    {
+        question:
+        "You have been working for a long time without a proper break. What would you choose?",
+
+        options: [
+            "Take a short break and reset.",
+            "Finish the current task first.",
+            "Do a quick relaxation or breathing activity.",
+            "Continue working without stopping."
+        ]
+    },
+
+    {
+        question:
+        "You notice that your workload has been increasing for several days. What would you most likely do?",
+
+        options: [
+            "Talk to my manager about the workload.",
+            "Reorganize my tasks and priorities.",
+            "Talk to someone I trust about it.",
+            "Keep everything to myself and continue."
+        ]
+    }
+
+];
+
+
+let currentScenario = 0;
+let choices = [];
+let responseTimes = [];
+let startTime = 0;
+
+
+function startGame() {
+
+    currentScenario = 0;
+    choices = [];
+    responseTimes = [];
+
+    document.getElementById("gameScreen").style.display = "block";
+    document.getElementById("resultScreen").style.display = "none";
+
+    showScenario();
+}
+
+
+function showScenario() {
+
+    const scenario = scenarios[currentScenario];
+
+    document.getElementById("scenarioNumber").textContent =
+        currentScenario + 1;
+
+    document.getElementById("question").textContent =
+        scenario.question;
+
+    const optionsContainer =
+        document.getElementById("options");
+
+    optionsContainer.innerHTML = "";
+
+    scenario.options.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            `${index + 1}. ${option}`;
+
+        button.onclick = function() {
+
+            selectOption(index);
+
+        };
+
+        optionsContainer.appendChild(button);
+
+    });
+
+    startTime = performance.now();
+}
+
+
+function selectOption(index) {
+
+    const responseTime =
+        Math.round(performance.now() - startTime);
+
+    choices.push(index);
+
+    responseTimes.push(responseTime);
+
+    document.getElementById("feedback").textContent =
+        "✓ Choice recorded";
+
+    setTimeout(() => {
+
+        currentScenario++;
+
+        if (currentScenario >= scenarios.length) {
+
+            finishGame();
+
+        } else {
+
+            document.getElementById("feedback").textContent = "";
+
+            showScenario();
+
+        }
+
+    }, 500);
+}
+
+
+function finishGame() {
+
+    const totalTime =
+        responseTimes.reduce(
+            (sum, time) => sum + time,
+            0
+        );
+
+    const averageTime =
+        Math.round(
+            totalTime / responseTimes.length
+        );
+
+
+    /*
+        Activity score only.
+        It is NOT a mental-health score.
+    */
+
+    let score = 100;
+
+    if (averageTime > 10000) {
+        score -= 10;
+    }
+
+    if (averageTime > 15000) {
+        score -= 10;
+    }
+
+    if (score < 0) {
+        score = 0;
+    }
+
+
+    document.getElementById("finalQuestions").textContent =
+        scenarios.length;
+
+    document.getElementById("finalTime").textContent =
+        averageTime + " ms";
+
+    document.getElementById("finalChoices").textContent =
+        choices.length;
+
+    document.getElementById("finalScore").textContent =
+        score;
+
+
+    const gameData = {
+
+        game: "Choice Quest",
+
+        scenariosCompleted:
+            scenarios.length,
+
+        choices:
+            choices,
+
+        responseTimes:
+            responseTimes,
+
+        averageResponseTime:
+            averageTime,
+
+        score:
+            score,
+
+        date:
+            new Date().toISOString()
+
+    };
+
+
+    localStorage.setItem(
+        "mindwell_choice_quest",
+        JSON.stringify(gameData)
+    );
+
+
+    document.getElementById("gameScreen").style.display =
+        "none";
+
+    document.getElementById("resultScreen").style.display =
+        "block";
+}
+
+
+function restartGame() {
+
+    startGame();
+
+}
+
+
+function goBack() {
+
+    window.location.href =
+        "employee.html";
+
+}
+
+
+startGame();
+
+</script>
+
+</body>
+</html>
