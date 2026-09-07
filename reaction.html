@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>MindWell - Reaction Rush</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f7f8fc;
+            color: #222;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        header {
+
+            height: 70px;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            box-shadow:
+                0 2px 12px rgba(0,0,0,0.05);
+
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+        }
+
+
+        .round-info {
+
+            color: #555;
+
+            font-size: 14px;
+
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+
+            max-width: 900px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+
+        }
+
+
+        .game-header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .game-header h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .instruction {
+
+            color: #666;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .stat {
+
+            background: white;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.05);
+
+        }
+
+
+        .stat-number {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+            margin-top: 5px;
+
+        }
+
+
+        /* ================= GAME AREA ================= */
+
+        .game-area {
+
+            position: relative;
+
+            height: 480px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.06);
+
+            overflow: hidden;
+
+            cursor: crosshair;
+
+        }
+
+
+        .game-message {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            text-align: center;
+
+            color: #777;
+
+            font-size: 18px;
+
+            pointer-events: none;
+
+        }
+
+
+        .target {
+
+            position: absolute;
+
+            width: 65px;
+
+            height: 65px;
+
+            border-radius: 50%;
+
+            background: #5f5bd8;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 15px rgba(95,91,216,0.3);
+
+            transition: transform 0.1s;
+
+        }
+
+
+        .target:hover {
+
+            transform: scale(1.08);
+
+        }
+
+
+        /* ================= START BUTTON ================= */
+
+        .start-section {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+        }
+
+
+        .start-btn {
+
+            padding: 13px 28px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #5f5bd8;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .start-btn:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result {
+
+            display: none;
+
+            text-align: center;
+
+            background: white;
+
+            padding: 35px;
+
+            margin-top: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 25px rgba(0,0,0,0.06);
+
+        }
+
+
+        .result h2 {
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .result-score {
+
+            font-size: 42px;
+
+            font-weight: bold;
+
+            color: #5f5bd8;
+
+            margin: 15px 0;
+
+        }
+
+
+        .result p {
+
+            color: #666;
+
+            line-height: 1.6;
+
+        }
+
+
+        .result button {
+
+            border: none;
+
+            padding: 12px 22px;
+
+            border-radius: 10px;
+
+            background: #5f5bd8;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin: 15px 5px 0;
+
+        }
+
+
+        .result button:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .game-area {
+
+                height: 400px;
+
+            }
+
+
+            header {
+
+                padding: 0 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🧠 MindWell
+        </div>
+
+
+        <div class="round-info">
+
+            Round:
+            <span id="round">
+                0
+            </span>
+            / 10
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- GAME HEADER -->
+
+        <div class="game-header">
+
+            <h1>
+                ⚡ Reaction Rush
+            </h1>
+
+
+            <p class="instruction">
+
+                Wait for the circle to appear,
+                then click it as quickly as possible.
+
+                <br>
+
+                Don't click before it appears!
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= STATS ================= -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <div>
+                    Round
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="roundStat">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div>
+                    Correct
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="correctCount">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div>
+                    False Clicks
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="falseClicks">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div>
+                    Avg. Reaction
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="averageTime">
+
+                    -- ms
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= GAME AREA ================= -->
+
+        <div
+            class="game-area"
+            id="gameArea">
+
+
+            <div
+                class="game-message"
+                id="gameMessage">
+
+                Click "Start Game" to begin ⚡
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= START BUTTON ================= -->
+
+        <div class="start-section">
+
+            <button
+                class="start-btn"
+                id="startBtn"
+                onclick="startGame()">
+
+                Start Game
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ================= RESULT ================= -->
+
+        <div
+            class="result"
+            id="result">
+
+
+            <h2>
+                🎉 Reaction Rush Complete!
+            </h2>
+
+
+            <p>
+                You completed all 10 rounds.
+            </p>
+
+
+            <div
+                class="result-score"
+                id="finalScore">
+
+                0 ms
+
+            </div>
+
+
+            <p id="resultDetails">
+            </p>
+
+
+            <button
+                onclick="playAgain()">
+
+                Play Again
+
+            </button>
+
+
+            <button
+                onclick="goBack()">
+
+                Back to Activities
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ============================================
+           GAME SETTINGS
+        ============================================ */
+
+
+        const TOTAL_ROUNDS = 10;
+
+
+        let currentRound = 0;
+
+        let correct = 0;
+
+        let falseClicks = 0;
+
+        let reactionTimes = [];
+
+
+        let target;
+
+        let targetAppearedTime;
+
+        let waitingForTarget = false;
+
+        let roundTimeout;
+
+
+
+        /* ============================================
+           GAME AREA
+        ============================================ */
+
+
+        const gameArea =
+            document.getElementById(
+                "gameArea"
+            );
+
+
+        const gameMessage =
+            document.getElementById(
+                "gameMessage"
+            );
+
+
+
+        /* ============================================
+           START GAME
+        ============================================ */
+
+
+        function startGame() {
+
+
+            /*
+            Reset everything
+            */
+
+            currentRound = 0;
+
+            correct = 0;
+
+            falseClicks = 0;
+
+            reactionTimes = [];
+
+
+            /*
+            Hide result
+            */
+
+            document.getElementById(
+                "result"
+            ).style.display =
+                "none";
+
+
+            /*
+            Reset game area
+            */
+
+            gameArea.innerHTML = "";
+
+
+            /*
+            Reset button
+            */
+
+            document.getElementById(
+                "startBtn"
+            ).style.display =
+                "none";
+
+
+            /*
+            Reset stats
+            */
+
+            updateStats();
+
+
+            /*
+            Start first round
+            */
+
+            nextRound();
+
+        }
+
+
+
+        /* ============================================
+           NEXT ROUND
+        ============================================ */
+
+
+        function nextRound() {
+
+
+            /*
+            Check if game is complete
+            */
+
+            if (
+                currentRound >=
+                TOTAL_ROUNDS
+            ) {
+
+                finishGame();
+
+                return;
+
+            }
+
+
+            currentRound++;
+
+
+            waitingForTarget = true;
+
+
+            updateStats();
+
+
+            /*
+            Show waiting message
+            */
+
+            showMessage(
+                "Wait for the circle..."
+            );
+
+
+            /*
+            Random delay
+            */
+
+            const delay =
+                Math.floor(
+                    Math.random() * 2000
+                ) + 1000;
+
+
+            roundTimeout =
+                setTimeout(
+                    showTarget,
+                    delay
+                );
+
+        }
+
+
+
+        /* ============================================
+           SHOW TARGET
+        ============================================ */
+
+
+        function showTarget() {
+
+
+            waitingForTarget = false;
+
+
+            /*
+            Remove previous message
+            */
+
+            gameArea.innerHTML = "";
+
+
+            /*
+            Create target
+            */
+
+            target =
+                document.createElement(
+                    "div"
+                );
+
+
+            target.classList.add(
+                "target"
+            );
+
+
+            /*
+            Random position
+            */
+
+            const maxX =
+                gameArea.clientWidth -
+                65;
+
+
+            const maxY =
+                gameArea.clientHeight -
+                65;
+
+
+            const x =
+                Math.floor(
+                    Math.random() *
+                    maxX
+                );
+
+
+            const y =
+                Math.floor(
+                    Math.random() *
+                    maxY
+                );
+
+
+            target.style.left =
+                x + "px";
+
+
+            target.style.top =
+                y + "px";
+
+
+            /*
+            Record appearance time
+            */
+
+            targetAppearedTime =
+                performance.now();
+
+
+            /*
+            Click target
+            */
+
+            target.addEventListener(
+                "click",
+                handleTargetClick
+            );
+
+
+            gameArea.appendChild(
+                target
+            );
+
+
+            /*
+            Safety timeout
+
+            If user doesn't react
+            within 5 seconds,
+            count it as a miss.
+            */
+
+            roundTimeout =
+                setTimeout(
+                    targetMissed,
+                    5000
+                );
+
+        }
+
+
+
+        /* ============================================
+           TARGET CLICK
+        ============================================ */
+
+
+        function handleTargetClick(
+            event
+        ) {
+
+
+            /*
+            Stop event from reaching
+            game area.
+            */
+
+            event.stopPropagation();
+
+
+            clearTimeout(
+                roundTimeout
+            );
+
+
+            /*
+            Calculate reaction time
+            */
+
+            const reactionTime =
+                Math.round(
+                    performance.now() -
+                    targetAppearedTime
+                );
+
+
+            reactionTimes.push(
+                reactionTime
+            );
+
+
+            correct++;
+
+
+            /*
+            Remove target
+            */
+
+            target.remove();
+
+
+            /*
+            Move to next round
+            */
+
+            setTimeout(
+                nextRound,
+                500
+            );
+
+        }
+
+
+
+        /* ============================================
+           FALSE CLICK
+        ============================================ */
+
+
+        gameArea.addEventListener(
+            "click",
+            function () {
+
+
+                /*
+                If target is visible,
+                clicking anywhere except
+                target counts as false click.
+                */
+
+                if (
+                    !waitingForTarget &&
+                    target
+                ) {
+
+                    falseClicks++;
+
+                    updateStats();
+
+                }
+
+
+                /*
+                If we are waiting for target,
+                clicking early also counts
+                as false click.
+                */
+
+                if (
+                    waitingForTarget
+                ) {
+
+                    falseClicks++;
+
+                    updateStats();
+
+                }
+
+            }
+        );
+
+
+
+        /* ============================================
+           TARGET MISSED
+        ============================================ */
+
+
+        function targetMissed() {
+
+
+            if (
+                target &&
+                !waitingForTarget
+            ) {
+
+                target.remove();
+
+                target = null;
+
+            }
+
+
+            /*
+            Move to next round
+            */
+
+            setTimeout(
+                nextRound,
+                500
+            );
+
+        }
+
+
+
+        /* ============================================
+           SHOW MESSAGE
+        ============================================ */
+
+
+        function showMessage(
+            message
+        ) {
+
+
+            gameArea.innerHTML = "";
+
+
+            const messageElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            messageElement.className =
+                "game-message";
+
+
+            messageElement.innerText =
+                message;
+
+
+            gameArea.appendChild(
+                messageElement
+            );
+
+        }
+
+
+
+        /* ============================================
+           UPDATE STATS
+        ============================================ */
+
+
+        function updateStats() {
+
+
+            document.getElementById(
+                "round"
+            ).innerText =
+                currentRound;
+
+
+            document.getElementById(
+                "roundStat"
+            ).innerText =
+                currentRound;
+
+
+            document.getElementById(
+                "correctCount"
+            ).innerText =
+                correct;
+
+
+            document.getElementById(
+                "falseClicks"
+            ).innerText =
+                falseClicks;
+
+
+            if (
+                reactionTimes.length > 0
+            ) {
+
+
+                const total =
+                    reactionTimes.reduce(
+                        (
+                            sum,
+                            value
+                        ) =>
+                            sum + value,
+                        0
+                    );
+
+
+                const average =
+                    Math.round(
+                        total /
+                        reactionTimes.length
+                    );
+
+
+                document.getElementById(
+                    "averageTime"
+                ).innerText =
+                    average + " ms";
+
+            }
+
+        }
+
+
+
+        /* ============================================
+           FINISH GAME
+        ============================================ */
+
+
+        function finishGame() {
+
+
+            clearTimeout(
+                roundTimeout
+            );
+
+
+            waitingForTarget = false;
+
+
+            /*
+            Calculate average reaction time
+            */
+
+            let averageReaction =
+                0;
+
+
+            if (
+                reactionTimes.length > 0
+            ) {
+
+                const total =
+                    reactionTimes.reduce(
+                        (
+                            sum,
+                            value
+                        ) =>
+                            sum + value,
+                        0
+                    );
+
+
+                averageReaction =
+                    Math.round(
+                        total /
+                        reactionTimes.length
+                    );
+
+            }
+
+
+            /*
+            Activity score
+
+            This is NOT a mental-health score.
+            */
+
+            let score = 100;
+
+
+            score -=
+                falseClicks * 3;
+
+
+            /*
+            Small adjustment based
+            on reaction speed
+            */
+
+            if (
+                averageReaction > 700
+            ) {
+
+                score -= 15;
+
+            } else if (
+                averageReaction > 500
+            ) {
+
+                score -= 8;
+
+            }
+
+
+            score =
+                Math.max(
+                    0,
+                    Math.round(score)
+                );
+
+
+            /*
+            Store game data
+            */
+
+            const gameData = {
+
+                game:
+                    "Reaction Rush",
+
+                rounds:
+                    TOTAL_ROUNDS,
+
+                correct:
+                    correct,
+
+                falseClicks:
+                    falseClicks,
+
+                reactionTimes:
+                    reactionTimes,
+
+                averageReaction:
+                    averageReaction,
+
+                score:
+                    score,
+
+                date:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+
+                "mindwell_reaction_rush",
+
+                JSON.stringify(
+                    gameData
+                )
+
+            );
+
+
+            /*
+            Show result
+            */
+
+            document.getElementById(
+                "finalScore"
+            ).innerText =
+                averageReaction +
+                " ms";
+
+
+            document.getElementById(
+                "resultDetails"
+            ).innerText =
+
+                "Correct: " +
+                correct +
+                " / " +
+                TOTAL_ROUNDS +
+
+                " · False clicks: " +
+                falseClicks +
+
+                " · Activity score: " +
+                score;
+
+
+            document.getElementById(
+                "result"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "startBtn"
+            ).style.display =
+                "inline-block";
+
+
+            document.getElementById(
+                "startBtn"
+            ).innerText =
+                "Start Again";
+
+
+            showMessage(
+                "Great job! 🎉"
+            );
+
+        }
+
+
+
+        /* ============================================
+           PLAY AGAIN
+        ============================================ */
+
+
+        function playAgain() {
+
+
+            startGame();
+
+        }
+
+
+
+        /* ============================================
+           BACK TO ACTIVITIES
+        ============================================ */
+
+
+        function goBack() {
+
+
+            window.location.href =
+                "employee.html";
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

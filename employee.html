@@ -1000,24 +1000,34 @@
 
         function playGame(game) {
 
-            /*
-             Store which game the employee selected.
-            */
+    localStorage.setItem(
+        "selectedGame",
+        game
+    );
 
-            localStorage.setItem(
-                "selectedGame",
-                game
-            );
+    if (game === "focus") {
 
+        window.location.href =
+            "game.html";
 
-            /*
-             Open game page.
-            */
+    }
 
-            window.location.href =
-                "game.html";
+    else if (game === "reaction") {
 
-        }
+        window.location.href =
+            "reaction.html";
+
+    }
+
+    else {
+
+        alert(
+            "This activity is coming next 🎮"
+        );
+
+    }
+
+}
 
 
 
