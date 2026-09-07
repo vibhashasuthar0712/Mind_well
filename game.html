@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MindWell - Focus Hunt</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f6f8fc;
+            color: #222;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .header {
+
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+
+        .logo {
+
+            font-size: 24px;
+            font-weight: bold;
+
+        }
+
+
+        .timer {
+
+            font-size: 18px;
+            font-weight: bold;
+
+            color: #6c63ff;
+
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+
+            max-width: 900px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+
+            text-align: center;
+
+        }
+
+
+        .game-info h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .game-info p {
+
+            color: #777;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        /* ================= INSTRUCTION ================= */
+
+        .instruction {
+
+            background: #eef0ff;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            color: #5148c8;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ================= GAME BOARD ================= */
+
+        .game-board {
+
+            background: white;
+
+            min-height: 450px;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 20px;
+
+            align-items: center;
+
+            justify-items: center;
+
+        }
+
+
+        /* ================= OBJECTS ================= */
+
+        .object {
+
+            width: 60px;
+
+            height: 60px;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            transition: 0.15s;
+
+        }
+
+
+        .object:hover {
+
+            transform: scale(1.12);
+
+        }
+
+
+        .blue {
+            background: #3b82f6;
+        }
+
+
+        .red {
+            background: #ef4444;
+        }
+
+
+        .green {
+            background: #22c55e;
+        }
+
+
+        .yellow {
+            background: #facc15;
+        }
+
+
+        .purple {
+            background: #a855f7;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 40px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .stat {
+
+            background: white;
+
+            padding: 15px 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.05);
+
+        }
+
+
+        .stat span {
+
+            display: block;
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .stat strong {
+
+            font-size: 22px;
+
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        .start-button {
+
+            margin-top: 25px;
+
+            padding: 14px 30px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #6c63ff;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .start-button:hover {
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result {
+
+            display: none;
+
+            background: white;
+
+            padding: 35px;
+
+            margin-top: 30px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+        }
+
+
+        .result h2 {
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .result-score {
+
+            font-size: 45px;
+
+            font-weight: bold;
+
+            color: #6c63ff;
+
+            margin: 15px;
+
+        }
+
+
+        .continue-button {
+
+            padding: 12px 25px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #20a36a;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            .game-board {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+            .stats {
+
+                flex-wrap: wrap;
+
+            }
+
+            .header {
+
+                padding: 0 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="header">
+
+        <div class="logo">
+            🧠 MindWell
+        </div>
+
+        <div class="timer">
+            ⏱️ <span id="timer">0.0</span>s
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <div class="game-info">
+
+            <h1>
+                🎯 Focus Hunt
+            </h1>
+
+            <p>
+                A quick 2-minute attention challenge.
+            </p>
+
+        </div>
+
+
+        <div class="instruction">
+
+            Find and click all the
+            <strong>BLUE circles</strong>
+
+        </div>
+
+
+
+        <!-- ================= GAME BOARD ================= -->
+
+        <div
+            class="game-board"
+            id="gameBoard">
+
+        </div>
+
+
+
+        <!-- ================= STATS ================= -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <span>
+                    Targets
+                </span>
+
+                <strong id="targetCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <span>
+                    Correct
+                </span>
+
+                <strong id="correctCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                <span>
+                    Mistakes
+                </span>
+
+                <strong id="wrongCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <button
+            class="start-button"
+            id="startButton"
+            onclick="startGame()">
+
+            Start Challenge
+
+        </button>
+
+
+
+        <!-- ================= RESULT ================= -->
+
+        <div
+            class="result"
+            id="result">
+
+            <h2>
+                🎉 Challenge Complete!
+            </h2>
+
+            <p>
+                Here's your activity summary.
+            </p>
+
+
+            <div
+                class="result-score"
+                id="resultScore">
+
+                0%
+
+            </div>
+
+
+            <p id="resultText">
+                Good job!
+            </p>
+
+
+            <br>
+
+
+            <button
+                class="continue-button"
+                onclick="goToDashboard()">
+
+                Back to MindWell →
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ================= VARIABLES ================= */
+
+        let startTime;
+
+        let timerInterval;
+
+        let correct = 0;
+
+        let wrong = 0;
+
+        let totalTargets = 0;
+
+
+        const colors = [
+            "blue",
+            "red",
+            "green",
+            "yellow",
+            "purple"
+        ];
+
+
+
+        /* ================= START GAME ================= */
+
+        function startGame() {
+
+
+            correct = 0;
+
+            wrong = 0;
+
+
+            document.getElementById("correctCount")
+                .textContent = correct;
+
+
+            document.getElementById("wrongCount")
+                .textContent = wrong;
+
+
+            document.getElementById("result")
+                .style.display = "none";
+
+
+            document.getElementById("startButton")
+                .style.display = "none";
+
+
+            createObjects();
+
+
+            startTime = Date.now();
+
+
+            timerInterval = setInterval(function() {
+
+                const elapsed =
+                    (Date.now() - startTime) / 1000;
+
+                document.getElementById("timer")
+                    .textContent =
+                    elapsed.toFixed(1);
+
+            }, 100);
+
+        }
+
+
+
+        /* ================= CREATE OBJECTS ================= */
+
+        function createObjects() {
+
+
+            const board =
+                document.getElementById("gameBoard");
+
+
+            board.innerHTML = "";
+
+
+            totalTargets = 0;
+
+
+            for (let i = 0; i < 20; i++) {
+
+
+                const object =
+                    document.createElement("div");
+
+
+                object.classList.add("object");
+
+
+                const randomColor =
+                    colors[
+                        Math.floor(
+                            Math.random() *
+                            colors.length
+                        )
+                    ];
+
+
+                object.classList.add(randomColor);
+
+
+                if (randomColor === "blue") {
+
+                    totalTargets++;
+
+                }
+
+
+                object.addEventListener(
+                    "click",
+                    function() {
+
+                        handleClick(
+                            object,
+                            randomColor
+                        );
+
+                    }
+                );
+
+
+                board.appendChild(object);
+
+            }
+
+
+            document.getElementById("targetCount")
+                .textContent = totalTargets;
+
+        }
+
+
+
+        /* ================= HANDLE CLICK ================= */
+
+        function handleClick(
+            object,
+            color
+        ) {
+
+
+            if (object.dataset.clicked) {
+
+                return;
+
+            }
+
+
+            object.dataset.clicked = "true";
+
+
+            if (color === "blue") {
+
+
+                correct++;
+
+
+                object.style.opacity = "0.3";
+
+
+                document.getElementById(
+                    "correctCount"
+                ).textContent = correct;
+
+
+                if (correct === totalTargets) {
+
+                    finishGame();
+
+                }
+
+
+            } else {
+
+
+                wrong++;
+
+
+                object.style.opacity = "0.3";
+
+
+                document.getElementById(
+                    "wrongCount"
+                ).textContent = wrong;
+
+            }
+
+        }
+
+
+
+        /* ================= FINISH GAME ================= */
+
+        function finishGame() {
+
+
+            clearInterval(timerInterval);
+
+
+            const timeTaken =
+                (Date.now() - startTime) / 1000;
+
+
+            const accuracy =
+                (correct /
+                (correct + wrong)) * 100;
+
+
+            const finalScore =
+                Math.max(
+                    0,
+                    Math.round(
+                        accuracy -
+                        (timeTaken * 0.5)
+                    )
+                );
+
+
+            document.getElementById(
+                "resultScore"
+            ).textContent =
+                finalScore + "%";
+
+
+            document.getElementById(
+                "resultText"
+            ).textContent =
+                `Time: ${timeTaken.toFixed(1)} seconds • ` +
+                `Accuracy: ${accuracy.toFixed(1)}% • ` +
+                `Mistakes: ${wrong}`;
+
+
+            document.getElementById(
+                "result"
+            ).style.display = "block";
+
+
+            /* Store game data */
+
+            const gameData = {
+
+                game: "Focus Hunt",
+
+                time: timeTaken,
+
+                correct: correct,
+
+                wrong: wrong,
+
+                accuracy: accuracy,
+
+                score: finalScore,
+
+                date: new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                "mindwell_focus_hunt",
+                JSON.stringify(gameData)
+            );
+
+        }
+
+
+
+        /* ================= DASHBOARD ================= */
+
+        function goToDashboard() {
+
+            window.location.href =
+                "employee.html";
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

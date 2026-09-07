@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,7 +106,7 @@
         <form id="loginForm">
 
             <div class="input-group">
-                <label>Email</label>
+                <label for="email">Email</label>
 
                 <input
                     type="email"
@@ -118,7 +117,7 @@
             </div>
 
             <div class="input-group">
-                <label>Password</label>
+                <label for="password">Password</label>
 
                 <input
                     type="password"
@@ -129,7 +128,7 @@
             </div>
 
             <div class="input-group">
-                <label>Login as</label>
+                <label for="role">Login as</label>
 
                 <select id="role" required>
                     <option value="">Select role</option>
@@ -158,30 +157,17 @@
 
             event.preventDefault();
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
             const role = document.getElementById("role").value;
-
-
-            if (!email || !password || !role) {
-                alert("Please fill all fields.");
-                return;
-            }
-
 
             if (role === "employee") {
 
                 window.location.href = "employee.html";
 
-            }
-
-            else if (role === "responder") {
+            } else if (role === "responder") {
 
                 window.location.href = "responder.html";
 
-            }
-
-            else if (role === "hr") {
+            } else if (role === "hr") {
 
                 window.location.href = "hr.html";
 
@@ -192,5 +178,4 @@
     </script>
 
 </body>
-
 </html>
