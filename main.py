@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Depends
-from fastapi import HTTPException
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import hashlib
@@ -8,17 +8,27 @@ import os
 from database import Base, engine, get_db
 from models import Employee
 
+
+# =========================================================
+# APP
+# =========================================================
+
 app = FastAPI(title="MindWell API")
 
-# Create database tables
+
+# =========================================================
+# DATABASE
+# =========================================================
+
 Base.metadata.create_all(bind=engine)
 
 
-# -------------------------
-# Password helper functions
-# -------------------------
+# =========================================================
+# PASSWORD HELPER FUNCTIONS
+# =========================================================
 
 def hash_password(password: str, salt: str = None):
+
     if salt is None:
         salt = os.urandom(16).hex()
 
@@ -33,7 +43,9 @@ def hash_password(password: str, salt: str = None):
 
 
 def verify_password(password: str, stored_hash: str):
+
     try:
+
         salt, saved_hash = stored_hash.split(":")
 
         new_hash = hashlib.pbkdf2_hmac(
@@ -46,14 +58,16 @@ def verify_password(password: str, stored_hash: str):
         return new_hash == saved_hash
 
     except ValueError:
+
         return False
 
 
-# -------------------------
-# Request models
-# -------------------------
+# =========================================================
+# REQUEST MODELS
+# =========================================================
 
 class EmployeeCreate(BaseModel):
+
     name: str
     email: str
     password: str
@@ -61,36 +75,59 @@ class EmployeeCreate(BaseModel):
 
 
 class LoginRequest(BaseModel):
+
     email: str
     password: str
     role: str
 
 
-# -------------------------
-# Home
-# -------------------------
+# =========================================================
+# HTML PAGES
+# =========================================================
 
+# Login page
 @app.get("/")
 def home():
-    return {
-        "message": "MindWell API is running!"
-    }
+
+    return FileResponse("index.html")
 
 
-# -------------------------
-# Health check
-# -------------------------
+# Employee dashboard
+@app.get("/employee")
+def employee_page():
+
+    return FileResponse("employee.html")
+
+
+# Responder dashboard
+@app.get("/responder")
+def responder_page():
+
+    return FileResponse("responder.html")
+
+
+# HR dashboard
+@app.get("/hr")
+def hr_page():
+
+    return FileResponse("hr.html")
+
+
+# =========================================================
+# HEALTH CHECK
+# =========================================================
 
 @app.get("/health")
 def health_check():
+
     return {
         "status": "healthy"
     }
 
 
-# -------------------------
-# Create employee
-# -------------------------
+# =========================================================
+# CREATE EMPLOYEE
+# =========================================================
 
 @app.post("/employees")
 def create_employee(
@@ -98,39 +135,58 @@ def create_employee(
     db: Session = Depends(get_db)
 ):
 
+    # Check if email already exists
     existing_employee = db.query(Employee).filter(
         Employee.email == employee_data.email
     ).first()
 
     if existing_employee:
+
         raise HTTPException(
             status_code=400,
             detail="Email already registered"
         )
 
+    # Create new employee
     employee = Employee(
+
         name=employee_data.name,
+
         email=employee_data.email,
-        password_hash=hash_password(employee_data.password),
+
+        password_hash=hash_password(
+            employee_data.password
+        ),
+
         role=employee_data.role
+
     )
 
+    # Save to database
     db.add(employee)
+
     db.commit()
+
     db.refresh(employee)
 
     return {
+
         "message": "Employee created successfully",
+
         "employee_id": employee.id,
+
         "name": employee.name,
+
         "email": employee.email,
+
         "role": employee.role
+
     }
 
 
-# -------------------------
-# Login
-# -------------------------
+# =========================================================
+# LOGIN
+# =========================================================
 
 @app.post("/login")
 def login(
@@ -138,43 +194,57 @@ def login(
     db: Session = Depends(get_db)
 ):
 
+    # Find employee by email
     employee = db.query(Employee).filter(
         Employee.email == login_data.email
     ).first()
 
+    # Email doesn't exist
     if not employee:
+
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
         )
 
+    # Check role
     if employee.role != login_data.role:
+
         raise HTTPException(
             status_code=401,
             detail="Invalid role"
         )
 
+    # Check password
     if not verify_password(
         login_data.password,
         employee.password_hash
     ):
+
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
         )
 
+    # Login successful
     return {
+
         "message": "Login successful",
+
         "employee_id": employee.id,
+
         "name": employee.name,
+
         "email": employee.email,
+
         "role": employee.role
+
     }
 
 
-# -------------------------
-# Get all employees
-# -------------------------
+# =========================================================
+# GET ALL EMPLOYEES
+# =========================================================
 
 @app.get("/employees")
 def get_employees(
@@ -184,12 +254,21 @@ def get_employees(
     employees = db.query(Employee).all()
 
     return [
+
         {
+
             "id": employee.id,
+
             "name": employee.name,
+
             "email": employee.email,
+
             "role": employee.role,
+
             "created_at": employee.created_at
+
         }
+
         for employee in employees
+
     ]

@@ -499,9 +499,9 @@
         </div>
 
 
-        <div class="user">
+        <div class="user" id="userInfo">
 
-            Alex · Employee
+            Loading...
 
         </div>
 
@@ -518,9 +518,9 @@
 
         <div class="welcome">
 
-            <h1>
+            <h1 id="welcomeMessage">
 
-                Welcome back, Alex 👋
+                Welcome back 👋
 
             </h1>
 
@@ -1114,6 +1114,36 @@
     <!-- ================= JAVASCRIPT ================= -->
 
     <script>
+
+
+        /* ================= CHECK LOGGED-IN USER ================= */
+
+        const user = JSON.parse(
+            localStorage.getItem("mindwell_user")
+        );
+
+
+        if (!user) {
+
+            // User is not logged in
+            window.location.href = "/";
+
+        }
+
+
+        else {
+
+            // Show real employee name
+            document.getElementById("userInfo").textContent =
+                `${user.name} · ${user.role}`;
+
+
+            // Show real employee name in welcome message
+            document.getElementById("welcomeMessage").textContent =
+                `Welcome back, ${user.name} 👋`;
+
+        }
+
 
 
         /* ================= SHOW GAMES ================= */
