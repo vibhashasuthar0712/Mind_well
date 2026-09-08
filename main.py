@@ -2,10 +2,11 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+
 import hashlib
 import json
-from models import Employee, GameResult
 import os
+
 
 from database import Base, engine, get_db
 from models import Employee, GameResult
@@ -84,47 +85,102 @@ class LoginRequest(BaseModel):
 
 
 class GameResultCreate(BaseModel):
+
     employee_id: int
+
     game_name: str
 
     time_taken: int | None = None
+
     correct: int | None = None
+
     wrong: int | None = None
+
     accuracy: int | None = None
+
     score: int | None = None
 
     metrics: dict | None = None
 
+
 # =========================================================
-# HTML PAGES
+# MAIN HTML PAGES
 # =========================================================
 
-# Login page
+
+# LOGIN PAGE
 @app.get("/")
 def home():
 
     return FileResponse("index.html")
 
 
-# Employee dashboard
+# EMPLOYEE DASHBOARD
 @app.get("/employee")
 def employee_page():
 
     return FileResponse("employee.html")
 
 
-# Responder dashboard
+# RESPONDER DASHBOARD
 @app.get("/responder")
 def responder_page():
 
     return FileResponse("responder.html")
 
 
-# HR dashboard
+# HR DASHBOARD
 @app.get("/hr")
 def hr_page():
 
     return FileResponse("hr.html")
+
+
+# =========================================================
+# GAME PAGES
+# =========================================================
+
+
+# FOCUS HUNT
+@app.get("/game")
+def focus_game():
+
+    return FileResponse("game.html")
+
+
+# REACTION RUSH
+@app.get("/reaction")
+def reaction_game():
+
+    return FileResponse("reaction.html")
+
+
+# MEMORY MATCH
+@app.get("/memory")
+def memory_game():
+
+    return FileResponse("memory.html")
+
+
+# COLOR FLOW
+@app.get("/color")
+def color_game():
+
+    return FileResponse("color.html")
+
+
+# CHOICE QUEST
+@app.get("/choice")
+def choice_game():
+
+    return FileResponse("choice.html")
+
+
+# RELAX & RESET
+@app.get("/relax")
+def relax_page():
+
+    return FileResponse("relax.html")
 
 
 # =========================================================
@@ -149,9 +205,12 @@ def create_employee(
     db: Session = Depends(get_db)
 ):
 
+    # Normalize email
+    email = employee_data.email.strip().lower()
+
     # Check if email already exists
     existing_employee = db.query(Employee).filter(
-        Employee.email == employee_data.email
+        Employee.email == email
     ).first()
 
     if existing_employee:
@@ -161,22 +220,22 @@ def create_employee(
             detail="Email already registered"
         )
 
-    # Create new employee
+    # Create employee
     employee = Employee(
 
-        name=employee_data.name,
+        name=employee_data.name.strip(),
 
-        email=employee_data.email,
+        email=email,
 
         password_hash=hash_password(
             employee_data.password
         ),
 
-        role=employee_data.role
+        role=employee_data.role.strip().lower()
 
     )
 
-    # Save to database
+    # Save employee
     db.add(employee)
 
     db.commit()
@@ -208,12 +267,19 @@ def login(
     db: Session = Depends(get_db)
 ):
 
-    # Find employee by email
+    # Normalize input
+    email = login_data.email.strip().lower()
+
+    role = login_data.role.strip().lower()
+
+
+    # Find employee
     employee = db.query(Employee).filter(
-        Employee.email == login_data.email
+        Employee.email == email
     ).first()
 
-    # Email doesn't exist
+
+    # Employee not found
     if not employee:
 
         raise HTTPException(
@@ -221,13 +287,15 @@ def login(
             detail="Invalid email or password"
         )
 
+
     # Check role
-    if employee.role != login_data.role:
+    if employee.role.strip().lower() != role:
 
         raise HTTPException(
             status_code=401,
             detail="Invalid role"
         )
+
 
     # Check password
     if not verify_password(
@@ -240,7 +308,8 @@ def login(
             detail="Invalid email or password"
         )
 
-    # Login successful
+
+    # Successful login
     return {
 
         "message": "Login successful",
@@ -256,22 +325,31 @@ def login(
     }
 
 
+# =========================================================
+# SAVE GAME RESULT
+# =========================================================
+
 @app.post("/game-results")
 def save_game_result(
     result: GameResultCreate,
     db: Session = Depends(get_db)
 ):
 
+    # Check employee exists
     employee = db.query(Employee).filter(
         Employee.id == result.employee_id
     ).first()
 
+
     if not employee:
+
         raise HTTPException(
             status_code=404,
             detail="Employee not found"
         )
 
+
+    # Create game result
     game_result = GameResult(
 
         employee_id=result.employee_id,
@@ -291,18 +369,90 @@ def save_game_result(
         metrics=json.dumps(result.metrics)
         if result.metrics
         else None
+
     )
 
+
+    # Save result
     db.add(game_result)
 
     db.commit()
 
     db.refresh(game_result)
 
+
     return {
+
         "message": "Game result saved successfully",
+
         "result_id": game_result.id
+
     }
+
+
+# =========================================================
+# GET GAME RESULTS FOR EMPLOYEE
+# =========================================================
+
+@app.get("/game-results/{employee_id}")
+def get_game_results(
+    employee_id: int,
+    db: Session = Depends(get_db)
+):
+
+    # Check employee exists
+    employee = db.query(Employee).filter(
+        Employee.id == employee_id
+    ).first()
+
+
+    if not employee:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found"
+        )
+
+
+    # Get results
+    results = db.query(GameResult).filter(
+        GameResult.employee_id == employee_id
+    ).order_by(
+        GameResult.created_at.asc()
+    ).all()
+
+
+    return [
+
+        {
+
+            "id": result.id,
+
+            "game_name": result.game_name,
+
+            "time_taken": result.time_taken,
+
+            "correct": result.correct,
+
+            "wrong": result.wrong,
+
+            "accuracy": result.accuracy,
+
+            "score": result.score,
+
+            "metrics":
+                json.loads(result.metrics)
+                if result.metrics
+                else {},
+
+            "created_at": result.created_at
+
+        }
+
+        for result in results
+
+    ]
+
 
 # =========================================================
 # GET ALL EMPLOYEES
@@ -314,6 +464,7 @@ def get_employees(
 ):
 
     employees = db.query(Employee).all()
+
 
     return [
 

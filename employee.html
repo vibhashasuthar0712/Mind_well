@@ -5,7 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>MindWell - Employee Dashboard</title>
 
@@ -407,7 +410,7 @@
 
             text-align: center;
 
-            width: 50px;
+            width: 60px;
         }
 
 
@@ -420,6 +423,10 @@
             border-radius: 8px 8px 0 0;
 
             background: #8b87ed;
+
+            min-height: 5px;
+
+            transition: height 0.5s ease;
         }
 
 
@@ -430,6 +437,30 @@
             color: #777;
 
             margin-top: 8px;
+        }
+
+
+        .bar-value {
+
+            font-size: 11px;
+
+            color: #777;
+
+            margin-bottom: 5px;
+        }
+
+
+        .no-activity {
+
+            text-align: center;
+
+            color: #888;
+
+            width: 100%;
+
+            padding-top: 60px;
+
+            font-size: 14px;
         }
 
 
@@ -527,7 +558,8 @@
 
             <p>
 
-                Take a moment for yourself. Choose whatever feels right today.
+                Take a moment for yourself.
+                Choose whatever feels right today.
 
             </p>
 
@@ -540,6 +572,8 @@
         <div class="overview">
 
 
+            <!-- ================= SCORE ================= -->
+
             <div class="score-card">
 
                 <h3>
@@ -549,22 +583,30 @@
                 </h3>
 
 
-                <div class="score">
+                <div
+                    class="score"
+                    id="wellbeingScore"
+                >
 
-                    78
+                    --
 
                 </div>
 
 
-                <p class="small-text">
+                <p
+                    class="small-text"
+                    id="scoreDescription"
+                >
 
-                    Based on your recent voluntary activities
+                    Loading your recent activity...
 
                 </p>
 
             </div>
 
 
+
+            <!-- ================= STATUS ================= -->
 
             <div class="status-card">
 
@@ -575,16 +617,23 @@
                 </h3>
 
 
-                <span class="status">
+                <span
+                    class="status"
+                    id="currentStatus"
+                >
 
-                    ● Looking Good
+                    ● Loading...
 
                 </span>
 
 
-                <p class="small-text" style="margin-top: 15px;">
+                <p
+                    class="small-text"
+                    id="statusDescription"
+                    style="margin-top: 15px;"
+                >
 
-                    Keep taking small moments to reset and recharge.
+                    Looking at your recent voluntary activities.
 
                 </p>
 
@@ -636,7 +685,8 @@
 
                 <button
                     class="choice-btn"
-                    onclick="showGames()">
+                    onclick="showGames()"
+                >
 
                     Choose Activity →
 
@@ -675,7 +725,8 @@
 
                 <button
                     class="choice-btn"
-                    onclick="talkToAI()">
+                    onclick="talkToAI()"
+                >
 
                     Talk to AI →
 
@@ -713,7 +764,8 @@
 
                 <button
                     class="choice-btn"
-                    onclick="relax()">
+                    onclick="relax()"
+                >
 
                     Relax →
 
@@ -781,7 +833,8 @@
 
 
                     <button
-                        onclick="playGame('focus')">
+                        onclick="playGame('focus')"
+                    >
 
                         Play →
 
@@ -818,7 +871,8 @@
 
 
                     <button
-                        onclick="playGame('reaction')">
+                        onclick="playGame('reaction')"
+                    >
 
                         Play →
 
@@ -855,7 +909,8 @@
 
 
                     <button
-                        onclick="playGame('memory')">
+                        onclick="playGame('memory')"
+                    >
 
                         Play →
 
@@ -892,7 +947,8 @@
 
 
                     <button
-                        onclick="playGame('color')">
+                        onclick="playGame('color')"
+                    >
 
                         Play →
 
@@ -929,7 +985,8 @@
 
 
                     <button
-                        onclick="playGame('choice')">
+                        onclick="playGame('choice')"
+                    >
 
                         Play →
 
@@ -967,7 +1024,8 @@
 
 
                     <button
-                        onclick="relax()">
+                        onclick="relax()"
+                    >
 
                         Relax Instead →
 
@@ -992,97 +1050,25 @@
             </h3>
 
 
-            <p class="small-text">
+            <p
+                class="small-text"
+                id="trendDescription"
+            >
 
-                Example activity trend
+                Based on your recent voluntary activities.
 
             </p>
 
 
 
-            <div class="bars">
+            <div
+                class="bars"
+                id="trendBars"
+            >
 
+                <div class="no-activity">
 
-                <div class="bar-wrapper">
-
-                    <div
-                        class="bar"
-                        style="height: 70px;">
-                    </div>
-
-                    <div class="day">
-
-                        Mon
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="bar-wrapper">
-
-                    <div
-                        class="bar"
-                        style="height: 100px;">
-                    </div>
-
-                    <div class="day">
-
-                        Tue
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="bar-wrapper">
-
-                    <div
-                        class="bar"
-                        style="height: 85px;">
-                    </div>
-
-                    <div class="day">
-
-                        Wed
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="bar-wrapper">
-
-                    <div
-                        class="bar"
-                        style="height: 125px;">
-                    </div>
-
-                    <div class="day">
-
-                        Thu
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="bar-wrapper">
-
-                    <div
-                        class="bar"
-                        style="height: 115px;">
-                    </div>
-
-                    <div class="day">
-
-                        Fri
-
-                    </div>
+                    Loading activity pattern...
 
                 </div>
 
@@ -1116,7 +1102,9 @@
     <script>
 
 
-        /* ================= CHECK LOGGED-IN USER ================= */
+        // =====================================================
+        // CHECK LOGGED-IN USER
+        // =====================================================
 
         const user = JSON.parse(
             localStorage.getItem("mindwell_user")
@@ -1125,7 +1113,6 @@
 
         if (!user) {
 
-            // User is not logged in
             window.location.href = "/";
 
         }
@@ -1133,12 +1120,10 @@
 
         else {
 
-            // Show real employee name
             document.getElementById("userInfo").textContent =
                 `${user.name} · ${user.role}`;
 
 
-            // Show real employee name in welcome message
             document.getElementById("welcomeMessage").textContent =
                 `Welcome back, ${user.name} 👋`;
 
@@ -1146,12 +1131,421 @@
 
 
 
-        /* ================= SHOW GAMES ================= */
+        // =====================================================
+        // LOAD GAME RESULTS
+        // =====================================================
+
+        async function loadGameResults() {
+
+            if (!user) {
+                return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    `/game-results/${user.employee_id}`
+                );
+
+
+                const results = await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        results.detail ||
+                        "Unable to load game results"
+                    );
+
+                }
+
+
+                console.log(
+                    "Game results:",
+                    results
+                );
+
+
+                updateDashboard(results);
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Error loading game results:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "wellbeingScore"
+                ).textContent = "--";
+
+
+                document.getElementById(
+                    "scoreDescription"
+                ).textContent =
+                    "Unable to load recent activity.";
+
+
+                document.getElementById(
+                    "currentStatus"
+                ).textContent =
+                    "● No data";
+
+
+                document.getElementById(
+                    "statusDescription"
+                ).textContent =
+                    "Please try again later.";
+
+            }
+
+        }
+
+
+
+        // =====================================================
+        // UPDATE DASHBOARD
+        // =====================================================
+
+        function updateDashboard(results) {
+
+
+            // -----------------------------------------------
+            // NO ACTIVITY
+            // -----------------------------------------------
+
+            if (!results || results.length === 0) {
+
+                document.getElementById(
+                    "wellbeingScore"
+                ).textContent = "--";
+
+
+                document.getElementById(
+                    "scoreDescription"
+                ).textContent =
+                    "Complete a voluntary activity to begin building your personal trend.";
+
+
+                document.getElementById(
+                    "currentStatus"
+                ).textContent =
+                    "● No recent activity";
+
+
+                document.getElementById(
+                    "statusDescription"
+                ).textContent =
+                    "There is not enough activity data yet to show a pattern.";
+
+
+                document.getElementById(
+                    "trendDescription"
+                ).textContent =
+                    "Your activity pattern will appear here after you complete an activity.";
+
+
+                document.getElementById(
+                    "trendBars"
+                ).innerHTML = `
+                    <div class="no-activity">
+                        No activity recorded yet 🌿
+                    </div>
+                `;
+
+
+                return;
+
+            }
+
+
+
+            // -----------------------------------------------
+            // CALCULATE SCORE
+            // -----------------------------------------------
+
+            const validScores = results
+                .map(result => result.score)
+                .filter(
+                    score =>
+                        typeof score === "number"
+                );
+
+
+            let wellbeingScore = 0;
+
+
+            if (validScores.length > 0) {
+
+                const total = validScores.reduce(
+                    (sum, score) => sum + score,
+                    0
+                );
+
+
+                wellbeingScore = Math.round(
+                    total / validScores.length
+                );
+
+            }
+
+
+            else {
+
+                // If scores are unavailable,
+                // use a neutral activity indicator.
+                wellbeingScore = 50;
+
+            }
+
+
+            wellbeingScore = Math.max(
+                0,
+                Math.min(100, wellbeingScore)
+            );
+
+
+            document.getElementById(
+                "wellbeingScore"
+            ).textContent = wellbeingScore;
+
+
+
+            document.getElementById(
+                "scoreDescription"
+            ).textContent =
+                `Based on ${results.length} recent voluntary ${results.length === 1 ? "activity" : "activities"}.`;
+
+
+
+            // -----------------------------------------------
+            // DETERMINE STATUS
+            // -----------------------------------------------
+
+            let statusText;
+            let statusDescription;
+
+
+            if (wellbeingScore >= 75) {
+
+                statusText = "● Looking Good";
+
+                statusDescription =
+                    "Your recent activity pattern looks relatively stable.";
+
+            }
+
+
+            else if (wellbeingScore >= 50) {
+
+                statusText = "● Worth Checking In";
+
+                statusDescription =
+                    "Some changes are visible in your recent activity pattern.";
+
+            }
+
+
+            else {
+
+                statusText = "● Needs Attention";
+
+                statusDescription =
+                    "Your recent activity pattern has changed. Consider taking a break or using a support activity.";
+
+            }
+
+
+            document.getElementById(
+                "currentStatus"
+            ).textContent = statusText;
+
+
+            document.getElementById(
+                "statusDescription"
+            ).textContent = statusDescription;
+
+
+
+            // -----------------------------------------------
+            // CREATE TREND
+            // -----------------------------------------------
+
+            createTrend(results);
+
+        }
+
+
+
+        // =====================================================
+        // CREATE RECENT ACTIVITY TREND
+        // =====================================================
+
+        function createTrend(results) {
+
+
+            const trendBars =
+                document.getElementById("trendBars");
+
+
+            trendBars.innerHTML = "";
+
+
+            // Take latest 5 activities
+            const recentResults =
+                results.slice(-5);
+
+
+            recentResults.forEach(
+                (result, index) => {
+
+
+                    let value =
+                        typeof result.score === "number"
+                            ? result.score
+                            : 50;
+
+
+                    value = Math.max(
+                        0,
+                        Math.min(100, value)
+                    );
+
+
+                    const barHeight =
+                        Math.max(
+                            10,
+                            Math.round(
+                                (value / 100) * 140
+                            )
+                        );
+
+
+                    const wrapper =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    wrapper.className =
+                        "bar-wrapper";
+
+
+                    const valueLabel =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    valueLabel.className =
+                        "bar-value";
+
+
+                    valueLabel.textContent =
+                        `${value}`;
+
+
+                    const bar =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    bar.className = "bar";
+
+
+                    bar.style.height =
+                        `${barHeight}px`;
+
+
+                    const day =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    day.className = "day";
+
+
+                    const date =
+                        new Date(
+                            result.created_at
+                        );
+
+
+                    if (
+                        !isNaN(
+                            date.getTime()
+                        )
+                    ) {
+
+                        day.textContent =
+                            date.toLocaleDateString(
+                                "en-US",
+                                {
+                                    weekday: "short"
+                                }
+                            );
+
+                    }
+
+                    else {
+
+                        day.textContent =
+                            `#${index + 1}`;
+
+                    }
+
+
+                    wrapper.appendChild(
+                        valueLabel
+                    );
+
+
+                    wrapper.appendChild(
+                        bar
+                    );
+
+
+                    wrapper.appendChild(
+                        day
+                    );
+
+
+                    trendBars.appendChild(
+                        wrapper
+                    );
+
+                }
+            );
+
+
+            document.getElementById(
+                "trendDescription"
+            ).textContent =
+                `Showing your latest ${recentResults.length} voluntary activity ${recentResults.length === 1 ? "result" : "results"}.`;
+
+        }
+
+
+
+        // =====================================================
+        // SHOW GAMES
+        // =====================================================
 
         function showGames() {
 
             const games =
-                document.getElementById("gameSelection");
+                document.getElementById(
+                    "gameSelection"
+                );
+
 
             games.style.display = "block";
 
@@ -1166,9 +1560,12 @@
 
 
 
-        /* ================= PLAY GAMES ================= */
+        // =====================================================
+        // PLAY GAMES
+        // =====================================================
 
         function playGame(game) {
+
 
             localStorage.setItem(
                 "selectedGame",
@@ -1179,7 +1576,7 @@
             if (game === "focus") {
 
                 window.location.href =
-                    "game.html";
+                    "/game";
 
             }
 
@@ -1187,7 +1584,7 @@
             else if (game === "reaction") {
 
                 window.location.href =
-                    "reaction.html";
+                    "/reaction";
 
             }
 
@@ -1195,7 +1592,7 @@
             else if (game === "memory") {
 
                 window.location.href =
-                    "memory.html";
+                    "memory";
 
             }
 
@@ -1203,7 +1600,7 @@
             else if (game === "color") {
 
                 window.location.href =
-                    "color.html";
+                    "/color";
 
             }
 
@@ -1211,7 +1608,7 @@
             else if (game === "choice") {
 
                 window.location.href =
-                    "choice.html";
+                    "/choice";
 
             }
 
@@ -1228,7 +1625,9 @@
 
 
 
-        /* ================= AI SUPPORT ================= */
+        // =====================================================
+        // AI SUPPORT
+        // =====================================================
 
         function talkToAI() {
 
@@ -1240,15 +1639,28 @@
 
 
 
-        /* ================= RELAX & RESET ================= */
+        // =====================================================
+        // RELAX & RESET
+        // =====================================================
 
         function relax() {
 
             window.location.href =
-                "relax.html";
+                "/relax";
 
         }
 
+
+
+        // =====================================================
+        // LOAD DATA WHEN PAGE OPENS
+        // =====================================================
+
+        if (user) {
+
+            loadGameResults();
+
+        }
 
     </script>
 
