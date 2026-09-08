@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Text
 from datetime import datetime
-
 from database import Base
 
 
@@ -14,6 +13,7 @@ class Employee(Base):
     role = Column(String, default="employee")
     created_at = Column(DateTime, default=datetime.utcnow)
 
+
 class GameResult(Base):
     __tablename__ = "game_results"
 
@@ -23,10 +23,14 @@ class GameResult(Base):
 
     game_name = Column(String, nullable=False)
 
+    # Common activity metrics
     time_taken = Column(Integer, nullable=True)
     correct = Column(Integer, nullable=True)
     wrong = Column(Integer, nullable=True)
     accuracy = Column(Integer, nullable=True)
     score = Column(Integer, nullable=True)
+
+    # Game-specific metrics stored as JSON text
+    metrics = Column(Text, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -185,7 +185,8 @@
 
             left: 50%;
 
-            transform: translate(-50%, -50%);
+            transform:
+                translate(-50%, -50%);
 
             text-align: center;
 
@@ -215,7 +216,8 @@
             box-shadow:
                 0 5px 15px rgba(95,91,216,0.3);
 
-            transition: transform 0.1s;
+            transition:
+                transform 0.1s;
 
         }
 
@@ -377,7 +379,6 @@
 </head>
 
 
-
 <body>
 
 
@@ -386,22 +387,27 @@
     <header>
 
         <div class="logo">
+
             🧠 MindWell
+
         </div>
 
 
         <div class="round-info">
 
             Round:
+
             <span id="round">
+
                 0
+
             </span>
+
             / 10
 
         </div>
 
     </header>
-
 
 
     <!-- ================= MAIN ================= -->
@@ -414,7 +420,9 @@
         <div class="game-header">
 
             <h1>
+
                 ⚡ Reaction Rush
+
             </h1>
 
 
@@ -432,7 +440,6 @@
         </div>
 
 
-
         <!-- ================= STATS ================= -->
 
         <div class="stats">
@@ -441,8 +448,11 @@
             <div class="stat">
 
                 <div>
+
                     Round
+
                 </div>
+
 
                 <div
                     class="stat-number"
@@ -455,12 +465,14 @@
             </div>
 
 
-
             <div class="stat">
 
                 <div>
+
                     Correct
+
                 </div>
+
 
                 <div
                     class="stat-number"
@@ -473,12 +485,14 @@
             </div>
 
 
-
             <div class="stat">
 
                 <div>
+
                     False Clicks
+
                 </div>
+
 
                 <div
                     class="stat-number"
@@ -491,12 +505,14 @@
             </div>
 
 
-
             <div class="stat">
 
                 <div>
+
                     Avg. Reaction
+
                 </div>
+
 
                 <div
                     class="stat-number"
@@ -509,7 +525,6 @@
             </div>
 
         </div>
-
 
 
         <!-- ================= GAME AREA ================= -->
@@ -531,7 +546,6 @@
         </div>
 
 
-
         <!-- ================= START BUTTON ================= -->
 
         <div class="start-section">
@@ -548,7 +562,6 @@
         </div>
 
 
-
         <!-- ================= RESULT ================= -->
 
         <div
@@ -557,12 +570,16 @@
 
 
             <h2>
+
                 🎉 Reaction Rush Complete!
+
             </h2>
 
 
             <p>
+
                 You completed all 10 rounds.
+
             </p>
 
 
@@ -576,6 +593,7 @@
 
 
             <p id="resultDetails">
+
             </p>
 
 
@@ -599,10 +617,116 @@
     </div>
 
 
-
     <!-- ================= JAVASCRIPT ================= -->
 
     <script>
+
+
+        /* ============================================
+           SAVE GAME RESULT TO FASTAPI DATABASE
+        ============================================ */
+
+        async function saveGameResult(data) {
+
+            const user = JSON.parse(
+                localStorage.getItem("mindwell_user")
+            );
+
+
+            /*
+            Check whether employee is logged in
+            */
+
+            if (!user) {
+
+                console.error(
+                    "User not logged in"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    "/game-results",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body: JSON.stringify({
+
+                            employee_id:
+                                user.employee_id,
+
+                            game_name:
+                                data.game_name,
+
+                            time_taken:
+                                data.time_taken ?? null,
+
+                            correct:
+                                data.correct ?? null,
+
+                            wrong:
+                                data.wrong ?? null,
+
+                            accuracy:
+                                data.accuracy ?? null,
+
+                            score:
+                                data.score ?? null,
+
+                            metrics:
+                                data.metrics ?? {}
+
+                        })
+
+                    }
+                );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    console.error(
+                        "Failed to save game result:",
+                        result
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "Game result saved:",
+                    result
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error saving game result:",
+                    error
+                );
+
+            }
+
+        }
 
 
         /* ============================================
@@ -631,7 +755,6 @@
         let roundTimeout;
 
 
-
         /* ============================================
            GAME AREA
         ============================================ */
@@ -647,7 +770,6 @@
             document.getElementById(
                 "gameMessage"
             );
-
 
 
         /* ============================================
@@ -672,6 +794,15 @@
 
 
             /*
+            Clear any previous timeout
+            */
+
+            clearTimeout(
+                roundTimeout
+            );
+
+
+            /*
             Hide result
             */
 
@@ -689,6 +820,13 @@
 
 
             /*
+            Reset target
+            */
+
+            target = null;
+
+
+            /*
             Reset button
             */
 
@@ -702,6 +840,12 @@
             Reset stats
             */
 
+            document.getElementById(
+                "averageTime"
+            ).innerText =
+                "-- ms";
+
+
             updateStats();
 
 
@@ -712,7 +856,6 @@
             nextRound();
 
         }
-
 
 
         /* ============================================
@@ -741,8 +884,9 @@
 
             currentRound++;
 
-
             waitingForTarget = true;
+
+            target = null;
 
 
             updateStats();
@@ -774,7 +918,6 @@
                 );
 
         }
-
 
 
         /* ============================================
@@ -886,7 +1029,6 @@
         }
 
 
-
         /* ============================================
            TARGET CLICK
         ============================================ */
@@ -935,6 +1077,8 @@
 
             target.remove();
 
+            target = null;
+
 
             /*
             Move to next round
@@ -946,7 +1090,6 @@
             );
 
         }
-
 
 
         /* ============================================
@@ -997,7 +1140,6 @@
         );
 
 
-
         /* ============================================
            TARGET MISSED
         ============================================ */
@@ -1028,7 +1170,6 @@
             );
 
         }
-
 
 
         /* ============================================
@@ -1063,7 +1204,6 @@
             );
 
         }
-
 
 
         /* ============================================
@@ -1131,7 +1271,6 @@
         }
 
 
-
         /* ============================================
            FINISH GAME
         ============================================ */
@@ -1160,6 +1299,7 @@
                 reactionTimes.length > 0
             ) {
 
+
                 const total =
                     reactionTimes.reduce(
                         (
@@ -1184,6 +1324,7 @@
             Activity score
 
             This is NOT a mental-health score.
+            It is only an activity performance score.
             */
 
             let score = 100;
@@ -1253,6 +1394,12 @@
             };
 
 
+            /*
+            =========================================
+            SAVE BACKUP IN LOCAL STORAGE
+            =========================================
+            */
+
             localStorage.setItem(
 
                 "mindwell_reaction_rush",
@@ -1262,6 +1409,48 @@
                 )
 
             );
+
+
+            /*
+            =========================================
+            SAVE RESULT TO FASTAPI DATABASE
+            =========================================
+            */
+
+            saveGameResult({
+
+                game_name:
+                    "Reaction Rush",
+
+                time_taken:
+                    averageReaction,
+
+                correct:
+                    correct,
+
+                wrong:
+                    falseClicks,
+
+                score:
+                    score,
+
+                metrics: {
+
+                    rounds:
+                        TOTAL_ROUNDS,
+
+                    falseClicks:
+                        falseClicks,
+
+                    reactionTimes:
+                        reactionTimes,
+
+                    averageReaction:
+                        averageReaction
+
+                }
+
+            });
 
 
             /*
@@ -1316,7 +1505,6 @@
         }
 
 
-
         /* ============================================
            PLAY AGAIN
         ============================================ */
@@ -1324,11 +1512,9 @@
 
         function playAgain() {
 
-
             startGame();
 
         }
-
 
 
         /* ============================================
@@ -1337,7 +1523,6 @@
 
 
         function goBack() {
-
 
             window.location.href =
                 "employee.html";

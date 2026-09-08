@@ -161,6 +161,7 @@
 <div class="container">
 
     <!-- GAME -->
+
     <div class="card" id="gameScreen">
 
         <h1>🎮 Choice Quest</h1>
@@ -190,6 +191,7 @@
 
 
     <!-- RESULT -->
+
     <div class="card result" id="resultScreen">
 
         <h1>🎉 Quest Complete!</h1>
@@ -241,6 +243,114 @@
 
 
 <script>
+
+
+/* ============================================
+   BACKEND INTEGRATION
+============================================ */
+
+
+async function saveGameResult(data) {
+
+    const user = JSON.parse(
+        localStorage.getItem("mindwell_user")
+    );
+
+
+    if (!user) {
+
+        console.error(
+            "User not logged in"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/game-results",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        employee_id:
+                            user.employee_id,
+
+                        game_name:
+                            data.game_name,
+
+                        time_taken:
+                            data.time_taken ?? null,
+
+                        correct:
+                            data.correct ?? null,
+
+                        wrong:
+                            data.wrong ?? null,
+
+                        accuracy:
+                            data.accuracy ?? null,
+
+                        score:
+                            data.score ?? null,
+
+                        metrics:
+                            data.metrics ?? {}
+
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Failed to save game result:",
+                result
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "Game result saved:",
+            result
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error saving game result:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ============================================
+   GAME DATA
+============================================ */
+
 
 const scenarios = [
 
@@ -308,144 +418,304 @@ const scenarios = [
 
 
 let currentScenario = 0;
+
 let choices = [];
+
 let responseTimes = [];
+
 let startTime = 0;
+
+
+
+/* ============================================
+   START GAME
+============================================ */
 
 
 function startGame() {
 
     currentScenario = 0;
+
     choices = [];
+
     responseTimes = [];
 
-    document.getElementById("gameScreen").style.display = "block";
-    document.getElementById("resultScreen").style.display = "none";
+    startTime = 0;
+
+
+    document.getElementById(
+        "gameScreen"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "resultScreen"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
 
     showScenario();
+
 }
+
+
+
+/* ============================================
+   SHOW SCENARIO
+============================================ */
 
 
 function showScenario() {
 
-    const scenario = scenarios[currentScenario];
+    const scenario =
+        scenarios[currentScenario];
 
-    document.getElementById("scenarioNumber").textContent =
+
+    document.getElementById(
+        "scenarioNumber"
+    ).textContent =
         currentScenario + 1;
 
-    document.getElementById("question").textContent =
+
+    document.getElementById(
+        "question"
+    ).textContent =
         scenario.question;
 
+
     const optionsContainer =
-        document.getElementById("options");
+        document.getElementById(
+            "options"
+        );
+
 
     optionsContainer.innerHTML = "";
 
-    scenario.options.forEach((option, index) => {
 
-        const button = document.createElement("button");
+    scenario.options.forEach(
+        (option, index) => {
 
-        button.className = "option";
 
-        button.textContent =
-            `${index + 1}. ${option}`;
+            const button =
+                document.createElement(
+                    "button"
+                );
 
-        button.onclick = function() {
 
-            selectOption(index);
+            button.className =
+                "option";
 
-        };
 
-        optionsContainer.appendChild(button);
+            button.textContent =
+                `${index + 1}. ${option}`;
 
-    });
 
-    startTime = performance.now();
+            button.onclick =
+                function() {
+
+                    selectOption(index);
+
+                };
+
+
+            optionsContainer.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    startTime =
+        performance.now();
+
 }
+
+
+
+/* ============================================
+   SELECT OPTION
+============================================ */
 
 
 function selectOption(index) {
 
     const responseTime =
-        Math.round(performance.now() - startTime);
+        Math.round(
+            performance.now() -
+            startTime
+        );
+
 
     choices.push(index);
 
-    responseTimes.push(responseTime);
+    responseTimes.push(
+        responseTime
+    );
 
-    document.getElementById("feedback").textContent =
+
+    document.getElementById(
+        "feedback"
+    ).textContent =
         "✓ Choice recorded";
 
-    setTimeout(() => {
 
-        currentScenario++;
+    /*
+        Disable all options so the user
+        cannot select multiple answers.
+    */
 
-        if (currentScenario >= scenarios.length) {
+    const optionButtons =
+        document.querySelectorAll(
+            ".option"
+        );
 
-            finishGame();
 
-        } else {
+    optionButtons.forEach(
+        button => {
 
-            document.getElementById("feedback").textContent = "";
+            button.disabled = true;
 
-            showScenario();
+            button.style.cursor =
+                "default";
 
         }
+    );
 
-    }, 500);
+
+    setTimeout(
+        () => {
+
+            currentScenario++;
+
+
+            if (
+                currentScenario >=
+                scenarios.length
+            ) {
+
+                finishGame();
+
+            }
+
+            else {
+
+                document.getElementById(
+                    "feedback"
+                ).textContent = "";
+
+                showScenario();
+
+            }
+
+        },
+        500
+    );
+
 }
+
+
+
+/* ============================================
+   FINISH GAME
+============================================ */
 
 
 function finishGame() {
 
     const totalTime =
         responseTimes.reduce(
-            (sum, time) => sum + time,
+            (sum, time) =>
+                sum + time,
             0
         );
 
+
     const averageTime =
         Math.round(
-            totalTime / responseTimes.length
+            totalTime /
+            responseTimes.length
         );
 
 
     /*
         Activity score only.
+
         It is NOT a mental-health score.
     */
 
+
     let score = 100;
 
-    if (averageTime > 10000) {
+
+    if (
+        averageTime > 10000
+    ) {
+
         score -= 10;
+
     }
 
-    if (averageTime > 15000) {
+
+    if (
+        averageTime > 15000
+    ) {
+
         score -= 10;
+
     }
+
 
     if (score < 0) {
+
         score = 0;
+
     }
 
 
-    document.getElementById("finalQuestions").textContent =
+    /*
+        Show result
+    */
+
+
+    document.getElementById(
+        "finalQuestions"
+    ).textContent =
         scenarios.length;
 
-    document.getElementById("finalTime").textContent =
+
+    document.getElementById(
+        "finalTime"
+    ).textContent =
         averageTime + " ms";
 
-    document.getElementById("finalChoices").textContent =
+
+    document.getElementById(
+        "finalChoices"
+    ).textContent =
         choices.length;
 
-    document.getElementById("finalScore").textContent =
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
         score;
+
+
+
+    /*
+        Prepare activity data
+    */
 
 
     const gameData = {
 
-        game: "Choice Quest",
+        game:
+            "Choice Quest",
 
         scenariosCompleted:
             scenarios.length,
@@ -468,18 +738,80 @@ function finishGame() {
     };
 
 
+    /*
+        Save locally
+    */
+
+
     localStorage.setItem(
+
         "mindwell_choice_quest",
-        JSON.stringify(gameData)
+
+        JSON.stringify(
+            gameData
+        )
+
     );
 
 
-    document.getElementById("gameScreen").style.display =
+    /*
+        SEND RESULT TO FASTAPI
+    */
+
+
+    saveGameResult({
+
+        game_name:
+            "Choice Quest",
+
+        time_taken:
+            averageTime,
+
+        score:
+            score,
+
+        metrics: {
+
+            scenariosCompleted:
+                scenarios.length,
+
+            choices:
+                choices,
+
+            responseTimes:
+                responseTimes,
+
+            averageResponseTime:
+                averageTime
+
+        }
+
+    });
+
+
+    /*
+        Show result screen
+    */
+
+
+    document.getElementById(
+        "gameScreen"
+    ).style.display =
         "none";
 
-    document.getElementById("resultScreen").style.display =
+
+    document.getElementById(
+        "resultScreen"
+    ).style.display =
         "block";
+
 }
+
+
+
+/* ============================================
+   RESTART
+============================================ */
 
 
 function restartGame() {
@@ -489,12 +821,24 @@ function restartGame() {
 }
 
 
+
+/* ============================================
+   BACK
+============================================ */
+
+
 function goBack() {
 
     window.location.href =
         "employee.html";
 
 }
+
+
+
+/* ============================================
+   START
+============================================ */
 
 
 startGame();

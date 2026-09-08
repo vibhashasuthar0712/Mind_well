@@ -636,6 +636,108 @@
 
 
         /* ============================================
+           BACKEND INTEGRATION
+        ============================================ */
+
+
+        async function saveGameResult(data) {
+
+            const user = JSON.parse(
+                localStorage.getItem("mindwell_user")
+            );
+
+
+            if (!user) {
+
+                console.error(
+                    "User not logged in"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/game-results",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                employee_id:
+                                    user.employee_id,
+
+                                game_name:
+                                    data.game_name,
+
+                                time_taken:
+                                    data.time_taken ?? null,
+
+                                correct:
+                                    data.correct ?? null,
+
+                                wrong:
+                                    data.wrong ?? null,
+
+                                accuracy:
+                                    data.accuracy ?? null,
+
+                                score:
+                                    data.score ?? null,
+
+                                metrics:
+                                    data.metrics ?? {}
+
+                            })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    console.error(
+                        "Failed to save game result:",
+                        result
+                    );
+
+                    return;
+
+                }
+
+
+                console.log(
+                    "Game result saved:",
+                    result
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error saving game result:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* ============================================
            GAME DATA
         ============================================ */
 
@@ -1148,6 +1250,7 @@
             /*
             Calculate activity score
 
+            IMPORTANT:
             This is NOT a mental health score.
             */
 
@@ -1190,7 +1293,7 @@
 
 
             /*
-            Store data
+            Store data locally
             */
 
             const gameData = {
@@ -1231,6 +1334,46 @@
                 )
 
             );
+
+
+            /*
+            SEND RESULT TO FASTAPI
+            */
+
+            saveGameResult({
+
+                game_name:
+                    "Memory Match",
+
+                time_taken:
+                    completionTime,
+
+                correct:
+                    pairsFound,
+
+                score:
+                    score,
+
+                metrics: {
+
+                    pairs:
+                        emojis.length,
+
+                    pairsFound:
+                        pairsFound,
+
+                    moves:
+                        moves,
+
+                    attempts:
+                        attempts,
+
+                    completionTime:
+                        completionTime
+
+                }
+
+            });
 
 
             /*

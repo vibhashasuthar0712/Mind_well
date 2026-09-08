@@ -3,6 +3,8 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import hashlib
+import json
+from models import Employee, GameResult
 import os
 
 from database import Base, engine, get_db
@@ -84,12 +86,14 @@ class LoginRequest(BaseModel):
 class GameResultCreate(BaseModel):
     employee_id: int
     game_name: str
+
     time_taken: int | None = None
     correct: int | None = None
     wrong: int | None = None
     accuracy: int | None = None
     score: int | None = None
 
+    metrics: dict | None = None
 
 # =========================================================
 # HTML PAGES
@@ -269,24 +273,36 @@ def save_game_result(
         )
 
     game_result = GameResult(
+
         employee_id=result.employee_id,
+
         game_name=result.game_name,
+
         time_taken=result.time_taken,
+
         correct=result.correct,
+
         wrong=result.wrong,
+
         accuracy=result.accuracy,
-        score=result.score
+
+        score=result.score,
+
+        metrics=json.dumps(result.metrics)
+        if result.metrics
+        else None
     )
 
     db.add(game_result)
+
     db.commit()
+
     db.refresh(game_result)
 
     return {
         "message": "Game result saved successfully",
         "result_id": game_result.id
     }
-
 
 # =========================================================
 # GET ALL EMPLOYEES

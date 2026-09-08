@@ -225,6 +225,7 @@
 <div class="container">
 
     <!-- GAME SCREEN -->
+
     <div class="card" id="gameScreen">
 
         <h1>🌈 Color Flow</h1>
@@ -248,23 +249,27 @@
 
         <div class="buttons">
 
-            <button class="color-btn blue"
-                    onclick="selectColor('blue')">
+            <button
+                class="color-btn blue"
+                onclick="selectColor('blue')">
                 BLUE
             </button>
 
-            <button class="color-btn red"
-                    onclick="selectColor('red')">
+            <button
+                class="color-btn red"
+                onclick="selectColor('red')">
                 RED
             </button>
 
-            <button class="color-btn green"
-                    onclick="selectColor('green')">
+            <button
+                class="color-btn green"
+                onclick="selectColor('green')">
                 GREEN
             </button>
 
-            <button class="color-btn yellow"
-                    onclick="selectColor('yellow')">
+            <button
+                class="color-btn yellow"
+                onclick="selectColor('yellow')">
                 YELLOW
             </button>
 
@@ -290,6 +295,7 @@
 
 
     <!-- RESULT SCREEN -->
+
     <div class="card result" id="resultScreen">
 
         <h2>🎉 Activity Complete!</h2>
@@ -347,6 +353,114 @@
 
 <script>
 
+
+    /* ============================================
+       BACKEND INTEGRATION
+    ============================================ */
+
+
+    async function saveGameResult(data) {
+
+        const user = JSON.parse(
+            localStorage.getItem("mindwell_user")
+        );
+
+
+        if (!user) {
+
+            console.error(
+                "User not logged in"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/game-results",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            employee_id:
+                                user.employee_id,
+
+                            game_name:
+                                data.game_name,
+
+                            time_taken:
+                                data.time_taken ?? null,
+
+                            correct:
+                                data.correct ?? null,
+
+                            wrong:
+                                data.wrong ?? null,
+
+                            accuracy:
+                                data.accuracy ?? null,
+
+                            score:
+                                data.score ?? null,
+
+                            metrics:
+                                data.metrics ?? {}
+
+                        })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                console.error(
+                    "Failed to save game result:",
+                    result
+                );
+
+                return;
+
+            }
+
+
+            console.log(
+                "Game result saved:",
+                result
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error saving game result:",
+                error
+            );
+
+        }
+
+    }
+
+
+
+    /* ============================================
+       GAME VARIABLES
+    ============================================ */
+
+
     const totalRounds = 10;
 
     const colors = [
@@ -365,7 +479,9 @@
 
 
     let currentRound = 0;
+
     let correct = 0;
+
     let wrong = 0;
 
     let reactionTimes = [];
@@ -375,6 +491,7 @@
     let startTime = 0;
 
     let waiting = false;
+
 
 
     const colorWord =
@@ -393,26 +510,55 @@
         document.getElementById("wrongCount");
 
 
+
+    /* ============================================
+       START GAME
+    ============================================ */
+
+
     function startGame() {
 
         currentRound = 0;
+
         correct = 0;
+
         wrong = 0;
+
         reactionTimes = [];
+
+        correctColor = "";
+
+        startTime = 0;
+
+        waiting = false;
+
 
         document.getElementById("gameScreen")
             .style.display = "block";
 
+
         document.getElementById("resultScreen")
             .style.display = "none";
 
+
         correctCount.textContent = 0;
+
         wrongCount.textContent = 0;
+
+        roundNumber.textContent = 1;
 
         feedback.textContent = "";
 
+
         nextRound();
+
     }
+
+
+
+    /* ============================================
+       NEXT ROUND
+    ============================================ */
 
 
     function nextRound() {
@@ -422,12 +568,16 @@
             finishGame();
 
             return;
+
         }
 
 
         currentRound++;
 
-        roundNumber.textContent = currentRound;
+
+        roundNumber.textContent =
+            currentRound;
+
 
         feedback.textContent = "";
 
@@ -437,15 +587,31 @@
             are deliberately different.
         */
 
+
         const wordColor =
-            colors[Math.floor(Math.random() * colors.length)];
+            colors[
+                Math.floor(
+                    Math.random() *
+                    colors.length
+                )
+            ];
+
 
         do {
 
             correctColor =
-                colors[Math.floor(Math.random() * colors.length)];
+                colors[
+                    Math.floor(
+                        Math.random() *
+                        colors.length
+                    )
+                ];
 
-        } while (correctColor === wordColor);
+        }
+
+        while (
+            correctColor === wordColor
+        );
 
 
         colorWord.textContent =
@@ -475,23 +641,40 @@
     }
 
 
+
+    /* ============================================
+       SELECT COLOR
+    ============================================ */
+
+
     function selectColor(selectedColor) {
 
         if (waiting) {
+
             return;
+
         }
 
 
         const reactionTime =
-            Math.round(performance.now() - startTime);
+            Math.round(
+                performance.now() -
+                startTime
+            );
 
 
-        reactionTimes.push(reactionTime);
+        reactionTimes.push(
+            reactionTime
+        );
 
 
-        if (selectedColor === correctColor) {
+        if (
+            selectedColor ===
+            correctColor
+        ) {
 
             correct++;
+
 
             feedback.textContent =
                 "✓ Correct!";
@@ -502,6 +685,7 @@
 
             wrong++;
 
+
             feedback.textContent =
                 "✗ Try to focus on the displayed color.";
 
@@ -510,6 +694,7 @@
 
         correctCount.textContent =
             correct;
+
 
         wrongCount.textContent =
             wrong;
@@ -531,27 +716,42 @@
     }
 
 
+
+    /* ============================================
+       FINISH GAME
+    ============================================ */
+
+
     function finishGame() {
 
         const accuracy =
-            Math.round((correct / totalRounds) * 100);
+            Math.round(
+                (correct / totalRounds) *
+                100
+            );
 
 
         let averageReaction = 0;
 
 
-        if (reactionTimes.length > 0) {
+        if (
+            reactionTimes.length > 0
+        ) {
 
             const total =
                 reactionTimes.reduce(
-                    (sum, time) => sum + time,
+                    (sum, time) =>
+                        sum + time,
                     0
                 );
 
+
             averageReaction =
                 Math.round(
-                    total / reactionTimes.length
+                    total /
+                    reactionTimes.length
                 );
+
         }
 
 
@@ -561,52 +761,83 @@
             It is NOT a stress/depression score.
         */
 
+
         let score =
             (correct * 10) -
             (wrong * 3);
 
 
         if (score < 0) {
+
             score = 0;
+
         }
+
 
         if (score > 100) {
+
             score = 100;
+
         }
 
 
-        document.getElementById("finalCorrect")
-            .textContent = correct;
+        document.getElementById(
+            "finalCorrect"
+        ).textContent =
+            correct;
 
-        document.getElementById("finalWrong")
-            .textContent = wrong;
 
-        document.getElementById("finalAccuracy")
-            .textContent = accuracy + "%";
+        document.getElementById(
+            "finalWrong"
+        ).textContent =
+            wrong;
 
-        document.getElementById("finalReaction")
-            .textContent = averageReaction + " ms";
 
-        document.getElementById("finalScore")
-            .textContent = score;
+        document.getElementById(
+            "finalAccuracy"
+        ).textContent =
+            accuracy + "%";
+
+
+        document.getElementById(
+            "finalReaction"
+        ).textContent =
+            averageReaction + " ms";
+
+
+        document.getElementById(
+            "finalScore"
+        ).textContent =
+            score;
+
+
+        /*
+            Create activity data
+        */
 
 
         const gameData = {
 
-            game: "Color Flow",
+            game:
+                "Color Flow",
 
-            rounds: totalRounds,
+            rounds:
+                totalRounds,
 
-            correct: correct,
+            correct:
+                correct,
 
-            wrong: wrong,
+            wrong:
+                wrong,
 
-            accuracy: accuracy,
+            accuracy:
+                accuracy,
 
             averageReactionTime:
                 averageReaction,
 
-            score: score,
+            score:
+                score,
 
             date:
                 new Date().toISOString()
@@ -615,23 +846,85 @@
 
 
         /*
-            Save activity data
-            for future MindWell risk/trend analysis.
+            Save locally
         */
 
+
         localStorage.setItem(
+
             "mindwell_color_flow",
-            JSON.stringify(gameData)
+
+            JSON.stringify(
+                gameData
+            )
+
         );
 
 
-        document.getElementById("gameScreen")
-            .style.display = "none";
+        /*
+            SEND RESULT TO FASTAPI
+        */
 
-        document.getElementById("resultScreen")
-            .style.display = "block";
+
+        saveGameResult({
+
+            game_name:
+                "Color Flow",
+
+            time_taken:
+                averageReaction,
+
+            correct:
+                correct,
+
+            wrong:
+                wrong,
+
+            accuracy:
+                accuracy,
+
+            score:
+                score,
+
+            metrics: {
+
+                rounds:
+                    totalRounds,
+
+                averageReactionTime:
+                    averageReaction,
+
+                reactionTimes:
+                    reactionTimes
+
+            }
+
+        });
+
+
+        /*
+            Show result screen
+        */
+
+
+        document.getElementById(
+            "gameScreen"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "resultScreen"
+        ).style.display =
+            "block";
 
     }
+
+
+
+    /* ============================================
+       RESTART
+    ============================================ */
 
 
     function restartGame() {
@@ -639,6 +932,12 @@
         startGame();
 
     }
+
+
+
+    /* ============================================
+       BACK
+    ============================================ */
 
 
     function goBack() {
@@ -649,7 +948,14 @@
     }
 
 
+
+    /* ============================================
+       START
+    ============================================ */
+
+
     startGame();
+
 
 </script>
 
