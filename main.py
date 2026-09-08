@@ -6,7 +6,7 @@ import hashlib
 import os
 
 from database import Base, engine, get_db
-from models import Employee
+from models import Employee, GameResult
 
 
 # =========================================================
@@ -79,6 +79,16 @@ class LoginRequest(BaseModel):
     email: str
     password: str
     role: str
+
+
+class GameResultCreate(BaseModel):
+    employee_id: int
+    game_name: str
+    time_taken: int | None = None
+    correct: int | None = None
+    wrong: int | None = None
+    accuracy: int | None = None
+    score: int | None = None
 
 
 # =========================================================
@@ -239,6 +249,42 @@ def login(
 
         "role": employee.role
 
+    }
+
+
+@app.post("/game-results")
+def save_game_result(
+    result: GameResultCreate,
+    db: Session = Depends(get_db)
+):
+
+    employee = db.query(Employee).filter(
+        Employee.id == result.employee_id
+    ).first()
+
+    if not employee:
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found"
+        )
+
+    game_result = GameResult(
+        employee_id=result.employee_id,
+        game_name=result.game_name,
+        time_taken=result.time_taken,
+        correct=result.correct,
+        wrong=result.wrong,
+        accuracy=result.accuracy,
+        score=result.score
+    )
+
+    db.add(game_result)
+    db.commit()
+    db.refresh(game_result)
+
+    return {
+        "message": "Game result saved successfully",
+        "result_id": game_result.id
     }
 
 

@@ -13,3 +13,20 @@ class Employee(Base):
     password_hash = Column(String, nullable=False)
     role = Column(String, default="employee")
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class GameResult(Base):
+    __tablename__ = "game_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    employee_id = Column(Integer, nullable=False)
+
+    game_name = Column(String, nullable=False)
+
+    time_taken = Column(Integer, nullable=True)
+    correct = Column(Integer, nullable=True)
+    wrong = Column(Integer, nullable=True)
+    accuracy = Column(Integer, nullable=True)
+    score = Column(Integer, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
