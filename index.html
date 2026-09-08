@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,6 +85,33 @@
             opacity: 0.9;
         }
 
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            display: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffe8e8;
+            color: #d93025;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .success-message {
+            display: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #e8f8ef;
+            color: #18864b;
+            font-size: 14px;
+            text-align: center;
+        }
+
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -93,20 +121,27 @@
     </style>
 </head>
 
+
 <body>
 
     <div class="login-container">
 
-        <div class="logo">🧠 MindWell</div>
+        <div class="logo">
+            🧠 MindWell
+        </div>
 
         <p class="tagline">
             Your wellbeing. Your privacy. Your support.
         </p>
 
+
         <form id="loginForm">
 
             <div class="input-group">
-                <label for="email">Email</label>
+
+                <label for="email">
+                    Email
+                </label>
 
                 <input
                     type="email"
@@ -114,10 +149,15 @@
                     placeholder="Enter your email"
                     required
                 >
+
             </div>
 
+
             <div class="input-group">
-                <label for="password">Password</label>
+
+                <label for="password">
+                    Password
+                </label>
 
                 <input
                     type="password"
@@ -125,51 +165,213 @@
                     placeholder="Enter your password"
                     required
                 >
+
             </div>
+
 
             <div class="input-group">
-                <label for="role">Login as</label>
+
+                <label for="role">
+                    Login as
+                </label>
 
                 <select id="role" required>
-                    <option value="">Select role</option>
-                    <option value="employee">Employee</option>
-                    <option value="responder">Responder</option>
-                    <option value="hr">HR / Admin</option>
+
+                    <option value="">
+                        Select role
+                    </option>
+
+                    <option value="employee">
+                        Employee
+                    </option>
+
+                    <option value="responder">
+                        Responder
+                    </option>
+
+                    <option value="hr">
+                        HR / Admin
+                    </option>
+
                 </select>
+
             </div>
 
-            <button type="submit">
+
+            <!-- Error message -->
+
+            <div
+                id="errorMessage"
+                class="error-message">
+            </div>
+
+
+            <!-- Success message -->
+
+            <div
+                id="successMessage"
+                class="success-message">
+            </div>
+
+
+            <button
+                type="submit"
+                id="loginButton">
+
                 Login
+
             </button>
 
         </form>
 
+
         <div class="footer">
+
             🔒 Your personal wellbeing information stays private.
+
         </div>
 
     </div>
 
 
+
     <script>
 
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
+        const loginForm = document.getElementById("loginForm");
 
+        const loginButton = document.getElementById("loginButton");
+
+        const errorMessage = document.getElementById("errorMessage");
+
+        const successMessage = document.getElementById("successMessage");
+
+
+        loginForm.addEventListener("submit", async function(event) {
+
+            // Stop normal form submission
             event.preventDefault();
 
-            const role = document.getElementById("role").value;
 
-            if (role === "employee") {
+            // Get values from form
+            const email =
+                document.getElementById("email").value.trim();
 
-                window.location.href = "employee.html";
+            const password =
+                document.getElementById("password").value;
 
-            } else if (role === "responder") {
+            const role =
+                document.getElementById("role").value;
 
-                window.location.href = "responder.html";
 
-            } else if (role === "hr") {
+            // Clear previous messages
+            errorMessage.style.display = "none";
+            successMessage.style.display = "none";
 
-                window.location.href = "hr.html";
+
+            // Disable button while login is processing
+            loginButton.disabled = true;
+
+            loginButton.innerText = "Logging in...";
+
+
+            try {
+
+                // Send login request to FastAPI
+                const response = await fetch("/login", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        email: email,
+
+                        password: password,
+
+                        role: role
+
+                    })
+
+                });
+
+
+                // Convert response to JSON
+                const data = await response.json();
+
+
+                // Login failed
+                if (!response.ok) {
+
+                    errorMessage.innerText =
+                        data.detail || "Login failed. Please try again.";
+
+                    errorMessage.style.display = "block";
+
+                    loginButton.disabled = false;
+
+                    loginButton.innerText = "Login";
+
+                    return;
+                }
+
+
+                // Login successful
+                successMessage.innerText =
+                    "Login successful! Redirecting...";
+
+                successMessage.style.display = "block";
+
+
+                // Store logged-in user information
+                localStorage.setItem(
+                    "mindwell_user",
+                    JSON.stringify(data)
+                );
+
+
+                // Redirect according to role
+                setTimeout(function() {
+
+                    if (data.role === "employee") {
+
+                        window.location.href = "employee.html";
+
+                    }
+
+                    else if (data.role === "responder") {
+
+                        window.location.href = "responder.html";
+
+                    }
+
+                    else if (data.role === "hr") {
+
+                        window.location.href = "hr.html";
+
+                    }
+
+                }, 500);
+
+
+            }
+
+            catch (error) {
+
+                console.error("Login error:", error);
+
+
+                errorMessage.innerText =
+                    "Unable to connect to MindWell server.";
+
+                errorMessage.style.display = "block";
+
+
+                loginButton.disabled = false;
+
+                loginButton.innerText = "Login";
 
             }
 
@@ -178,4 +380,5 @@
     </script>
 
 </body>
+
 </html>
