@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>MindWell - Responder Dashboard</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -109,10 +111,18 @@
             padding: 10px 16px;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            min-width: 110px;
+            transition: 0.2s;
         }
 
         .refresh-btn:hover {
             background: #1d4ed8;
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         /* ================= CASE CARD ================= */
@@ -337,11 +347,20 @@
             .details {
                 grid-template-columns: 1fr;
             }
+
+            .section-header {
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
+
     </style>
+
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -357,6 +376,7 @@
 
 
 <main class="container">
+
 
     <div class="welcome">
 
@@ -439,6 +459,7 @@
 
         <button
             class="refresh-btn"
+            id="refreshBtn"
             onclick="loadCases()"
         >
             ↻ Refresh
@@ -483,10 +504,12 @@
 
     </div>
 
+
 </main>
 
 
 <script>
+
 
     // =================================================
     // LOAD RESPONDER CASES
@@ -497,19 +520,45 @@
         const container =
             document.getElementById("casesContainer");
 
+        const refreshBtn =
+            document.getElementById("refreshBtn");
+
+
+        // Show refreshing state
+
+        refreshBtn.disabled = true;
+
+        refreshBtn.textContent = "⟳ Refreshing...";
+
+
         container.innerHTML = `
+
             <div class="empty">
-                <div class="empty-icon">⏳</div>
-                <h3>Loading cases...</h3>
-                <p>Please wait.</p>
+
+                <div class="empty-icon">
+                    ⟳
+                </div>
+
+                <h3>Refreshing cases...</h3>
+
+                <p>
+                    Checking for new risk cases.
+                </p>
+
             </div>
+
         `;
 
 
         try {
 
+            // Cache-busting request
+
             const response =
-                await fetch("/responder/cases");
+                await fetch(
+                    "/responder/cases?refresh=" +
+                    Date.now()
+                );
 
 
             const cases =
@@ -522,6 +571,7 @@
                     cases.detail ||
                     "Unable to load cases"
                 );
+
             }
 
 
@@ -530,12 +580,28 @@
             renderCases(cases);
 
 
+            // Success state
+
+            refreshBtn.textContent = "✓ Updated";
+
+
+            setTimeout(() => {
+
+                refreshBtn.textContent = "↻ Refresh";
+
+            }, 1500);
+
+
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Error loading responder cases:",
+                error
+            );
 
 
             container.innerHTML = `
+
                 <div class="empty">
 
                     <div class="empty-icon">
@@ -545,12 +611,22 @@
                     <h3>Unable to load cases</h3>
 
                     <p>
-                        Please make sure the MindWell server
-                        is running and try again.
+                        ${escapeHtml(error.message)}
                     </p>
 
                 </div>
+
             `;
+
+
+            refreshBtn.textContent = "↻ Try Again";
+
+        }
+
+
+        finally {
+
+            refreshBtn.disabled = false;
 
         }
 
@@ -703,6 +779,7 @@
 
                         <div class="details">
 
+
                             <div class="detail">
 
                                 <h4>Risk Score</h4>
@@ -739,6 +816,7 @@
 
                             </div>
 
+
                         </div>
 
 
@@ -752,11 +830,13 @@
 
                                 ${
                                     signals.length
-                                    ? signals.map(
+                                    ?
+                                    signals.map(
                                         signal =>
                                         `<li>${escapeHtml(signal)}</li>`
-                                      ).join("")
-                                    : "<li>No signals available</li>"
+                                    ).join("")
+                                    :
+                                    "<li>No signals available</li>"
                                 }
 
                             </ul>
@@ -774,6 +854,7 @@
 
 
                         <div class="actions">
+
 
                             ${
                                 caseData.status === "new"
@@ -840,6 +921,7 @@
                                 ""
                             }
 
+
                         </div>
 
 
@@ -848,6 +930,7 @@
                             id="notes-${caseData.case_id}"
                             placeholder="Add responder notes..."
                         ></textarea>
+
 
                     </div>
 
@@ -897,7 +980,9 @@
             loadCases();
 
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(error);
 
@@ -950,6 +1035,7 @@
                                 "Human check-in started."
 
                         })
+
                     }
                 );
 
@@ -976,7 +1062,9 @@
             loadCases();
 
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(error);
 
@@ -1042,6 +1130,7 @@
                                 "Case resolved after human follow-up."
 
                         })
+
                     }
                 );
 
@@ -1068,7 +1157,9 @@
             loadCases();
 
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(error);
 
@@ -1088,7 +1179,9 @@
     function formatStatus(status) {
 
         if (!status) {
+
             return "Unknown";
+
         }
 
 
@@ -1109,7 +1202,9 @@
     function formatDate(dateString) {
 
         if (!dateString) {
+
             return "Unknown";
+
         }
 
 
@@ -1128,8 +1223,10 @@
 
     function escapeHtml(value) {
 
-        if (value === null ||
-            value === undefined) {
+        if (
+            value === null ||
+            value === undefined
+        ) {
 
             return "";
 
@@ -1152,7 +1249,9 @@
 
     loadCases();
 
+
 </script>
+
 
 </body>
 </html>
