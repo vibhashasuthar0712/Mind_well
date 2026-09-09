@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+from risk_engine import calculate_risk
 
 import hashlib
 import json
@@ -485,3 +486,35 @@ def get_employees(
         for employee in employees
 
     ]
+
+@app.get("/risk/{employee_id}")
+def get_employee_risk(
+    employee_id: int,
+    db: Session = Depends(get_db)
+):
+    employee = db.query(Employee).filter(
+        Employee.id == employee_id
+    ).first()
+
+    if not employee:
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found"
+        )
+
+    results = db.query(GameResult).filter(
+        GameResult.employee_id == employee_id
+    ).order_by(
+        GameResult.created_at.asc()
+    ).all()
+
+    risk = calculate_risk(results)
+
+    return {
+        "employee_id": employee_id,
+        "employee_name": employee.name,
+        "risk_score": risk["risk_score"],
+        "risk_level": risk["risk_level"],
+        "signals": risk["signals"],
+        "message": risk["message"]
+    }

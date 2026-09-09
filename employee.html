@@ -126,6 +126,8 @@
             color: #777;
 
             font-size: 14px;
+
+            line-height: 1.5;
         }
 
 
@@ -145,6 +147,43 @@
             font-size: 13px;
 
             font-weight: bold;
+        }
+
+
+        /* ================= RISK DETAILS ================= */
+
+        .risk-details {
+
+            margin-top: 20px;
+
+            background: #fafaff;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+        }
+
+
+        .risk-details h4 {
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+        }
+
+
+        .risk-details ul {
+
+            padding-left: 20px;
+
+            color: #666;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
         }
 
 
@@ -578,7 +617,7 @@
 
                 <h3>
 
-                    Your Wellbeing Trend
+                    Your Wellbeing Risk Signal
 
                 </h3>
 
@@ -636,6 +675,26 @@
                     Looking at your recent voluntary activities.
 
                 </p>
+
+
+                <div
+                    class="risk-details"
+                    id="riskDetails"
+                    style="display: none;"
+                >
+
+                    <h4>
+
+                        Detected Activity Signals
+
+                    </h4>
+
+
+                    <ul id="riskSignals">
+
+                    </ul>
+
+                </div>
 
             </div>
 
@@ -1120,11 +1179,15 @@
 
         else {
 
-            document.getElementById("userInfo").textContent =
+            document.getElementById(
+                "userInfo"
+            ).textContent =
                 `${user.name} · ${user.role}`;
 
 
-            document.getElementById("welcomeMessage").textContent =
+            document.getElementById(
+                "welcomeMessage"
+            ).textContent =
                 `Welcome back, ${user.name} 👋`;
 
         }
@@ -1132,51 +1195,174 @@
 
 
         // =====================================================
-        // LOAD GAME RESULTS
+        // LOAD RISK INFORMATION
         // =====================================================
 
-        async function loadGameResults() {
+        async function loadWellbeing() {
 
             if (!user) {
+
                 return;
+
             }
 
 
             try {
 
                 const response = await fetch(
-                    `/game-results/${user.employee_id}`
+                    `/risk/${user.employee_id}`
                 );
 
 
-                const results = await response.json();
+                const data = await response.json();
 
 
                 if (!response.ok) {
 
                     throw new Error(
-                        results.detail ||
-                        "Unable to load game results"
+                        data.detail ||
+                        "Unable to load risk information"
                     );
 
                 }
 
 
                 console.log(
-                    "Game results:",
-                    results
+                    "Risk information:",
+                    data
                 );
 
 
-                updateDashboard(results);
+                // ---------------------------------------------
+                // RISK SCORE
+                // ---------------------------------------------
 
+                document.getElementById(
+                    "wellbeingScore"
+                ).textContent =
+                    data.risk_score;
+
+
+                document.getElementById(
+                    "scoreDescription"
+                ).textContent =
+                    "Activity-based wellbeing risk signal. Not a medical diagnosis.";
+
+
+                // ---------------------------------------------
+                // RISK LEVEL
+                // ---------------------------------------------
+
+                const currentStatus =
+                    document.getElementById(
+                        "currentStatus"
+                    );
+
+
+                const statusDescription =
+                    document.getElementById(
+                        "statusDescription"
+                    );
+
+
+                const riskLevel =
+                    data.risk_level.toLowerCase();
+
+
+                if (riskLevel === "low") {
+
+                    currentStatus.textContent =
+                        "● Low Risk";
+
+                    statusDescription.textContent =
+                        data.message;
+
+                }
+
+
+                else if (riskLevel === "elevated") {
+
+                    currentStatus.textContent =
+                        "● Elevated";
+
+                    statusDescription.textContent =
+                        data.message;
+
+                }
+
+
+                else if (riskLevel === "high") {
+
+                    currentStatus.textContent =
+                        "● High Risk";
+
+                    statusDescription.textContent =
+                        data.message;
+
+                }
+
+
+                else if (riskLevel === "critical") {
+
+                    currentStatus.textContent =
+                        "● Critical";
+
+                    statusDescription.textContent =
+                        data.message;
+
+                }
+
+
+                // ---------------------------------------------
+                // SIGNALS
+                // ---------------------------------------------
+
+                const riskDetails =
+                    document.getElementById(
+                        "riskDetails"
+                    );
+
+
+                const riskSignals =
+                    document.getElementById(
+                        "riskSignals"
+                    );
+
+
+                if (
+                    data.signals &&
+                    data.signals.length > 0
+                ) {
+
+                    riskDetails.style.display =
+                        "block";
+
+
+                    riskSignals.innerHTML =
+                        data.signals
+                            .map(
+                                signal =>
+                                    `<li>${signal}</li>`
+                            )
+                            .join("");
+
+                }
+
+
+                else {
+
+                    riskDetails.style.display =
+                        "none";
+
+                }
 
             }
+
 
             catch (error) {
 
                 console.error(
-                    "Error loading game results:",
+                    "Error loading risk information:",
                     error
                 );
 
@@ -1210,174 +1396,67 @@
 
 
         // =====================================================
-        // UPDATE DASHBOARD
+        // LOAD GAME RESULTS
         // =====================================================
 
-        function updateDashboard(results) {
+        async function loadGameResults() {
 
-
-            // -----------------------------------------------
-            // NO ACTIVITY
-            // -----------------------------------------------
-
-            if (!results || results.length === 0) {
-
-                document.getElementById(
-                    "wellbeingScore"
-                ).textContent = "--";
-
-
-                document.getElementById(
-                    "scoreDescription"
-                ).textContent =
-                    "Complete a voluntary activity to begin building your personal trend.";
-
-
-                document.getElementById(
-                    "currentStatus"
-                ).textContent =
-                    "● No recent activity";
-
-
-                document.getElementById(
-                    "statusDescription"
-                ).textContent =
-                    "There is not enough activity data yet to show a pattern.";
-
-
-                document.getElementById(
-                    "trendDescription"
-                ).textContent =
-                    "Your activity pattern will appear here after you complete an activity.";
-
-
-                document.getElementById(
-                    "trendBars"
-                ).innerHTML = `
-                    <div class="no-activity">
-                        No activity recorded yet 🌿
-                    </div>
-                `;
-
+            if (!user) {
 
                 return;
 
             }
 
 
+            try {
 
-            // -----------------------------------------------
-            // CALCULATE SCORE
-            // -----------------------------------------------
-
-            const validScores = results
-                .map(result => result.score)
-                .filter(
-                    score =>
-                        typeof score === "number"
+                const response = await fetch(
+                    `/game-results/${user.employee_id}`
                 );
 
 
-            let wellbeingScore = 0;
+                const results = await response.json();
 
 
-            if (validScores.length > 0) {
+                if (!response.ok) {
 
-                const total = validScores.reduce(
-                    (sum, score) => sum + score,
-                    0
+                    throw new Error(
+                        results.detail ||
+                        "Unable to load game results"
+                    );
+
+                }
+
+
+                console.log(
+                    "Game results:",
+                    results
                 );
 
 
-                wellbeingScore = Math.round(
-                    total / validScores.length
+                // Create recent activity trend
+                createTrend(results);
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Error loading game results:",
+                    error
                 );
 
-            }
 
-
-            else {
-
-                // If scores are unavailable,
-                // use a neutral activity indicator.
-                wellbeingScore = 50;
-
-            }
-
-
-            wellbeingScore = Math.max(
-                0,
-                Math.min(100, wellbeingScore)
-            );
-
-
-            document.getElementById(
-                "wellbeingScore"
-            ).textContent = wellbeingScore;
-
-
-
-            document.getElementById(
-                "scoreDescription"
-            ).textContent =
-                `Based on ${results.length} recent voluntary ${results.length === 1 ? "activity" : "activities"}.`;
-
-
-
-            // -----------------------------------------------
-            // DETERMINE STATUS
-            // -----------------------------------------------
-
-            let statusText;
-            let statusDescription;
-
-
-            if (wellbeingScore >= 75) {
-
-                statusText = "● Looking Good";
-
-                statusDescription =
-                    "Your recent activity pattern looks relatively stable.";
+                document.getElementById(
+                    "trendBars"
+                ).innerHTML = `
+                    <div class="no-activity">
+                        Unable to load activity pattern.
+                    </div>
+                `;
 
             }
-
-
-            else if (wellbeingScore >= 50) {
-
-                statusText = "● Worth Checking In";
-
-                statusDescription =
-                    "Some changes are visible in your recent activity pattern.";
-
-            }
-
-
-            else {
-
-                statusText = "● Needs Attention";
-
-                statusDescription =
-                    "Your recent activity pattern has changed. Consider taking a break or using a support activity.";
-
-            }
-
-
-            document.getElementById(
-                "currentStatus"
-            ).textContent = statusText;
-
-
-            document.getElementById(
-                "statusDescription"
-            ).textContent = statusDescription;
-
-
-
-            // -----------------------------------------------
-            // CREATE TREND
-            // -----------------------------------------------
-
-            createTrend(results);
 
         }
 
@@ -1391,13 +1470,39 @@
 
 
             const trendBars =
-                document.getElementById("trendBars");
+                document.getElementById(
+                    "trendBars"
+                );
 
 
             trendBars.innerHTML = "";
 
 
+            if (
+                !results ||
+                results.length === 0
+            ) {
+
+                trendBars.innerHTML = `
+                    <div class="no-activity">
+                        No activity recorded yet 🌿
+                    </div>
+                `;
+
+
+                document.getElementById(
+                    "trendDescription"
+                ).textContent =
+                    "Your activity pattern will appear here after you complete an activity.";
+
+
+                return;
+
+            }
+
+
             // Take latest 5 activities
+
             const recentResults =
                 results.slice(-5);
 
@@ -1457,7 +1562,8 @@
                         );
 
 
-                    bar.className = "bar";
+                    bar.className =
+                        "bar";
 
 
                     bar.style.height =
@@ -1470,7 +1576,8 @@
                         );
 
 
-                    day.className = "day";
+                    day.className =
+                        "day";
 
 
                     const date =
@@ -1529,7 +1636,11 @@
             document.getElementById(
                 "trendDescription"
             ).textContent =
-                `Showing your latest ${recentResults.length} voluntary activity ${recentResults.length === 1 ? "result" : "results"}.`;
+                `Showing your latest ${recentResults.length} voluntary activity ${
+                    recentResults.length === 1
+                        ? "result"
+                        : "results"
+                }.`;
 
         }
 
@@ -1541,13 +1652,15 @@
 
         function showGames() {
 
+
             const games =
                 document.getElementById(
                     "gameSelection"
                 );
 
 
-            games.style.display = "block";
+            games.style.display =
+                "block";
 
 
             games.scrollIntoView({
@@ -1592,7 +1705,7 @@
             else if (game === "memory") {
 
                 window.location.href =
-                    "memory";
+                    "/memory";
 
             }
 
@@ -1658,9 +1771,12 @@
 
         if (user) {
 
+            loadWellbeing();
+
             loadGameResults();
 
         }
+
 
     </script>
 
