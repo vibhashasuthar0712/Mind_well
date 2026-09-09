@@ -6,13 +6,14 @@ from pydantic import BaseModel
 import hashlib
 import json
 import os
+from datetime import datetime
 
 from database import Base, engine, get_db
 from models import Employee, GameResult, RiskCase
 from risk_engine import calculate_risk
 
 
-app = FastAPI(title="MindWell API")
+app = FastAPI(title="Wellora API")
 
 Base.metadata.create_all(bind=engine)
 
@@ -39,6 +40,7 @@ def hash_password(password: str, salt: str = None):
 def verify_password(password: str, stored_hash: str):
 
     try:
+
         salt, saved_hash = stored_hash.split(":")
 
         new_hash = hashlib.pbkdf2_hmac(
@@ -51,6 +53,7 @@ def verify_password(password: str, stored_hash: str):
         return new_hash == saved_hash
 
     except ValueError:
+
         return False
 
 
@@ -91,6 +94,21 @@ class StatusUpdate(BaseModel):
 
     status: str
     responder_notes: str | None = None
+
+
+# =====================================================
+# SAFETY ESCALATION REQUEST
+# =====================================================
+
+class EscalationRequest(BaseModel):
+
+    escalation_level: str
+
+    escalation_reason: str | None = None
+
+    employee_contacted: bool = False
+
+    support_required: bool = False
 
 
 # =====================================================
@@ -197,16 +215,22 @@ def create_employee(
         )
 
     employee = Employee(
+
         name=employee_data.name.strip(),
+
         email=email,
+
         password_hash=hash_password(
             employee_data.password
         ),
+
         role=employee_data.role.strip().lower()
     )
 
     db.add(employee)
+
     db.commit()
+
     db.refresh(employee)
 
     return {
@@ -329,34 +353,43 @@ def save_game_result(
 
 
     # -------------------------------------------------
-    # Calculate latest risk after every activity
+    # Calculate latest risk
     # -------------------------------------------------
 
     all_results = db.query(GameResult).filter(
+
         GameResult.employee_id == result.employee_id
+
     ).order_by(
+
         GameResult.created_at.asc()
+
     ).all()
 
     risk = calculate_risk(all_results)
 
 
     # -------------------------------------------------
-    # Automatically create case for HIGH / CRITICAL
+    # Automatically create HIGH / CRITICAL case
     # -------------------------------------------------
 
     if risk["risk_level"] in ["high", "critical"]:
 
         existing_case = db.query(RiskCase).filter(
+
             RiskCase.employee_id == result.employee_id,
+
             RiskCase.status.in_([
                 "new",
                 "acknowledged",
                 "in_progress"
             ])
+
         ).first()
 
+
         # Don't create duplicate active cases
+
         if not existing_case:
 
             new_case = RiskCase(
@@ -413,9 +446,13 @@ def get_game_results(
         )
 
     results = db.query(GameResult).filter(
+
         GameResult.employee_id == employee_id
+
     ).order_by(
+
         GameResult.created_at.asc()
+
     ).all()
 
     return [
@@ -437,8 +474,11 @@ def get_game_results(
             "score": result.score,
 
             "metrics":
+
                 json.loads(result.metrics)
+
                 if result.metrics
+
                 else {},
 
             "created_at": result.created_at
@@ -500,9 +540,13 @@ def get_employee_risk(
         )
 
     results = db.query(GameResult).filter(
+
         GameResult.employee_id == employee_id
+
     ).order_by(
+
         GameResult.created_at.asc()
+
     ).all()
 
     risk = calculate_risk(results)
@@ -534,14 +578,19 @@ def get_responder_cases(
 ):
 
     cases = db.query(RiskCase).filter(
+
         RiskCase.status.in_([
             "new",
             "acknowledged",
             "in_progress"
         ])
+
     ).order_by(
+
         RiskCase.risk_score.desc(),
+
         RiskCase.created_at.desc()
+
     ).all()
 
 
@@ -551,7 +600,9 @@ def get_responder_cases(
     for case in cases:
 
         employee = db.query(Employee).filter(
+
             Employee.id == case.employee_id
+
         ).first()
 
 
@@ -562,8 +613,11 @@ def get_responder_cases(
             "employee_id": case.employee_id,
 
             "employee_name":
+
                 employee.name
+
                 if employee
+
                 else "Unknown",
 
             "risk_score": case.risk_score,
@@ -571,8 +625,11 @@ def get_responder_cases(
             "risk_level": case.risk_level,
 
             "signals":
+
                 json.loads(case.signals)
+
                 if case.signals
+
                 else [],
 
             "status": case.status,
@@ -582,10 +639,31 @@ def get_responder_cases(
             "responder_notes":
                 case.responder_notes,
 
-            "created_at": case.created_at,
+            # Safety escalation information
+
+            "escalation_level":
+                case.escalation_level,
+
+            "escalation_reason":
+                case.escalation_reason,
+
+            "employee_contacted":
+                bool(case.employee_contacted),
+
+            "support_required":
+                bool(case.support_required),
+
+            "escalated_at":
+                case.escalated_at,
+
+            "created_at":
+                case.created_at,
 
             "acknowledged_at":
-                case.acknowledged_at
+                case.acknowledged_at,
+
+            "resolved_at":
+                case.resolved_at
         })
 
 
@@ -628,9 +706,7 @@ def acknowledge_case(
 
     case.status = "acknowledged"
 
-    case.acknowledged_at = __import__(
-        "datetime"
-    ).datetime.utcnow()
+    case.acknowledged_at = datetime.utcnow()
 
 
     db.commit()
@@ -683,7 +759,11 @@ def update_case_status(
     ]
 
 
-    new_status = status_data.status.strip().lower()
+    new_status = (
+        status_data.status
+        .strip()
+        .lower()
+    )
 
 
     if new_status not in allowed_statuses:
@@ -712,9 +792,7 @@ def update_case_status(
 
     if new_status == "resolved":
 
-        case.resolved_at = __import__(
-            "datetime"
-        ).datetime.utcnow()
+        case.resolved_at = datetime.utcnow()
 
 
     db.commit()
@@ -732,4 +810,144 @@ def update_case_status(
 
         "responder_notes":
             case.responder_notes
+    }
+
+
+# =====================================================
+# SAFETY ESCALATION
+# =====================================================
+
+@app.post("/responder/cases/{case_id}/escalate")
+def escalate_case(
+    case_id: int,
+    escalation_data: EscalationRequest,
+    db: Session = Depends(get_db)
+):
+
+    case = db.query(RiskCase).filter(
+        RiskCase.id == case_id
+    ).first()
+
+
+    if not case:
+
+        raise HTTPException(
+
+            status_code=404,
+
+            detail="Risk case not found"
+        )
+
+
+    # -------------------------------------------------
+    # Allowed escalation levels
+    # -------------------------------------------------
+
+    allowed_levels = [
+
+        "secondary_responder",
+
+        "safety_lead",
+
+        "emergency_protocol"
+    ]
+
+
+    escalation_level = (
+
+        escalation_data.escalation_level
+
+        .strip()
+
+        .lower()
+    )
+
+
+    if escalation_level not in allowed_levels:
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail=(
+                "Invalid escalation level. "
+                "Use: secondary_responder, "
+                "safety_lead, or emergency_protocol."
+            )
+        )
+
+
+    # -------------------------------------------------
+    # Save escalation information
+    # -------------------------------------------------
+
+    case.escalation_level = (
+        escalation_level
+    )
+
+
+    case.escalation_reason = (
+
+        escalation_data.escalation_reason
+    )
+
+
+    case.employee_contacted = (
+
+        1
+
+        if escalation_data.employee_contacted
+
+        else 0
+    )
+
+
+    case.support_required = (
+
+        1
+
+        if escalation_data.support_required
+
+        else 0
+    )
+
+
+    case.escalated_at = datetime.utcnow()
+
+
+    # Case is now actively being handled
+
+    case.status = "in_progress"
+
+
+    db.commit()
+
+    db.refresh(case)
+
+
+    return {
+
+        "message":
+            "Safety escalation recorded",
+
+        "case_id":
+            case.id,
+
+        "escalation_level":
+            case.escalation_level,
+
+        "escalation_reason":
+            case.escalation_reason,
+
+        "employee_contacted":
+            bool(case.employee_contacted),
+
+        "support_required":
+            bool(case.support_required),
+
+        "status":
+            case.status,
+
+        "escalated_at":
+            case.escalated_at
     }
