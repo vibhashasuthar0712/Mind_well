@@ -1,0 +1,558 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wellora - Talk & Share</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f7fb;
+            color: #202124;
+        }
+
+        .topbar {
+            height: 72px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: #5f5bd8;
+        }
+
+        .back-btn {
+            border: none;
+            background: #f1f1f8;
+            color: #444;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #e7e7f2;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .header-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .header-card h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .header-card p {
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .privacy-note {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: #f7f7fc;
+            border-radius: 12px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .chat-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .chat-box {
+            height: 500px;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 18px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .bubble {
+            max-width: 75%;
+            padding: 13px 17px;
+            border-radius: 16px;
+            line-height: 1.5;
+            font-size: 15px;
+            white-space: pre-wrap;
+        }
+
+        .message.bot .bubble {
+            background: #f0f0f8;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.user .bubble {
+            background: #5f5bd8;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .typing {
+            color: #777;
+            font-size: 14px;
+            display: none;
+            padding: 0 25px 15px;
+        }
+
+        .input-area {
+            border-top: 1px solid #eeeeee;
+            padding: 18px;
+            display: flex;
+            gap: 10px;
+            background: #fff;
+        }
+
+        .input-area textarea {
+            flex: 1;
+            resize: none;
+            height: 52px;
+            border: 1px solid #ddd;
+            border-radius: 13px;
+            padding: 14px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-area textarea:focus {
+            border-color: #5f5bd8;
+        }
+
+        .send-btn {
+            width: 90px;
+            border: none;
+            border-radius: 13px;
+            background: #5f5bd8;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: #4e4abf;
+        }
+
+        .send-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .support-card {
+            display: none;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 22px;
+            border-left: 4px solid #5f5bd8;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .support-card h3 {
+            margin: 0 0 8px;
+        }
+
+        .support-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .support-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .support-actions button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .relax-btn {
+            background: #eef7f2;
+            color: #27734d;
+        }
+
+        .dashboard-btn {
+            background: #f1f1f8;
+            color: #444;
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin-top: 18px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 650px) {
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .page {
+                margin-top: 20px;
+            }
+
+            .chat-box {
+                height: 450px;
+            }
+
+            .bubble {
+                max-width: 88%;
+            }
+
+            .input-area {
+                padding: 12px;
+            }
+
+            .send-btn {
+                width: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <div class="brand">
+        Wellora
+    </div>
+
+    <button class="back-btn" onclick="goBack()">
+        ← Dashboard
+    </button>
+
+</div>
+
+
+<div class="page">
+
+    <div class="header-card">
+
+        <h1>💬 Talk & Share</h1>
+
+        <p>
+            Sometimes you may simply want to talk about what's on your mind.
+            You can share freely and Wellora can offer supportive suggestions.
+        </p>
+
+        <div class="privacy-note">
+            🔒 This conversation is intended for wellbeing support.
+            It is not a medical diagnosis or a replacement for professional
+            or emergency help.
+        </div>
+
+    </div>
+
+
+    <div class="chat-card">
+
+        <div class="chat-box" id="chatBox">
+
+            <div class="message bot">
+
+                <div class="bubble">
+                    Hi! I'm here to listen. 💙
+
+                    You can talk about work pressure, feeling overwhelmed,
+                    difficulty focusing, or simply how your day is going.
+
+                    What would you like to share?
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="typing" id="typing">
+            Wellora is thinking...
+        </div>
+
+
+        <div class="input-area">
+
+            <textarea
+                id="messageInput"
+                placeholder="Type what's on your mind..."
+                maxlength="2000"
+                onkeydown="handleKey(event)"
+            ></textarea>
+
+            <button
+                class="send-btn"
+                id="sendBtn"
+                onclick="sendMessage()"
+            >
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="support-card" id="supportCard">
+
+        <h3>💙 You don't have to handle everything alone</h3>
+
+        <p id="supportText">
+            If you feel that you need additional support, you can use
+            Wellora's wellbeing activities or connect with appropriate
+            human support.
+        </p>
+
+        <div class="support-actions">
+
+            <button
+                class="relax-btn"
+                onclick="openRelax()"
+            >
+                🌿 Relax & Reset
+            </button>
+
+            <button
+                class="dashboard-btn"
+                onclick="goBack()"
+            >
+                ← Back to Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="disclaimer">
+
+        Wellora provides wellbeing support, not medical diagnosis.
+        <br>
+        If you are in immediate danger or need urgent help,
+        contact appropriate emergency or trusted-person support.
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const API_BASE = window.location.origin;
+
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const typing = document.getElementById("typing");
+    const supportCard = document.getElementById("supportCard");
+    const supportText = document.getElementById("supportText");
+
+
+    function getUser() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem("mindwell_user")
+            );
+
+        } catch (error) {
+
+            return null;
+
+        }
+
+    }
+
+
+    function addMessage(text, type) {
+
+        const message = document.createElement("div");
+
+        message.className = "message " + type;
+
+        const bubble = document.createElement("div");
+
+        bubble.className = "bubble";
+
+        bubble.textContent = text;
+
+        message.appendChild(bubble);
+
+        chatBox.appendChild(message);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+
+    function handleKey(event) {
+
+        if (event.key === "Enter" && !event.shiftKey) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+
+
+    async function sendMessage() {
+
+        const message = messageInput.value.trim();
+
+        if (!message) {
+            return;
+        }
+
+        const user = getUser();
+
+        addMessage(message, "user");
+
+        messageInput.value = "";
+
+        sendBtn.disabled = true;
+
+        typing.style.display = "block";
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE}/talk`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        employee_id: user ? user.employee_id : null,
+
+                        message: message
+
+                    })
+
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail || "Unable to connect to Talk & Share."
+                );
+
+            }
+
+
+            addMessage(
+                data.reply,
+                "bot"
+            );
+
+
+            if (data.safety_support === true) {
+
+                supportCard.style.display = "block";
+
+                supportText.textContent =
+                    data.safety_message ||
+                    "You may want to connect with a trusted person or appropriate human support.";
+
+            }
+
+        } catch (error) {
+
+            addMessage(
+                "I'm sorry, I couldn't connect right now. Please try again in a moment. If you need immediate support, please contact an appropriate trusted person or emergency service.",
+                "bot"
+            );
+
+            console.error(error);
+
+        } finally {
+
+            typing.style.display = "none";
+
+            sendBtn.disabled = false;
+
+            messageInput.focus();
+
+        }
+
+    }
+
+
+    function openRelax() {
+
+        window.location.href = "/relax";
+
+    }
+
+
+    function goBack() {
+
+        window.location.href = "/employee";
+
+    }
+
+
+    messageInput.focus();
+
+</script>
+
+</body>
+</html>
+```

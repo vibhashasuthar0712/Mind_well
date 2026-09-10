@@ -1,68 +1,59 @@
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.responses import FileResponse
-from sqlalchemy.orm import Session
-from pydantic import BaseModel
-
-import hashlib
-import json
 import os
+import json
+import hashlib
 from datetime import datetime
 
-from database import Base, engine, get_db
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from database import engine, get_db, Base
 from models import Employee, GameResult, RiskCase
 from risk_engine import calculate_risk
 
 
-app = FastAPI(title="Wellora API")
+# ============================================================
+# OPTIONAL OPENAI
+# ============================================================
+
+try:
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
+
+
+# ============================================================
+# DATABASE
+# ============================================================
 
 Base.metadata.create_all(bind=engine)
 
 
-# =====================================================
-# PASSWORD FUNCTIONS
-# =====================================================
+# ============================================================
+# FASTAPI APP
+# ============================================================
 
-def hash_password(password: str, salt: str = None):
-
-    if salt is None:
-        salt = os.urandom(16).hex()
-
-    password_hash = hashlib.pbkdf2_hmac(
-        "sha256",
-        password.encode(),
-        salt.encode(),
-        100000
-    ).hex()
-
-    return f"{salt}:{password_hash}"
+app = FastAPI(title="Wellora API")
 
 
-def verify_password(password: str, stored_hash: str):
+# ============================================================
+# OPTIONAL OPENAI CONFIGURATION
+# ============================================================
 
-    try:
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-        salt, saved_hash = stored_hash.split(":")
-
-        new_hash = hashlib.pbkdf2_hmac(
-            "sha256",
-            password.encode(),
-            salt.encode(),
-            100000
-        ).hex()
-
-        return new_hash == saved_hash
-
-    except ValueError:
-
-        return False
+if OpenAI and OPENAI_API_KEY:
+    client = OpenAI(api_key=OPENAI_API_KEY)
+else:
+    client = None
 
 
-# =====================================================
-# PYDANTIC MODELS
-# =====================================================
+# ============================================================
+# REQUEST MODELS
+# ============================================================
 
-class EmployeeCreate(BaseModel):
-
+class RegisterRequest(BaseModel):
     name: str
     email: str
     password: str
@@ -70,331 +61,446 @@ class EmployeeCreate(BaseModel):
 
 
 class LoginRequest(BaseModel):
-
     email: str
     password: str
     role: str
 
 
-class GameResultCreate(BaseModel):
-
+class GameResultRequest(BaseModel):
     employee_id: int
     game_name: str
-
     time_taken: int | None = None
     correct: int | None = None
     wrong: int | None = None
     accuracy: int | None = None
     score: int | None = None
-
     metrics: dict | None = None
 
 
-class StatusUpdate(BaseModel):
-
+class StatusUpdateRequest(BaseModel):
     status: str
-    responder_notes: str | None = None
 
-
-# =====================================================
-# SAFETY ESCALATION REQUEST
-# =====================================================
 
 class EscalationRequest(BaseModel):
-
-    escalation_level: str
-
+    employee_contacted: bool = False
+    support_required: bool = False
+    escalation_level: str = "secondary_responder"
     escalation_reason: str | None = None
 
-    employee_contacted: bool = False
 
-    support_required: bool = False
+class TalkRequest(BaseModel):
+    employee_id: int | None = None
+    message: str
 
 
-# =====================================================
-# BASIC PAGES
-# =====================================================
+# ============================================================
+# PASSWORD HELPERS
+# ============================================================
+
+def hash_password(password: str):
+    return hashlib.sha256(
+        password.encode("utf-8")
+    ).hexdigest()
+
+
+def verify_password(password: str, password_hash: str):
+    return hash_password(password) == password_hash
+
+
+# ============================================================
+# BASIC ROUTE
+# ============================================================
 
 @app.get("/")
 def home():
 
-    return FileResponse("index.html")
+    try:
+
+        with open(
+            "index.html",
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            return HTMLResponse(
+                file.read()
+            )
+
+    except FileNotFoundError:
+
+        return {
+            "message": "Wellora API is running."
+        }
 
 
-@app.get("/employee")
+# ============================================================
+# PAGE ROUTES
+# ============================================================
+
+@app.get("/employee", response_class=HTMLResponse)
 def employee_page():
 
-    return FileResponse("employee.html")
+    with open(
+        "employee.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
 
 
-@app.get("/responder")
-def responder_page():
+@app.get("/checkin", response_class=HTMLResponse)
+def checkin_page():
 
-    return FileResponse("responder.html")
+    with open(
+        "checkin.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
 
 
-@app.get("/hr")
+@app.get("/hr", response_class=HTMLResponse)
 def hr_page():
 
-    return FileResponse("hr.html")
+    with open(
+        "hr.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
 
 
-# =====================================================
-# GAME PAGES
-# =====================================================
+@app.get("/responder", response_class=HTMLResponse)
+def responder_page():
 
-@app.get("/game")
-def focus_game():
+    with open(
+        "responder.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
 
-    return FileResponse("game.html")
-
-
-@app.get("/reaction")
-def reaction_game():
-
-    return FileResponse("reaction.html")
+        return HTMLResponse(
+            file.read()
+        )
 
 
-@app.get("/memory")
-def memory_game():
+@app.get("/game", response_class=HTMLResponse)
+def game_page():
 
-    return FileResponse("memory.html")
+    with open(
+        "game.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
 
-
-@app.get("/color")
-def color_game():
-
-    return FileResponse("color.html")
-
-
-@app.get("/choice")
-def choice_game():
-
-    return FileResponse("choice.html")
+        return HTMLResponse(
+            file.read()
+        )
 
 
-@app.get("/relax")
+@app.get("/reaction", response_class=HTMLResponse)
+def reaction_page():
+
+    with open(
+        "reaction.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
+
+
+@app.get("/memory", response_class=HTMLResponse)
+def memory_page():
+
+    with open(
+        "memory.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
+
+
+@app.get("/color", response_class=HTMLResponse)
+def color_page():
+
+    with open(
+        "color.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
+
+
+@app.get("/choice", response_class=HTMLResponse)
+def choice_page():
+
+    with open(
+        "choice.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
+
+
+@app.get("/relax", response_class=HTMLResponse)
 def relax_page():
 
-    return FileResponse("relax.html")
+    with open(
+        "relax.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return HTMLResponse(
+            file.read()
+        )
 
 
-# =====================================================
-# HEALTH CHECK
-# =====================================================
+@app.get("/talk", response_class=HTMLResponse)
+def talk_page():
 
-@app.get("/health")
-def health_check():
+    with open(
+        "talk.html",
+        "r",
+        encoding="utf-8"
+    ) as file:
 
-    return {
-        "status": "healthy"
-    }
+        return HTMLResponse(
+            file.read()
+        )
 
 
-# =====================================================
-# EMPLOYEE REGISTRATION
-# =====================================================
+# ============================================================
+# REGISTER
+# ============================================================
 
-@app.post("/employees")
-def create_employee(
-    employee_data: EmployeeCreate,
+@app.post("/register")
+def register(
+    request: RegisterRequest,
     db: Session = Depends(get_db)
 ):
 
-    email = employee_data.email.strip().lower()
-
-    existing_employee = db.query(Employee).filter(
-        Employee.email == email
-    ).first()
+    existing_employee = (
+        db.query(Employee)
+        .filter(
+            Employee.email == request.email
+        )
+        .first()
+    )
 
     if existing_employee:
 
         raise HTTPException(
             status_code=400,
-            detail="Email already registered"
+            detail="Email already registered."
         )
 
     employee = Employee(
-
-        name=employee_data.name.strip(),
-
-        email=email,
-
+        name=request.name,
+        email=request.email,
         password_hash=hash_password(
-            employee_data.password
+            request.password
         ),
-
-        role=employee_data.role.strip().lower()
+        role=request.role
     )
 
     db.add(employee)
-
     db.commit()
-
     db.refresh(employee)
 
     return {
-
-        "message": "Employee created successfully",
-
+        "message": "Registration successful",
         "employee_id": employee.id,
-
         "name": employee.name,
-
         "email": employee.email,
-
         "role": employee.role
     }
 
 
-# =====================================================
+# ============================================================
 # LOGIN
-# =====================================================
+# ============================================================
 
 @app.post("/login")
 def login(
-    login_data: LoginRequest,
+    request: LoginRequest,
     db: Session = Depends(get_db)
 ):
 
-    email = login_data.email.strip().lower()
-
-    role = login_data.role.strip().lower()
-
-    employee = db.query(Employee).filter(
-        Employee.email == email
-    ).first()
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.email == request.email
+        )
+        .first()
+    )
 
     if not employee:
 
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password"
-        )
-
-    if employee.role.strip().lower() != role:
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid role"
+            detail="Invalid email or password."
         )
 
     if not verify_password(
-        login_data.password,
+        request.password,
         employee.password_hash
     ):
 
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password"
+            detail="Invalid email or password."
+        )
+
+    # --------------------------------------------------------
+    # Check selected role
+    # --------------------------------------------------------
+
+    if employee.role != request.role:
+
+        raise HTTPException(
+            status_code=401,
+            detail=(
+                f"This account is registered as "
+                f"{employee.role}. "
+                f"Please select the correct role."
+            )
         )
 
     return {
-
         "message": "Login successful",
-
         "employee_id": employee.id,
-
         "name": employee.name,
-
         "email": employee.email,
-
         "role": employee.role
     }
 
 
-# =====================================================
+# ============================================================
 # SAVE GAME RESULT
-# =====================================================
+# ============================================================
 
-@app.post("/game-results")
+@app.post("/game-result")
 def save_game_result(
-    result: GameResultCreate,
+    request: GameResultRequest,
     db: Session = Depends(get_db)
 ):
 
-    employee = db.query(Employee).filter(
-        Employee.id == result.employee_id
-    ).first()
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == request.employee_id
+        )
+        .first()
+    )
 
     if not employee:
 
         raise HTTPException(
             status_code=404,
-            detail="Employee not found"
+            detail="Employee not found."
         )
 
-    game_result = GameResult(
+    result = GameResult(
 
-        employee_id=result.employee_id,
+        employee_id=request.employee_id,
 
-        game_name=result.game_name,
+        game_name=request.game_name,
 
-        time_taken=result.time_taken,
+        time_taken=request.time_taken,
 
-        correct=result.correct,
+        correct=request.correct,
 
-        wrong=result.wrong,
+        wrong=request.wrong,
 
-        accuracy=result.accuracy,
+        accuracy=request.accuracy,
 
-        score=result.score,
+        score=request.score,
 
-        metrics=json.dumps(result.metrics)
-        if result.metrics
-        else None
+        metrics=(
+            json.dumps(request.metrics)
+            if request.metrics
+            else None
+        )
     )
 
-    db.add(game_result)
-
+    db.add(result)
     db.commit()
-
-    db.refresh(game_result)
-
-
-    # -------------------------------------------------
-    # Calculate latest risk
-    # -------------------------------------------------
-
-    all_results = db.query(GameResult).filter(
-
-        GameResult.employee_id == result.employee_id
-
-    ).order_by(
-
-        GameResult.created_at.asc()
-
-    ).all()
-
-    risk = calculate_risk(all_results)
+    db.refresh(result)
 
 
-    # -------------------------------------------------
-    # Automatically create HIGH / CRITICAL case
-    # -------------------------------------------------
+    # --------------------------------------------------------
+    # Calculate current risk
+    # --------------------------------------------------------
 
-    if risk["risk_level"] in ["high", "critical"]:
+    all_results = (
+        db.query(GameResult)
+        .filter(
+            GameResult.employee_id ==
+            request.employee_id
+        )
+        .order_by(
+            GameResult.created_at.asc()
+        )
+        .all()
+    )
 
-        existing_case = db.query(RiskCase).filter(
-
-            RiskCase.employee_id == result.employee_id,
-
-            RiskCase.status.in_([
-                "new",
-                "acknowledged",
-                "in_progress"
-            ])
-
-        ).first()
+    risk = calculate_risk(
+        all_results
+    )
 
 
-        # Don't create duplicate active cases
+    # --------------------------------------------------------
+    # Create RiskCase for high / critical
+    # --------------------------------------------------------
+
+    if risk["risk_level"] in [
+        "high",
+        "critical"
+    ]:
+
+        existing_case = (
+            db.query(RiskCase)
+            .filter(
+                RiskCase.employee_id ==
+                request.employee_id,
+
+                RiskCase.status.in_(
+                    [
+                        "new",
+                        "in_progress"
+                    ]
+                )
+            )
+            .first()
+        )
 
         if not existing_case:
 
-            new_case = RiskCase(
+            risk_case = RiskCase(
 
-                employee_id=result.employee_id,
+                employee_id=request.employee_id,
 
                 risk_score=risk["risk_score"],
 
@@ -407,523 +513,443 @@ def save_game_result(
                 status="new"
             )
 
-            db.add(new_case)
-
+            db.add(risk_case)
             db.commit()
+            db.refresh(risk_case)
 
 
     return {
 
-        "message": "Game result saved successfully",
+        "message":
+            "Game result saved",
 
-        "result_id": game_result.id,
+        "game_result_id":
+            result.id,
 
-        "risk_score": risk["risk_score"],
+        "risk_score":
+            risk["risk_score"],
 
-        "risk_level": risk["risk_level"]
+        "risk_level":
+            risk["risk_level"],
+
+        "signals":
+            risk["signals"],
+
+        "risk_message":
+            risk["message"]
     }
 
 
-# =====================================================
-# GET EMPLOYEE GAME HISTORY
-# =====================================================
+# ============================================================
+# GAME HISTORY
+# ============================================================
 
-@app.get("/game-results/{employee_id}")
-def get_game_results(
+@app.get("/game-history/{employee_id}")
+def game_history(
     employee_id: int,
     db: Session = Depends(get_db)
 ):
 
-    employee = db.query(Employee).filter(
-        Employee.id == employee_id
-    ).first()
-
-    if not employee:
-
-        raise HTTPException(
-            status_code=404,
-            detail="Employee not found"
+    results = (
+        db.query(GameResult)
+        .filter(
+            GameResult.employee_id ==
+            employee_id
         )
-
-    results = db.query(GameResult).filter(
-
-        GameResult.employee_id == employee_id
-
-    ).order_by(
-
-        GameResult.created_at.asc()
-
-    ).all()
+        .order_by(
+            GameResult.created_at.asc()
+        )
+        .all()
+    )
 
     return [
 
         {
+            "id":
+                result.id,
 
-            "id": result.id,
+            "game_name":
+                result.game_name,
 
-            "game_name": result.game_name,
+            "time_taken":
+                result.time_taken,
 
-            "time_taken": result.time_taken,
+            "correct":
+                result.correct,
 
-            "correct": result.correct,
+            "wrong":
+                result.wrong,
 
-            "wrong": result.wrong,
+            "accuracy":
+                result.accuracy,
 
-            "accuracy": result.accuracy,
+            "score":
+                result.score,
 
-            "score": result.score,
-
-            "metrics":
-
+            "metrics": (
                 json.loads(result.metrics)
-
                 if result.metrics
+                else {}
+            ),
 
-                else {},
-
-            "created_at": result.created_at
+            "created_at":
+                result.created_at
         }
 
         for result in results
     ]
 
 
-# =====================================================
-# GET ALL EMPLOYEES
-# =====================================================
-
-@app.get("/employees")
-def get_employees(
-    db: Session = Depends(get_db)
-):
-
-    employees = db.query(Employee).all()
-
-    return [
-
-        {
-
-            "id": employee.id,
-
-            "name": employee.name,
-
-            "email": employee.email,
-
-            "role": employee.role,
-
-            "created_at": employee.created_at
-        }
-
-        for employee in employees
-    ]
-
-
-# =====================================================
+# ============================================================
 # EMPLOYEE RISK
-# =====================================================
+# ============================================================
 
-@app.get("/risk/{employee_id}")
-def get_employee_risk(
+@app.get("/employee-risk/{employee_id}")
+def employee_risk(
     employee_id: int,
     db: Session = Depends(get_db)
 ):
 
-    employee = db.query(Employee).filter(
-        Employee.id == employee_id
-    ).first()
-
-    if not employee:
-
-        raise HTTPException(
-            status_code=404,
-            detail="Employee not found"
+    results = (
+        db.query(GameResult)
+        .filter(
+            GameResult.employee_id ==
+            employee_id
         )
+        .order_by(
+            GameResult.created_at.asc()
+        )
+        .all()
+    )
 
-    results = db.query(GameResult).filter(
-
-        GameResult.employee_id == employee_id
-
-    ).order_by(
-
-        GameResult.created_at.asc()
-
-    ).all()
-
-    risk = calculate_risk(results)
-
-    return {
-
-        "employee_id": employee_id,
-
-        "employee_name": employee.name,
-
-        "risk_score": risk["risk_score"],
-
-        "risk_level": risk["risk_level"],
-
-        "signals": risk["signals"],
-
-        "message": risk["message"]
-    }
+    return calculate_risk(
+        results
+    )
 
 
-# =====================================================
-# RESPONDER DASHBOARD
-# GET ACTIVE RISK CASES
-# =====================================================
+# ============================================================
+# EMPLOYEE LIST
+# ============================================================
 
-@app.get("/responder/cases")
-def get_responder_cases(
+@app.get("/employees")
+def employees(
     db: Session = Depends(get_db)
 ):
 
-    cases = db.query(RiskCase).filter(
+    employee_list = (
+        db.query(Employee)
+        .filter(
+            Employee.role == "employee"
+        )
+        .all()
+    )
 
-        RiskCase.status.in_([
-            "new",
-            "acknowledged",
-            "in_progress"
-        ])
+    return [
 
-    ).order_by(
+        {
+            "id":
+                employee.id,
 
-        RiskCase.risk_score.desc(),
+            "name":
+                employee.name,
 
-        RiskCase.created_at.desc()
+            "email":
+                employee.email,
 
-    ).all()
+            "role":
+                employee.role
+        }
 
+        for employee in employee_list
+    ]
+
+
+# ============================================================
+# RESPONDER - ACTIVE CASES
+# ============================================================
+
+@app.get("/responder/cases")
+def responder_cases(
+    db: Session = Depends(get_db)
+):
+
+    cases = (
+        db.query(RiskCase)
+        .filter(
+            RiskCase.status.in_(
+                [
+                    "new",
+                    "in_progress"
+                ]
+            )
+        )
+        .order_by(
+            RiskCase.created_at.desc()
+        )
+        .all()
+    )
 
     response = []
 
-
     for case in cases:
 
-        employee = db.query(Employee).filter(
+        employee = (
+            db.query(Employee)
+            .filter(
+                Employee.id ==
+                case.employee_id
+            )
+            .first()
+        )
 
-            Employee.id == case.employee_id
+        response.append(
 
-        ).first()
+            {
+                "id":
+                    case.id,
 
+                "employee_id":
+                    case.employee_id,
 
-        response.append({
+                "employee_name": (
+                    employee.name
+                    if employee
+                    else "Unknown"
+                ),
 
-            "case_id": case.id,
+                "employee_email": (
+                    employee.email
+                    if employee
+                    else ""
+                ),
 
-            "employee_id": case.employee_id,
+                "risk_score":
+                    case.risk_score,
 
-            "employee_name":
+                "risk_level":
+                    case.risk_level,
 
-                employee.name
+                "signals": (
+                    json.loads(case.signals)
+                    if case.signals
+                    else []
+                ),
 
-                if employee
+                "status":
+                    case.status,
 
-                else "Unknown",
+                "responder_id":
+                    case.responder_id,
 
-            "risk_score": case.risk_score,
+                "responder_notes":
+                    case.responder_notes,
 
-            "risk_level": case.risk_level,
+                "escalation_level":
+                    case.escalation_level,
 
-            "signals":
+                "escalation_reason":
+                    case.escalation_reason,
 
-                json.loads(case.signals)
+                "escalated_at":
+                    case.escalated_at,
 
-                if case.signals
+                "employee_contacted":
+                    bool(
+                        case.employee_contacted
+                    ),
 
-                else [],
+                "support_required":
+                    bool(
+                        case.support_required
+                    ),
 
-            "status": case.status,
+                "created_at":
+                    case.created_at,
 
-            "responder_id": case.responder_id,
+                "acknowledged_at":
+                    case.acknowledged_at,
 
-            "responder_notes":
-                case.responder_notes,
-
-            # Safety escalation information
-
-            "escalation_level":
-                case.escalation_level,
-
-            "escalation_reason":
-                case.escalation_reason,
-
-            "employee_contacted":
-                bool(case.employee_contacted),
-
-            "support_required":
-                bool(case.support_required),
-
-            "escalated_at":
-                case.escalated_at,
-
-            "created_at":
-                case.created_at,
-
-            "acknowledged_at":
-                case.acknowledged_at,
-
-            "resolved_at":
-                case.resolved_at
-        })
-
+                "resolved_at":
+                    case.resolved_at
+            }
+        )
 
     return response
 
 
-# =====================================================
+# ============================================================
 # ACKNOWLEDGE CASE
-# =====================================================
+# ============================================================
 
-@app.post("/responder/cases/{case_id}/acknowledge")
+@app.post(
+    "/responder/cases/{case_id}/acknowledge"
+)
 def acknowledge_case(
     case_id: int,
     db: Session = Depends(get_db)
 ):
 
-    case = db.query(RiskCase).filter(
-        RiskCase.id == case_id
-    ).first()
+    case = (
+        db.query(RiskCase)
+        .filter(
+            RiskCase.id == case_id
+        )
+        .first()
+    )
 
     if not case:
 
         raise HTTPException(
             status_code=404,
-            detail="Risk case not found"
+            detail="Risk case not found."
         )
-
-
-    if case.status != "new":
-
-        return {
-
-            "message": "Case is already acknowledged",
-
-            "case_id": case.id,
-
-            "status": case.status
-        }
-
-
-    case.status = "acknowledged"
-
-    case.acknowledged_at = datetime.utcnow()
-
-
-    db.commit()
-
-    db.refresh(case)
-
-
-    return {
-
-        "message": "Case acknowledged successfully",
-
-        "case_id": case.id,
-
-        "status": case.status
-    }
-
-
-# =====================================================
-# UPDATE CASE STATUS
-# =====================================================
-
-@app.post("/responder/cases/{case_id}/status")
-def update_case_status(
-    case_id: int,
-    status_data: StatusUpdate,
-    db: Session = Depends(get_db)
-):
-
-    case = db.query(RiskCase).filter(
-        RiskCase.id == case_id
-    ).first()
-
-    if not case:
-
-        raise HTTPException(
-            status_code=404,
-            detail="Risk case not found"
-        )
-
-
-    allowed_statuses = [
-
-        "new",
-
-        "acknowledged",
-
-        "in_progress",
-
-        "resolved"
-    ]
-
-
-    new_status = (
-        status_data.status
-        .strip()
-        .lower()
-    )
-
-
-    if new_status not in allowed_statuses:
-
-        raise HTTPException(
-
-            status_code=400,
-
-            detail=(
-                "Invalid status. Use: "
-                "new, acknowledged, "
-                "in_progress, or resolved."
-            )
-        )
-
-
-    case.status = new_status
-
-
-    if status_data.responder_notes is not None:
-
-        case.responder_notes = (
-            status_data.responder_notes
-        )
-
-
-    if new_status == "resolved":
-
-        case.resolved_at = datetime.utcnow()
-
-
-    db.commit()
-
-    db.refresh(case)
-
-
-    return {
-
-        "message": "Case status updated",
-
-        "case_id": case.id,
-
-        "status": case.status,
-
-        "responder_notes":
-            case.responder_notes
-    }
-
-
-# =====================================================
-# SAFETY ESCALATION
-# =====================================================
-
-@app.post("/responder/cases/{case_id}/escalate")
-def escalate_case(
-    case_id: int,
-    escalation_data: EscalationRequest,
-    db: Session = Depends(get_db)
-):
-
-    case = db.query(RiskCase).filter(
-        RiskCase.id == case_id
-    ).first()
-
-
-    if not case:
-
-        raise HTTPException(
-
-            status_code=404,
-
-            detail="Risk case not found"
-        )
-
-
-    # -------------------------------------------------
-    # Allowed escalation levels
-    # -------------------------------------------------
-
-    allowed_levels = [
-
-        "secondary_responder",
-
-        "safety_lead",
-
-        "emergency_protocol"
-    ]
-
-
-    escalation_level = (
-
-        escalation_data.escalation_level
-
-        .strip()
-
-        .lower()
-    )
-
-
-    if escalation_level not in allowed_levels:
-
-        raise HTTPException(
-
-            status_code=400,
-
-            detail=(
-                "Invalid escalation level. "
-                "Use: secondary_responder, "
-                "safety_lead, or emergency_protocol."
-            )
-        )
-
-
-    # -------------------------------------------------
-    # Save escalation information
-    # -------------------------------------------------
-
-    case.escalation_level = (
-        escalation_level
-    )
-
-
-    case.escalation_reason = (
-
-        escalation_data.escalation_reason
-    )
-
-
-    case.employee_contacted = (
-
-        1
-
-        if escalation_data.employee_contacted
-
-        else 0
-    )
-
-
-    case.support_required = (
-
-        1
-
-        if escalation_data.support_required
-
-        else 0
-    )
-
-
-    case.escalated_at = datetime.utcnow()
-
-
-    # Case is now actively being handled
 
     case.status = "in_progress"
 
+    case.acknowledged_at = (
+        datetime.utcnow()
+    )
 
     db.commit()
-
     db.refresh(case)
 
+    return {
+
+        "message":
+            "Case acknowledged",
+
+        "case_id":
+            case.id,
+
+        "status":
+            case.status,
+
+        "acknowledged_at":
+            case.acknowledged_at
+    }
+
+
+# ============================================================
+# UPDATE CASE STATUS
+# ============================================================
+
+@app.post(
+    "/responder/cases/{case_id}/status"
+)
+def update_case_status(
+    case_id: int,
+    request: StatusUpdateRequest,
+    db: Session = Depends(get_db)
+):
+
+    allowed_statuses = [
+        "new",
+        "in_progress",
+        "resolved"
+    ]
+
+    if request.status not in allowed_statuses:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid case status."
+        )
+
+    case = (
+        db.query(RiskCase)
+        .filter(
+            RiskCase.id == case_id
+        )
+        .first()
+    )
+
+    if not case:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Risk case not found."
+        )
+
+    case.status = request.status
+
+    if request.status == "resolved":
+
+        case.resolved_at = (
+            datetime.utcnow()
+        )
+
+    db.commit()
+    db.refresh(case)
+
+    return {
+
+        "message":
+            "Case status updated",
+
+        "case_id":
+            case.id,
+
+        "status":
+            case.status
+    }
+
+
+# ============================================================
+# ESCALATE CASE
+# ============================================================
+
+@app.post(
+    "/responder/cases/{case_id}/escalate"
+)
+def escalate_case(
+    case_id: int,
+    request: EscalationRequest,
+    db: Session = Depends(get_db)
+):
+
+    case = (
+        db.query(RiskCase)
+        .filter(
+            RiskCase.id == case_id
+        )
+        .first()
+    )
+
+    if not case:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Risk case not found."
+        )
+
+    case.status = "in_progress"
+
+    case.escalation_level = (
+        request.escalation_level
+    )
+
+    case.escalation_reason = (
+        request.escalation_reason
+    )
+
+    case.escalated_at = (
+        datetime.utcnow()
+    )
+
+    case.employee_contacted = (
+        1
+        if request.employee_contacted
+        else 0
+    )
+
+    case.support_required = (
+        1
+        if request.support_required
+        else 0
+    )
+
+    db.commit()
+    db.refresh(case)
 
     return {
 
@@ -933,122 +959,813 @@ def escalate_case(
         "case_id":
             case.id,
 
+        "status":
+            case.status,
+
         "escalation_level":
             case.escalation_level,
 
-        "escalation_reason":
-            case.escalation_reason,
-
         "employee_contacted":
-            bool(case.employee_contacted),
+            bool(
+                case.employee_contacted
+            ),
 
         "support_required":
-            bool(case.support_required),
-
-        "status":
-            case.status,
+            bool(
+                case.support_required
+            ),
 
         "escalated_at":
             case.escalated_at
     }
 
-# =====================================================
-# HR DASHBOARD
-# PRIVACY-SAFE AGGREGATE OVERVIEW
-# =====================================================
+
+# ============================================================
+# HR OVERVIEW
+# ============================================================
 
 @app.get("/hr/overview")
-def get_hr_overview(
+def hr_overview(
     db: Session = Depends(get_db)
 ):
 
-    # Only employees, not responders/HR accounts
-    employees = db.query(Employee).filter(
-        Employee.role == "employee"
-    ).all()
+    employees = (
+        db.query(Employee)
+        .filter(
+            Employee.role == "employee"
+        )
+        .all()
+    )
 
-    total_employees = len(employees)
+    total_employees = len(
+        employees
+    )
 
-    stable_count = 0
-    elevated_count = 0
-    high_count = 0
-    critical_count = 0
+    stable = 0
+    elevated = 0
+    high = 0
+    critical = 0
 
     risk_scores = []
 
     for employee in employees:
 
-        results = db.query(GameResult).filter(
-            GameResult.employee_id == employee.id
-        ).order_by(
-            GameResult.created_at.asc()
-        ).all()
+        results = (
+            db.query(GameResult)
+            .filter(
+                GameResult.employee_id ==
+                employee.id
+            )
+            .order_by(
+                GameResult.created_at.asc()
+            )
+            .all()
+        )
 
-        risk = calculate_risk(results)
+        risk = calculate_risk(
+            results
+        )
 
-        risk_level = risk["risk_level"]
-        risk_score = risk["risk_score"]
+        risk_level = risk[
+            "risk_level"
+        ]
 
-        risk_scores.append(risk_score)
+        risk_score = risk[
+            "risk_score"
+        ]
+
+        risk_scores.append(
+            risk_score
+        )
 
         if risk_level == "low":
-            stable_count += 1
+
+            stable += 1
 
         elif risk_level == "elevated":
-            elevated_count += 1
+
+            elevated += 1
 
         elif risk_level == "high":
-            high_count += 1
+
+            high += 1
 
         elif risk_level == "critical":
-            critical_count += 1
 
-    # Overall average wellbeing risk score
-    if risk_scores:
+            critical += 1
 
-        average_risk_score = round(
-            sum(risk_scores) / len(risk_scores)
+
+    average_risk_score = (
+
+        round(
+            sum(risk_scores)
+            / len(risk_scores)
+        )
+
+        if risk_scores
+
+        else 0
+    )
+
+
+    if critical > 0:
+
+        organization_status = (
+            "Action Required"
+        )
+
+    elif high > 0:
+
+        organization_status = (
+            "Needs Attention"
+        )
+
+    elif elevated > 0:
+
+        organization_status = (
+            "Monitor"
         )
 
     else:
 
-        average_risk_score = 0
+        organization_status = (
+            "Stable"
+        )
 
-    # Overall organization status
-    if critical_count > 0:
-
-        overall_status = "Attention Required"
-
-    elif high_count > 0:
-
-        overall_status = "Needs Attention"
-
-    elif elevated_count > 0:
-
-        overall_status = "Monitor"
-
-    else:
-
-        overall_status = "Stable"
 
     return {
 
-        "total_employees": total_employees,
+        "organization_status":
+            organization_status,
 
-        "stable": stable_count,
+        "total_employees":
+            total_employees,
 
-        "elevated": elevated_count,
+        "stable":
+            stable,
 
-        "high": high_count,
+        "elevated":
+            elevated,
 
-        "critical": critical_count,
+        "high":
+            high,
 
-        "average_risk_score": average_risk_score,
+        "critical":
+            critical,
 
-        "overall_status": overall_status,
+        "average_risk_score":
+            average_risk_score
+    }
 
-        "privacy_note":
-            "HR receives aggregate wellbeing trends only. "
-            "Private conversations, detailed activity records, "
-            "and individual responder notes are not exposed."
+
+# ============================================================
+# TALK & SHARE - SAFETY DETECTION
+# ============================================================
+
+def detect_safety_concern(
+    message: str
+):
+
+    text = message.lower()
+
+    safety_keywords = [
+
+        "suicide",
+
+        "kill myself",
+
+        "end my life",
+
+        "want to die",
+
+        "don't want to live",
+
+        "dont want to live",
+
+        "hurt myself",
+
+        "harm myself",
+
+        "self harm",
+
+        "self-harm",
+
+        "take my life",
+
+        "ending my life"
+    ]
+
+    for keyword in safety_keywords:
+
+        if keyword in text:
+
+            return True
+
+    return False
+
+
+# ============================================================
+# TALK & SHARE - FALLBACK ASSISTANT
+# ============================================================
+
+def generate_fallback_reply(
+    message: str
+):
+
+    """
+    Context-aware Wellora assistant.
+
+    Used when no OpenAI API key is available.
+
+    This is supportive guidance only.
+    It does not diagnose any mental-health condition.
+    """
+
+    text = (
+        message
+        .lower()
+        .strip()
+    )
+
+
+    # --------------------------------------------------------
+    # SAFETY
+    # --------------------------------------------------------
+
+    if detect_safety_concern(text):
+
+        return {
+
+            "reply": (
+                "I'm really sorry you're going through "
+                "something this difficult. You don't have "
+                "to handle it alone. Please move to a safe "
+                "place and reach out to a trusted person "
+                "who can stay with you. If you may act on "
+                "these thoughts or are in immediate danger, "
+                "contact your local emergency service or "
+                "an appropriate crisis service now."
+            ),
+
+            "safety_support":
+                True,
+
+            "safety_message": (
+                "This may need immediate human support. "
+                "Please contact a trusted person or "
+                "appropriate emergency/crisis support."
+            )
+        }
+
+
+    # --------------------------------------------------------
+    # WORKLOAD
+    # --------------------------------------------------------
+
+    workload_words = [
+
+        "workload",
+
+        "too much work",
+
+        "much work",
+
+        "lots of work",
+
+        "lot of work",
+
+        "heavy workload",
+
+        "overloaded",
+
+        "overload",
+
+        "work pressure",
+
+        "pressure at work"
+    ]
+
+    if any(
+        word in text
+        for word in workload_words
+    ):
+
+        return {
+
+            "reply": (
+                "That sounds exhausting, especially when "
+                "the workload keeps piling up. 💙\n\n"
+                "Try breaking your workload into three "
+                "groups: urgent, important, and can-wait. "
+                "Start with the most urgent task instead "
+                "of trying to handle everything at once.\n\n"
+                "If there is more work than you can "
+                "realistically finish, it may also help "
+                "to tell your manager which tasks you can "
+                "complete by the deadline and ask which "
+                "ones should be prioritized."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # BOSS / MANAGER
+    # --------------------------------------------------------
+
+    boss_words = [
+
+        "boss",
+
+        "manager",
+
+        "supervisor",
+
+        "senior",
+
+        "my lead",
+
+        "team lead"
+    ]
+
+    if any(
+        word in text
+        for word in boss_words
+    ):
+
+        return {
+
+            "reply": (
+                "It sounds like the pressure may be coming "
+                "from having more tasks than you can "
+                "comfortably manage.\n\n"
+                "One useful step is to have a short "
+                "conversation with your manager about "
+                "priorities rather than simply saying "
+                "there is too much work.\n\n"
+                "You can explain what you're currently "
+                "working on, what the deadlines are, and "
+                "ask which task should come first."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # DEADLINE
+    # --------------------------------------------------------
+
+    deadline_words = [
+
+        "deadline",
+
+        "before saturday",
+
+        "by saturday",
+
+        "due",
+
+        "deadline pressure",
+
+        "finish before",
+
+        "complete before"
+    ]
+
+    if any(
+        word in text
+        for word in deadline_words
+    ):
+
+        return {
+
+            "reply": (
+                "A tight deadline can make everything feel "
+                "much heavier. Try not to look at the entire "
+                "workload at once.\n\n"
+                "Write down the tasks that must be finished "
+                "before the deadline, estimate how long each "
+                "one will take, and start with the "
+                "highest-priority item.\n\n"
+                "If the total time is more than the time "
+                "available, tell your manager early and ask "
+                "them to help prioritize."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # TIRED / EXHAUSTED
+    # --------------------------------------------------------
+
+    tired_words = [
+
+        "tired",
+
+        "tiring",
+
+        "exhausted",
+
+        "exhausting",
+
+        "drained",
+
+        "no energy",
+
+        "low energy",
+
+        "can't keep up",
+
+        "cannot keep up"
+    ]
+
+    if any(
+        word in text
+        for word in tired_words
+    ):
+
+        return {
+
+            "reply": (
+                "It sounds like you're feeling pretty "
+                "drained. When work is demanding, even "
+                "small things can start feeling difficult.\n\n"
+                "If possible, take a short break, step away "
+                "from the screen for a few minutes, get some "
+                "water, and then return to one task at a "
+                "time.\n\n"
+                "You don't have to solve the entire workload "
+                "in one go."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # FOCUS
+    # --------------------------------------------------------
+
+    focus_words = [
+
+        "focus",
+
+        "focusing",
+
+        "concentrate",
+
+        "concentration",
+
+        "distracted",
+
+        "can't concentrate",
+
+        "cannot concentrate"
+    ]
+
+    if any(
+        word in text
+        for word in focus_words
+    ):
+
+        return {
+
+            "reply": (
+                "When your mind is overloaded, focusing can "
+                "become much harder.\n\n"
+                "Try choosing just one small task and "
+                "working on it for 20–25 minutes without "
+                "switching between tasks. After that, take "
+                "a short break and decide what needs your "
+                "attention next."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # STRESS / OVERWHELMED
+    # --------------------------------------------------------
+
+    stress_words = [
+
+        "stress",
+
+        "stressed",
+
+        "overwhelmed",
+
+        "anxious",
+
+        "anxiety",
+
+        "pressure",
+
+        "frustrated",
+
+        "frustrating"
+    ]
+
+    if any(
+        word in text
+        for word in stress_words
+    ):
+
+        return {
+
+            "reply": (
+                "It sounds like there is a lot on your mind "
+                "right now. 💙\n\n"
+                "Before trying to solve everything, take a "
+                "moment to slow things down. Identify the "
+                "one thing that needs attention first.\n\n"
+                "If the pressure is mainly coming from work, "
+                "it may also help to discuss priorities or "
+                "deadlines with your manager."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # HELP / ADVICE
+    # --------------------------------------------------------
+
+    help_words = [
+
+        "what can i do",
+
+        "what should i do",
+
+        "help me",
+
+        "how can i",
+
+        "what do i do",
+
+        "suggest",
+
+        "suggestion",
+
+        "advice"
+    ]
+
+    if any(
+        word in text
+        for word in help_words
+    ):
+
+        return {
+
+            "reply": (
+                "Let's keep it simple. Start with the next "
+                "small step rather than trying to fix "
+                "everything at once.\n\n"
+                "1. List what needs to be done.\n"
+                "2. Mark the most urgent task.\n"
+                "3. Work on that task without switching "
+                "around.\n"
+                "4. Take a short break after a focused "
+                "work block.\n"
+                "5. If the workload still doesn't fit the "
+                "deadline, talk to your manager about "
+                "priorities."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # GREETING
+    # --------------------------------------------------------
+
+    greeting_words = [
+
+        "hi",
+
+        "hello",
+
+        "hey",
+
+        "hii",
+
+        "good morning",
+
+        "good evening",
+
+        "good afternoon"
+    ]
+
+    if text in greeting_words:
+
+        return {
+
+            "reply": (
+                "Hi! 💙 I'm here to listen. You can talk "
+                "about work pressure, workload, focus, "
+                "feeling overwhelmed, or simply how your "
+                "day is going."
+            ),
+
+            "safety_support":
+                False,
+
+            "safety_message":
+                None
+        }
+
+
+    # --------------------------------------------------------
+    # GENERAL RESPONSE
+    # --------------------------------------------------------
+
+    return {
+
+        "reply": (
+            "Thanks for sharing that with me. 💙 "
+            "It sounds like something is bothering you. "
+            "If you'd like, tell me a little more about "
+            "what has been difficult today, and we can "
+            "break it down into something manageable."
+        ),
+
+        "safety_support":
+            False,
+
+        "safety_message":
+            None
+    }
+
+
+# ============================================================
+# TALK & SHARE ENDPOINT
+# ============================================================
+
+@app.post("/talk")
+def talk(
+    request: TalkRequest
+):
+
+    message = request.message.strip()
+
+
+    if not message:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Message cannot be empty."
+        )
+
+
+    if len(message) > 2000:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Message is too long."
+        )
+
+
+    # --------------------------------------------------------
+    # Safety check first
+    # --------------------------------------------------------
+
+    if detect_safety_concern(
+        message
+    ):
+
+        return generate_fallback_reply(
+            message
+        )
+
+
+    # --------------------------------------------------------
+    # OpenAI mode
+    # --------------------------------------------------------
+
+    if client is not None:
+
+        try:
+
+            system_prompt = """
+You are Wellora's Talk & Share wellbeing assistant.
+
+Your role is to provide supportive, empathetic and practical
+conversation for workplace wellbeing.
+
+Important rules:
+
+1. Do not diagnose mental-health conditions.
+2. Do not claim that a game or activity can diagnose stress,
+   anxiety, depression or any other condition.
+3. Treat Wellora activity data only as possible wellbeing signals.
+4. Encourage practical steps such as breaks, prioritization,
+   communication and appropriate human support.
+5. Do not pretend that you contacted HR, a responder,
+   family member, emergency services or anyone else.
+6. If a user expresses possible immediate danger or self-harm,
+   encourage immediate human/emergency support.
+7. Keep responses conversational and reasonably short.
+8. Respond directly to what the user actually said.
+9. Avoid repeating generic responses.
+10. For workplace workload issues, give practical suggestions.
+"""
+
+            response = client.responses.create(
+
+                model="gpt-5.6-luna",
+
+                instructions=system_prompt,
+
+                input=message
+            )
+
+            reply = response.output_text
+
+            return {
+
+                "reply":
+                    reply,
+
+                "safety_support":
+                    False,
+
+                "safety_message":
+                    None
+            }
+
+
+        except Exception as error:
+
+            print(
+                "OpenAI request failed:",
+                str(error)
+            )
+
+            # Fall back to local assistant
+            return generate_fallback_reply(
+                message
+            )
+
+
+    # --------------------------------------------------------
+    # No API key
+    # --------------------------------------------------------
+
+    return generate_fallback_reply(
+        message
+    )
+
+
+# ============================================================
+# HEALTH CHECK
+# ============================================================
+
+@app.get("/health")
+def health():
+
+    return {
+
+        "status":
+            "ok",
+
+        "wellora":
+            True,
+
+        "ai_enabled":
+            client is not None
     }

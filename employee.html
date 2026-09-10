@@ -1,587 +1,698 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>Wellora - Employee Dashboard</title>
+<title>Wellora - Employee Dashboard</title>
 
-    <style>
+<style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+/* =====================================================
+   GLOBAL
+===================================================== */
 
-        body {
-            background: #f7f8fc;
-            color: #222;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        /* ================= NAVBAR ================= */
+body {
+    background: #f7f8fc;
+    color: #222;
+}
 
-        nav {
-            height: 70px;
-            background: white;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+/* =====================================================
+   NAVBAR
+===================================================== */
 
-            padding: 0 50px;
+nav {
+    height: 70px;
+    background: white;
 
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            color: #5f5bd8;
-        }
+    padding: 0 50px;
 
-        .user {
-            color: #555;
-            font-size: 14px;
-        }
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
 
-        /* ================= MAIN ================= */
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #5f5bd8;
+}
 
-        .container {
-            max-width: 1200px;
+.user {
+    color: #555;
+    font-size: 14px;
+}
 
-            margin: 40px auto;
 
-            padding: 0 25px;
-        }
+/* =====================================================
+   MAIN
+===================================================== */
 
-        .welcome {
-            margin-bottom: 30px;
-        }
+.container {
+    max-width: 1200px;
 
-        .welcome h1 {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
+    margin: 40px auto;
 
-        .welcome p {
-            color: #777;
-        }
+    padding: 0 25px;
+}
 
-        /* ================= SCORE ================= */
+.welcome {
+    margin-bottom: 30px;
+}
 
-        .overview {
-            display: grid;
+.welcome h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
 
-            grid-template-columns: 1fr 1fr;
+.welcome p {
+    color: #777;
+}
 
-            gap: 20px;
 
-            margin-bottom: 30px;
-        }
+/* =====================================================
+   OVERVIEW
+===================================================== */
 
-        .score-card,
-        .status-card {
+.overview {
+    display: grid;
 
-            background: white;
+    grid-template-columns: 1fr 1fr;
 
-            padding: 25px;
+    gap: 20px;
 
-            border-radius: 18px;
+    margin-bottom: 30px;
+}
 
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.05);
-        }
+.score-card,
+.status-card {
 
-        .score {
-            font-size: 42px;
+    background: white;
 
-            font-weight: bold;
+    padding: 25px;
 
-            color: #5f5bd8;
+    border-radius: 18px;
 
-            margin: 10px 0;
-        }
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
+}
 
-        .small-text {
-            color: #777;
 
-            font-size: 14px;
+/* =====================================================
+   SCORE
+===================================================== */
 
-            line-height: 1.5;
-        }
+.score {
+    font-size: 42px;
 
-        .status {
-            display: inline-block;
+    font-weight: bold;
 
-            margin-top: 15px;
+    color: #5f5bd8;
 
-            padding: 8px 14px;
+    margin: 10px 0;
+}
 
-            border-radius: 20px;
+.small-text {
+    color: #777;
 
-            background: #e8f7ef;
+    font-size: 14px;
 
-            color: #258a50;
+    line-height: 1.5;
+}
 
-            font-size: 13px;
 
-            font-weight: bold;
-        }
+/* =====================================================
+   STATUS
+===================================================== */
 
-        /* ================= RISK DETAILS ================= */
+.status {
+    display: inline-block;
 
-        .risk-details {
+    margin-top: 15px;
 
-            margin-top: 20px;
+    padding: 8px 14px;
 
-            background: #fafaff;
+    border-radius: 20px;
 
-            padding: 15px;
+    background: #e8f7ef;
 
-            border-radius: 12px;
-        }
+    color: #258a50;
 
-        .risk-details h4 {
+    font-size: 13px;
 
-            margin-bottom: 8px;
+    font-weight: bold;
+}
 
-            font-size: 14px;
-        }
 
-        .risk-details ul {
+/* =====================================================
+   RISK DETAILS
+===================================================== */
 
-            padding-left: 20px;
+.risk-details {
 
-            color: #666;
+    margin-top: 20px;
 
-            font-size: 13px;
+    background: #fafaff;
 
-            line-height: 1.6;
-        }
+    padding: 15px;
 
-        /* ================= SUPPORT GUIDANCE ================= */
+    border-radius: 12px;
+}
 
-        .support-guidance {
+.risk-details h4 {
 
-            display: none;
+    margin-bottom: 8px;
 
-            margin-bottom: 30px;
+    font-size: 14px;
+}
 
-            background: white;
+.risk-details ul {
 
-            padding: 24px;
+    padding-left: 20px;
 
-            border-radius: 18px;
+    color: #666;
 
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.05);
+    font-size: 13px;
 
-            border-left: 4px solid #5f5bd8;
-        }
+    line-height: 1.6;
+}
 
-        .support-guidance h3 {
 
-            margin-bottom: 10px;
+/* =====================================================
+   SUPPORT GUIDANCE
+===================================================== */
 
-            font-size: 19px;
-        }
+.support-guidance {
 
-        .support-guidance p {
+    display: none;
 
-            color: #666;
+    margin-bottom: 30px;
 
-            font-size: 14px;
+    background: white;
 
-            line-height: 1.6;
+    padding: 24px;
 
-            margin-bottom: 15px;
-        }
+    border-radius: 18px;
 
-        .support-note {
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
 
-            background: #f5f5ff;
+    border-left: 4px solid #5f5bd8;
+}
 
-            padding: 12px 14px;
+.support-guidance h3 {
 
-            border-radius: 10px;
+    margin-bottom: 10px;
 
-            font-size: 13px;
+    font-size: 19px;
+}
 
-            color: #666;
+.support-guidance p {
 
-            line-height: 1.5;
+    color: #666;
 
-        }
+    font-size: 14px;
 
-        /* ================= CHOICES ================= */
+    line-height: 1.6;
 
-        .section-title {
-            margin-bottom: 18px;
+    margin-bottom: 15px;
+}
 
-            font-size: 22px;
-        }
+.support-note {
 
-        .choices {
+    background: #f5f5ff;
 
-            display: grid;
+    padding: 12px 14px;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    border-radius: 10px;
 
-            gap: 20px;
+    font-size: 13px;
 
-            margin-bottom: 35px;
-        }
+    color: #666;
 
-        .choice-card {
+    line-height: 1.5;
+}
 
-            background: white;
 
-            padding: 25px;
+/* =====================================================
+   SECTION TITLES
+===================================================== */
 
-            border-radius: 18px;
+.section-title {
+    margin-bottom: 18px;
 
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.05);
+    font-size: 22px;
+}
 
-            transition: 0.2s;
-        }
 
-        .choice-card:hover {
+/* =====================================================
+   THREE CHOICES
+===================================================== */
 
-            transform: translateY(-4px);
-        }
+.choices {
 
-        .choice-icon {
+    display: grid;
 
-            font-size: 38px;
+    grid-template-columns:
+        repeat(3, 1fr);
 
-            margin-bottom: 15px;
-        }
+    gap: 20px;
 
-        .choice-card h3 {
+    margin-bottom: 35px;
+}
 
-            margin-bottom: 10px;
-        }
+.choice-card {
 
-        .choice-card p {
+    background: white;
 
-            color: #777;
+    padding: 25px;
 
-            font-size: 14px;
+    border-radius: 18px;
 
-            line-height: 1.5;
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
 
-            min-height: 65px;
-        }
+    transition: 0.2s;
+}
 
-        .choice-btn {
+.choice-card:hover {
 
-            width: 100%;
+    transform: translateY(-4px);
+}
 
-            padding: 12px;
+.choice-icon {
 
-            margin-top: 15px;
+    font-size: 38px;
 
-            border: none;
+    margin-bottom: 15px;
+}
 
-            border-radius: 10px;
+.choice-card h3 {
 
-            background: #5f5bd8;
+    margin-bottom: 10px;
+}
 
-            color: white;
+.choice-card p {
 
-            font-weight: bold;
+    color: #777;
 
-            cursor: pointer;
+    font-size: 14px;
 
-            font-size: 14px;
-        }
+    line-height: 1.5;
 
-        .choice-btn:hover {
+    min-height: 65px;
+}
 
-            opacity: 0.9;
-        }
+.choice-btn {
 
-        /* ================= GAME SELECTION ================= */
+    width: 100%;
 
-        #gameSelection {
+    padding: 12px;
 
-            display: none;
+    margin-top: 15px;
 
-            margin-top: 35px;
+    border: none;
 
-            margin-bottom: 40px;
-        }
+    border-radius: 10px;
 
-        .selection-header {
+    background: #5f5bd8;
 
-            text-align: center;
+    color: white;
 
-            margin-bottom: 25px;
-        }
+    font-weight: bold;
 
-        .selection-header h2 {
+    cursor: pointer;
 
-            font-size: 25px;
+    font-size: 14px;
+}
 
-            margin-bottom: 8px;
-        }
+.choice-btn:hover {
 
-        .selection-header p {
+    opacity: 0.9;
+}
 
-            color: #777;
 
-            font-size: 14px;
-        }
+/* =====================================================
+   GAME SELECTION
+===================================================== */
 
-        .game-grid {
+#gameSelection {
 
-            display: grid;
+    display: none;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    margin-top: 35px;
 
-            gap: 20px;
-        }
+    margin-bottom: 40px;
+}
 
-        .game-card {
+.selection-header {
 
-            background: white;
+    text-align: center;
 
-            padding: 25px;
+    margin-bottom: 25px;
+}
 
-            border-radius: 18px;
+.selection-header h2 {
 
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.06);
+    font-size: 25px;
 
-            transition: 0.2s;
-        }
+    margin-bottom: 8px;
+}
 
-        .game-card:hover {
+.selection-header p {
 
-            transform: translateY(-4px);
-        }
+    color: #777;
 
-        .game-icon {
+    font-size: 14px;
+}
 
-            font-size: 35px;
+.game-grid {
 
-            margin-bottom: 15px;
-        }
+    display: grid;
 
-        .game-card h3 {
+    grid-template-columns:
+        repeat(3, 1fr);
 
-            margin-bottom: 10px;
-        }
+    gap: 20px;
+}
 
-        .game-card p {
+.game-card {
 
-            color: #777;
+    background: white;
 
-            font-size: 14px;
+    padding: 25px;
 
-            line-height: 1.5;
+    border-radius: 18px;
 
-            min-height: 75px;
-        }
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.06);
 
-        .game-card button {
+    transition: 0.2s;
+}
 
-            width: 100%;
+.game-card:hover {
 
-            margin-top: 15px;
+    transform: translateY(-4px);
+}
 
-            padding: 12px;
+.game-icon {
 
-            border: none;
+    font-size: 35px;
 
-            border-radius: 9px;
+    margin-bottom: 15px;
+}
 
-            background: #5f5bd8;
+.game-card h3 {
 
-            color: white;
+    margin-bottom: 10px;
+}
 
-            font-weight: bold;
+.game-card p {
 
-            cursor: pointer;
-        }
+    color: #777;
 
-        .game-card button:hover {
+    font-size: 14px;
 
-            opacity: 0.9;
-        }
+    line-height: 1.5;
 
-        .not-today {
+    min-height: 75px;
+}
 
-            background: #eef8f5;
-        }
+.game-card button {
 
-        /* ================= TREND ================= */
+    width: 100%;
 
-        .trend-card {
+    margin-top: 15px;
 
-            background: white;
+    padding: 12px;
 
-            padding: 25px;
+    border: none;
 
-            border-radius: 18px;
+    border-radius: 9px;
 
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.05);
+    background: #5f5bd8;
 
-            margin-bottom: 30px;
-        }
+    color: white;
 
-        .bars {
+    font-weight: bold;
 
-            min-height: 220px;
+    cursor: pointer;
+}
 
-            display: flex;
+.game-card button:hover {
 
-            align-items: end;
+    opacity: 0.9;
+}
 
-            justify-content: space-around;
+.not-today {
 
-            gap: 15px;
+    background: #eef8f5;
+}
 
-            margin-top: 25px;
 
-            overflow-x: auto;
+/* =====================================================
+   TREND / GRAPH
+===================================================== */
 
-            padding-bottom: 5px;
-        }
+.trend-card {
 
-        .bar-wrapper {
+    background: white;
 
-            text-align: center;
+    padding: 25px;
 
-            min-width: 90px;
+    border-radius: 18px;
 
-            width: 90px;
-        }
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.05);
 
-        .bar {
+    margin-bottom: 30px;
+}
 
-            width: 35px;
 
-            margin: auto;
+/*
+   IMPORTANT:
+   Fixed height makes sure bars have a visible area
+   even when the score is small.
+*/
 
-            border-radius: 8px 8px 0 0;
+.bars {
 
-            background: #8b87ed;
+    height: 270px;
 
-            min-height: 5px;
+    display: flex;
 
-            transition: height 0.5s ease;
-        }
+    align-items: flex-end;
 
-        .day {
+    justify-content: space-around;
 
-            font-size: 11px;
+    gap: 20px;
 
-            color: #777;
+    margin-top: 25px;
 
-            margin-top: 8px;
-        }
+    overflow-x: auto;
 
-        .activity-name {
+    padding:
+        20px
+        10px
+        5px;
 
-            font-size: 12px;
+    border-bottom:
+        1px solid #eeeeee;
+}
 
-            font-weight: bold;
 
-            color: #444;
+/*
+   Each activity gets its own vertical area.
+*/
 
-            margin-top: 5px;
+.bar-wrapper {
 
-            white-space: nowrap;
+    text-align: center;
 
-            overflow: hidden;
+    min-width: 110px;
 
-            text-overflow: ellipsis;
-        }
+    width: 110px;
 
-        .bar-value {
+    height: 235px;
 
-            font-size: 11px;
+    display: flex;
 
-            color: #777;
+    flex-direction: column;
 
-            margin-bottom: 5px;
-        }
+    justify-content: flex-end;
 
-        .no-activity {
+    align-items: center;
+}
 
-            text-align: center;
 
-            color: #888;
+/*
+   Score shown above the bar.
+*/
 
-            width: 100%;
+.bar-value {
 
-            padding-top: 60px;
+    font-size: 12px;
 
-            font-size: 14px;
-        }
+    color: #555;
 
-        /* ================= PRIVACY ================= */
+    font-weight: bold;
 
-        .privacy {
+    margin-bottom: 6px;
+}
 
-            background: #f0f1ff;
 
-            padding: 18px 20px;
+/*
+   Actual graph bar.
+*/
 
-            border-radius: 14px;
+.bar {
 
-            color: #555;
+    width: 42px;
 
-            font-size: 13px;
+    border-radius:
+        8px
+        8px
+        0
+        0;
 
-            line-height: 1.5;
-        }
+    background: #8b87ed;
 
-        /* ================= MOBILE ================= */
+    min-height: 8px;
 
-        @media (max-width: 850px) {
+    transition:
+        height 0.5s ease;
 
-            .overview {
+    flex-shrink: 0;
+}
 
-                grid-template-columns: 1fr;
-            }
 
-            .choices {
+/*
+   Day
+*/
 
-                grid-template-columns: 1fr;
-            }
+.day {
 
-            .game-grid {
+    font-size: 11px;
 
-                grid-template-columns: 1fr;
-            }
+    color: #777;
 
-            nav {
+    margin-top: 8px;
+}
 
-                padding: 0 20px;
-            }
 
-            .bars {
+/*
+   Activity name
+*/
 
-                justify-content: flex-start;
-            }
+.activity-name {
 
-        }
+    font-size: 12px;
 
-    </style>
+    font-weight: bold;
+
+    color: #444;
+
+    margin-top: 5px;
+
+    max-width: 105px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/*
+   No data message
+*/
+
+.no-activity {
+
+    text-align: center;
+
+    color: #888;
+
+    width: 100%;
+
+    padding-top: 90px;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   PRIVACY
+===================================================== */
+
+.privacy {
+
+    background: #f0f1ff;
+
+    padding: 18px 20px;
+
+    border-radius: 14px;
+
+    color: #555;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 850px) {
+
+    .overview {
+
+        grid-template-columns: 1fr;
+    }
+
+    .choices {
+
+        grid-template-columns: 1fr;
+    }
+
+    .game-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+
+        padding: 0 20px;
+    }
+
+    .bars {
+
+        justify-content: flex-start;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -589,186 +700,477 @@
 <body>
 
 
-    <!-- ================= NAVBAR ================= -->
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
 
-    <nav>
+<nav>
 
-        <div class="logo">
+    <div class="logo">
 
-            🧠Wellora
+        🧠Wellora
 
-        </div>
+    </div>
 
-        <div class="user" id="userInfo">
+    <div
+        class="user"
+        id="userInfo"
+    >
 
-            Loading...
+        Loading...
 
-        </div>
+    </div>
 
-    </nav>
+</nav>
 
 
-    <!-- ================= MAIN CONTAINER ================= -->
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-    <div class="container">
+<div class="container">
 
 
-        <!-- ================= WELCOME ================= -->
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
 
-        <div class="welcome">
+    <div class="welcome">
 
-            <h1 id="welcomeMessage">
+        <h1 id="welcomeMessage">
 
-                Welcome back 👋
+            Welcome back 👋
 
-            </h1>
+        </h1>
 
-            <p>
+        <p>
 
-                Take a moment for yourself.
-                Choose whatever feels right today.
+            Take a moment for yourself.
+            Choose whatever feels right today.
 
-            </p>
+        </p>
 
-        </div>
+    </div>
 
 
-        <!-- ================= OVERVIEW ================= -->
+    <!-- =================================================
+         OVERVIEW
+    ================================================== -->
 
-        <div class="overview">
+    <div class="overview">
 
 
-            <!-- ================= SCORE ================= -->
+        <!-- SCORE CARD -->
 
-            <div class="score-card">
+        <div class="score-card">
 
-                <h3>
+            <h3>
 
-                    Your Wellbeing Risk Signal
-
-                </h3>
-
-                <div
-                    class="score"
-                    id="wellbeingScore"
-                >
-
-                    --
-
-                </div>
-
-                <p
-                    class="small-text"
-                    id="scoreDescription"
-                >
-
-                    Loading your recent activity...
-
-                </p>
-
-            </div>
-
-
-            <!-- ================= STATUS ================= -->
-
-            <div class="status-card">
-
-                <h3>
-
-                    Current Status
-
-                </h3>
-
-                <span
-                    class="status"
-                    id="currentStatus"
-                >
-
-                    ● Loading...
-
-                </span>
-
-                <p
-                    class="small-text"
-                    id="statusDescription"
-                    style="margin-top: 15px;"
-                >
-
-                    Looking at your recent voluntary activities.
-
-                </p>
-
-
-                <div
-                    class="risk-details"
-                    id="riskDetails"
-                    style="display: none;"
-                >
-
-                    <h4>
-
-                        Detected Activity Signals
-
-                    </h4>
-
-                    <ul id="riskSignals">
-
-                    </ul>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= SUPPORT GUIDANCE ================= -->
-
-        <div
-            class="support-guidance"
-            id="supportGuidance"
-        >
-
-            <h3 id="supportTitle">
-
-                A small next step
+                Your Wellbeing Risk Signal
 
             </h3>
 
-            <p id="supportMessage">
+            <div
+                class="score"
+                id="wellbeingScore"
+            >
 
-                You can choose whatever feels comfortable for you.
+                --
+
+            </div>
+
+            <p
+                class="small-text"
+                id="scoreDescription"
+            >
+
+                Loading your recent activity...
 
             </p>
 
-            <div class="support-note">
+        </div>
 
-                💡 These activity patterns are only wellbeing signals,
-                not a diagnosis. You remain in control of what support
-                you choose.
+
+        <!-- STATUS CARD -->
+
+        <div class="status-card">
+
+            <h3>
+
+                Current Status
+
+            </h3>
+
+            <span
+                class="status"
+                id="currentStatus"
+            >
+
+                ● Loading...
+
+            </span>
+
+            <p
+                class="small-text"
+                id="statusDescription"
+                style="margin-top: 15px;"
+            >
+
+                Looking at your recent voluntary activities.
+
+            </p>
+
+
+            <!-- RISK SIGNALS -->
+
+            <div
+                class="risk-details"
+                id="riskDetails"
+                style="display: none;"
+            >
+
+                <h4>
+
+                    Detected Activity Signals
+
+                </h4>
+
+                <ul id="riskSignals">
+
+                </ul>
 
             </div>
 
         </div>
 
-
-        <!-- ================= THREE CHOICES ================= -->
-
-        <h2 class="section-title">
-
-            How can we support you?
-
-        </h2>
+    </div>
 
 
-        <div class="choices">
+    <!-- =================================================
+         SUPPORT GUIDANCE
+    ================================================== -->
+
+    <div
+        class="support-guidance"
+        id="supportGuidance"
+    >
+
+        <h3 id="supportTitle">
+
+            A small next step
+
+        </h3>
+
+        <p id="supportMessage">
+
+            You can choose whatever feels comfortable for you.
+
+        </p>
+
+        <div class="support-note">
+
+            💡 These activity patterns are only wellbeing signals,
+            not a diagnosis. You remain in control of what support
+            you choose.
+
+        </div>
+
+    </div>
 
 
-            <!-- ================= PLAY ================= -->
+    <!-- =================================================
+         THREE MAIN CHOICES
+    ================================================== -->
 
-            <div class="choice-card">
+    <h2 class="section-title">
 
-                <div class="choice-icon">
+        How can we support you?
+
+    </h2>
+
+
+    <div class="choices">
+
+
+        <!-- PLAY & CHECK -->
+
+        <div class="choice-card">
+
+            <div class="choice-icon">
+
+                🎮
+
+            </div>
+
+            <h3>
+
+                Play & Check
+
+            </h3>
+
+            <p>
+
+                Try a short fun activity. Your interaction
+                patterns can help us understand wellbeing
+                changes over time.
+
+            </p>
+
+            <button
+                class="choice-btn"
+                onclick="showGames()"
+            >
+
+                Choose Activity →
+
+            </button>
+
+        </div>
+
+
+        <!-- TALK & SHARE -->
+
+        <div class="choice-card">
+
+            <div class="choice-icon">
+
+                💬
+
+            </div>
+
+            <h3>
+
+                Talk & Share
+
+            </h3>
+
+            <p>
+
+                Want to talk about something on your mind?
+                You can have a private conversation with
+                our AI support assistant.
+
+            </p>
+
+            <button
+                class="choice-btn"
+                onclick="talkToAI()"
+            >
+
+                Talk to AI →
+
+            </button>
+
+        </div>
+
+
+        <!-- RELAX & RESET -->
+
+        <div class="choice-card">
+
+            <div class="choice-icon">
+
+                🌿
+
+            </div>
+
+            <h3>
+
+                Relax & Reset
+
+            </h3>
+
+            <p>
+
+                Take a short breathing, grounding or
+                relaxation activity whenever you need it.
+
+            </p>
+
+            <button
+                class="choice-btn"
+                onclick="relax()"
+            >
+
+                Relax →
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         GAME SELECTION
+    ================================================== -->
+
+    <div id="gameSelection">
+
+
+        <div class="selection-header">
+
+            <h2>
+
+                🎮 Choose Your Activity
+
+            </h2>
+
+            <p>
+
+                Pick whatever feels right for you today.
+                There is no right or wrong choice.
+
+            </p>
+
+        </div>
+
+
+        <div class="game-grid">
+
+
+            <!-- FOCUS HUNT -->
+
+            <div class="game-card">
+
+                <div class="game-icon">
+
+                    🎯
+
+                </div>
+
+                <h3>
+
+                    Focus Hunt
+
+                </h3>
+
+                <p>
+
+                    Find the target among different
+                    objects as quickly and accurately
+                    as you can.
+
+                </p>
+
+                <button
+                    onclick="playGame('focus')"
+                >
+
+                    Play →
+
+                </button>
+
+            </div>
+
+
+            <!-- REACTION RUSH -->
+
+            <div class="game-card">
+
+                <div class="game-icon">
+
+                    ⚡
+
+                </div>
+
+                <h3>
+
+                    Reaction Rush
+
+                </h3>
+
+                <p>
+
+                    Test your reaction by tapping
+                    the target when it appears.
+
+                </p>
+
+                <button
+                    onclick="playGame('reaction')"
+                >
+
+                    Play →
+
+                </button>
+
+            </div>
+
+
+            <!-- MEMORY MATCH -->
+
+            <div class="game-card">
+
+                <div class="game-icon">
+
+                    🧩
+
+                </div>
+
+                <h3>
+
+                    Memory Match
+
+                </h3>
+
+                <p>
+
+                    Remember the cards and find
+                    matching pairs.
+
+                </p>
+
+                <button
+                    onclick="playGame('memory')"
+                >
+
+                    Play →
+
+                </button>
+
+            </div>
+
+
+            <!-- COLOR FLOW -->
+
+            <div class="game-card">
+
+                <div class="game-icon">
+
+                    🌈
+
+                </div>
+
+                <h3>
+
+                    Color Flow
+
+                </h3>
+
+                <p>
+
+                    Follow changing rules and see
+                    how quickly you can adapt.
+
+                </p>
+
+                <button
+                    onclick="playGame('color')"
+                >
+
+                    Play →
+
+                </button>
+
+            </div>
+
+
+            <!-- CHOICE QUEST -->
+
+            <div class="game-card">
+
+                <div class="game-icon">
 
                     🎮
 
@@ -776,71 +1178,33 @@
 
                 <h3>
 
-                    Play & Check
+                    Choice Quest
 
                 </h3>
 
                 <p>
 
-                    Try a short fun activity. Your interaction
-                    patterns can help us understand wellbeing
-                    changes over time.
+                    Explore everyday scenarios and
+                    choose what feels most natural.
 
                 </p>
 
                 <button
-                    class="choice-btn"
-                    onclick="showGames()"
+                    onclick="playGame('choice')"
                 >
 
-                    Choose Activity →
+                    Play →
 
                 </button>
 
             </div>
 
 
-            <!-- ================= TALK ================= -->
+            <!-- NOT TODAY -->
 
-            <div class="choice-card">
+            <div class="game-card not-today">
 
-                <div class="choice-icon">
-
-                    💬
-
-                </div>
-
-                <h3>
-
-                    Talk & Share
-
-                </h3>
-
-                <p>
-
-                    Want to talk about something on your mind?
-                    You can have a private conversation with
-                    our AI support assistant.
-
-                </p>
-
-                <button
-                    class="choice-btn"
-                    onclick="talkToAI()"
-                >
-
-                    Talk to AI →
-
-                </button>
-
-            </div>
-
-
-            <!-- ================= RELAX ================= -->
-
-            <div class="choice-card">
-
-                <div class="choice-icon">
+                <div class="game-icon">
 
                     🌿
 
@@ -848,23 +1212,23 @@
 
                 <h3>
 
-                    Relax & Reset
+                    Not in the mood?
 
                 </h3>
 
                 <p>
 
-                    Take a short breathing, grounding or
-                    relaxation activity whenever you need it.
+                    That's completely okay.
+                    You can relax or simply come
+                    back later.
 
                 </p>
 
                 <button
-                    class="choice-btn"
                     onclick="relax()"
                 >
 
-                    Relax →
+                    Relax Instead →
 
                 </button>
 
@@ -872,1041 +1236,878 @@
 
         </div>
 
+    </div>
 
-        <!-- ================= GAME SELECTION ================= -->
 
-        <div id="gameSelection">
+    <!-- =================================================
+         RECENT WELLBEING PATTERN
+    ================================================== -->
 
+    <div class="trend-card">
 
-            <div class="selection-header">
+        <h3>
 
-                <h2>
+            Recent Wellbeing Pattern
 
-                    🎮 Choose Your Activity
+        </h3>
 
-                </h2>
+        <p
+            class="small-text"
+            id="trendDescription"
+        >
 
-                <p>
+            Based on your recent voluntary activities.
 
-                    Pick whatever feels right for you today.
-                    There is no right or wrong choice.
+        </p>
 
-                </p>
 
-            </div>
+        <div
+            class="bars"
+            id="trendBars"
+        >
 
+            <div class="no-activity">
 
-            <div class="game-grid">
-
-
-                <!-- ================= FOCUS HUNT ================= -->
-
-                <div class="game-card">
-
-                    <div class="game-icon">
-
-                        🎯
-
-                    </div>
-
-                    <h3>
-
-                        Focus Hunt
-
-                    </h3>
-
-                    <p>
-
-                        Find the target among different
-                        objects as quickly and accurately
-                        as you can.
-
-                    </p>
-
-                    <button
-                        onclick="playGame('focus')"
-                    >
-
-                        Play →
-
-                    </button>
-
-                </div>
-
-
-                <!-- ================= REACTION RUSH ================= -->
-
-                <div class="game-card">
-
-                    <div class="game-icon">
-
-                        ⚡
-
-                    </div>
-
-                    <h3>
-
-                        Reaction Rush
-
-                    </h3>
-
-                    <p>
-
-                        Test your reaction by tapping
-                        the target when it appears.
-
-                    </p>
-
-                    <button
-                        onclick="playGame('reaction')"
-                    >
-
-                        Play →
-
-                    </button>
-
-                </div>
-
-
-                <!-- ================= MEMORY MATCH ================= -->
-
-                <div class="game-card">
-
-                    <div class="game-icon">
-
-                        🧩
-
-                    </div>
-
-                    <h3>
-
-                        Memory Match
-
-                    </h3>
-
-                    <p>
-
-                        Remember the cards and find
-                        matching pairs.
-
-                    </p>
-
-                    <button
-                        onclick="playGame('memory')"
-                    >
-
-                        Play →
-
-                    </button>
-
-                </div>
-
-
-                <!-- ================= COLOR FLOW ================= -->
-
-                <div class="game-card">
-
-                    <div class="game-icon">
-
-                        🌈
-
-                    </div>
-
-                    <h3>
-
-                        Color Flow
-
-                    </h3>
-
-                    <p>
-
-                        Follow changing rules and see
-                        how quickly you can adapt.
-
-                    </p>
-
-                    <button
-                        onclick="playGame('color')"
-                    >
-
-                        Play →
-
-                    </button>
-
-                </div>
-
-
-                <!-- ================= CHOICE QUEST ================= -->
-
-                <div class="game-card">
-
-                    <div class="game-icon">
-
-                        🎮
-
-                    </div>
-
-                    <h3>
-
-                        Choice Quest
-
-                    </h3>
-
-                    <p>
-
-                        Explore everyday scenarios and
-                        choose what feels most natural.
-
-                    </p>
-
-                    <button
-                        onclick="playGame('choice')"
-                    >
-
-                        Play →
-
-                    </button>
-
-                </div>
-
-
-                <!-- ================= NOT TODAY ================= -->
-
-                <div class="game-card not-today">
-
-                    <div class="game-icon">
-
-                        🌿
-
-                    </div>
-
-                    <h3>
-
-                        Not in the mood?
-
-                    </h3>
-
-                    <p>
-
-                        That's completely okay.
-                        You can relax or simply come
-                        back later.
-
-                    </p>
-
-                    <button
-                        onclick="relax()"
-                    >
-
-                        Relax Instead →
-
-                    </button>
-
-                </div>
+                Loading activity pattern...
 
             </div>
 
         </div>
-
-
-        <!-- ================= TREND ================= -->
-
-        <div class="trend-card">
-
-            <h3>
-
-                Recent Wellbeing Pattern
-
-            </h3>
-
-            <p
-                class="small-text"
-                id="trendDescription"
-            >
-
-                Based on your recent voluntary activities.
-
-            </p>
-
-
-            <div
-                class="bars"
-                id="trendBars"
-            >
-
-                <div class="no-activity">
-
-                    Loading activity pattern...
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= PRIVACY ================= -->
-
-        <div class="privacy">
-
-            🔒 <strong>Your privacy matters.</strong>
-
-            Your personal conversations and reflections
-            remain private. Organization-level insights
-            are designed to use aggregated wellbeing
-            information rather than exposing private
-            conversations.
-
-        </div>
-
 
     </div>
 
 
-    <!-- ================= JAVASCRIPT ================= -->
+    <!-- =================================================
+         PRIVACY
+    ================================================== -->
 
-    <script>
+    <div class="privacy">
+
+        🔒 <strong>Your privacy matters.</strong>
+
+        Your personal conversations and reflections
+        remain private. Organization-level insights
+        are designed to use aggregated wellbeing
+        information rather than exposing private
+        conversations.
+
+    </div>
 
 
-        // =====================================================
-        // CHECK LOGGED-IN USER
-        // =====================================================
+</div>
 
-        const user = JSON.parse(
-            localStorage.getItem("mindwell_user")
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   GET LOGGED-IN USER
+===================================================== */
+
+const user = JSON.parse(
+    localStorage.getItem("mindwell_user")
+);
+
+
+/* =====================================================
+   CHECK USER
+===================================================== */
+
+if (!user) {
+
+    window.location.href = "/";
+
+}
+
+else {
+
+    document.getElementById(
+        "userInfo"
+    ).textContent =
+        `${user.name} · ${user.role}`;
+
+
+    document.getElementById(
+        "welcomeMessage"
+    ).textContent =
+        `Welcome back, ${user.name} 👋`;
+
+}
+
+
+/* =====================================================
+   LOAD WELLBEING RISK
+===================================================== */
+
+async function loadWellbeing() {
+
+    if (!user) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+            `/employee-risk/${user.employee_id}`
         );
 
 
-        if (!user) {
+        const data = await response.json();
 
-            window.location.href = "/";
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to load risk information"
+            );
+
+        }
+
+
+        console.log(
+            "Risk information:",
+            data
+        );
+
+
+        /* ---------------------------------------------
+           SCORE
+        --------------------------------------------- */
+
+        document.getElementById(
+            "wellbeingScore"
+        ).textContent =
+            data.risk_score;
+
+
+        document.getElementById(
+            "scoreDescription"
+        ).textContent =
+            "Activity-based wellbeing risk signal. Not a medical diagnosis.";
+
+
+        /* ---------------------------------------------
+           STATUS
+        --------------------------------------------- */
+
+        const currentStatus =
+            document.getElementById(
+                "currentStatus"
+            );
+
+
+        const statusDescription =
+            document.getElementById(
+                "statusDescription"
+            );
+
+
+        const riskLevel =
+            String(
+                data.risk_level || "low"
+            ).toLowerCase();
+
+
+        const supportGuidance =
+            document.getElementById(
+                "supportGuidance"
+            );
+
+
+        const supportTitle =
+            document.getElementById(
+                "supportTitle"
+            );
+
+
+        const supportMessage =
+            document.getElementById(
+                "supportMessage"
+            );
+
+
+        /* ---------------------------------------------
+           LOW
+        --------------------------------------------- */
+
+        if (riskLevel === "low") {
+
+            currentStatus.textContent =
+                "● Low Risk";
+
+
+            statusDescription.textContent =
+                data.message ||
+                "Current activity pattern looks relatively stable.";
+
+
+            supportGuidance.style.display =
+                "none";
+
+        }
+
+
+        /* ---------------------------------------------
+           ELEVATED
+        --------------------------------------------- */
+
+        else if (riskLevel === "elevated") {
+
+            currentStatus.textContent =
+                "● Elevated";
+
+
+            statusDescription.textContent =
+                data.message ||
+                "Some changes in activity patterns may be worth checking in on.";
+
+
+            supportGuidance.style.display =
+                "block";
+
+
+            supportTitle.textContent =
+                "A gentle check-in with yourself";
+
+
+            supportMessage.textContent =
+                "We've noticed some changes in your recent activity pattern. " +
+                "This does not mean something is wrong. If you'd like, " +
+                "you can take a short break, try a relaxation activity, " +
+                "or talk about how you're feeling.";
+
+        }
+
+
+        /* ---------------------------------------------
+           HIGH
+        --------------------------------------------- */
+
+        else if (riskLevel === "high") {
+
+            currentStatus.textContent =
+                "● High Risk";
+
+
+            statusDescription.textContent =
+                data.message ||
+                "Multiple wellbeing signals detected.";
+
+
+            supportGuidance.style.display =
+                "block";
+
+
+            supportTitle.textContent =
+                "Consider taking a moment for support";
+
+
+            supportMessage.textContent =
+                "We've noticed several changes in your recent activity patterns. " +
+                "These signals are not a diagnosis. You may want to take a short " +
+                "break, try Relax & Reset, or talk with our support assistant. " +
+                "If you'd prefer human support, a responder can also help.";
+
+        }
+
+
+        /* ---------------------------------------------
+           CRITICAL
+        --------------------------------------------- */
+
+        else if (riskLevel === "critical") {
+
+            currentStatus.textContent =
+                "● Critical";
+
+
+            statusDescription.textContent =
+                data.message ||
+                "Significant wellbeing signals detected.";
+
+
+            supportGuidance.style.display =
+                "block";
+
+
+            supportTitle.textContent =
+                "Additional support is available";
+
+
+            supportMessage.textContent =
+                "We've detected significant changes in your recent activity patterns. " +
+                "These activity signals are not a diagnosis. Please consider connecting " +
+                "with human support or using one of the wellbeing activities below. " +
+                "If you feel that you may be in immediate danger, seek appropriate " +
+                "emergency or trusted-person support.";
+
+        }
+
+
+        /* ---------------------------------------------
+           SIGNALS
+        --------------------------------------------- */
+
+        const riskDetails =
+            document.getElementById(
+                "riskDetails"
+            );
+
+
+        const riskSignals =
+            document.getElementById(
+                "riskSignals"
+            );
+
+
+        if (
+            Array.isArray(data.signals) &&
+            data.signals.length > 0
+        ) {
+
+            riskDetails.style.display =
+                "block";
+
+
+            riskSignals.innerHTML =
+                data.signals
+                    .map(
+                        signal =>
+                            `<li>${signal}</li>`
+                    )
+                    .join("");
 
         }
 
         else {
 
-            document.getElementById(
-                "userInfo"
-            ).textContent =
-                `${user.name} · ${user.role}`;
+            riskDetails.style.display =
+                "none";
+
+        }
+
+    }
 
 
-            document.getElementById(
-                "welcomeMessage"
-            ).textContent =
-                `Welcome back, ${user.name} 👋`;
+    catch (error) {
+
+        console.error(
+            "Error loading risk information:",
+            error
+        );
+
+
+        document.getElementById(
+            "wellbeingScore"
+        ).textContent =
+            "--";
+
+
+        document.getElementById(
+            "scoreDescription"
+        ).textContent =
+            "Unable to load recent activity.";
+
+
+        document.getElementById(
+            "currentStatus"
+        ).textContent =
+            "● No data";
+
+
+        document.getElementById(
+            "statusDescription"
+        ).textContent =
+            "Please try again later.";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD GAME HISTORY
+===================================================== */
+
+async function loadGameResults() {
+
+    if (!user) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+            `/game-history/${user.employee_id}`
+        );
+
+
+        const results = await response.json();
+
+
+        console.log(
+            "GAME HISTORY RESPONSE:",
+            results
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                results.detail ||
+                "Unable to load game history"
+            );
 
         }
 
 
-        // =====================================================
-        // LOAD RISK INFORMATION
-        // =====================================================
+        createTrend(results);
 
-        async function loadWellbeing() {
+    }
 
-            if (!user) {
 
-                return;
+    catch (error) {
+
+        console.error(
+            "Error loading game history:",
+            error
+        );
+
+
+        document.getElementById(
+            "trendBars"
+        ).innerHTML = `
+            <div class="no-activity">
+                Unable to load activity pattern.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   CREATE TREND GRAPH
+===================================================== */
+
+function createTrend(results) {
+
+    const trendBars =
+        document.getElementById(
+            "trendBars"
+        );
+
+
+    trendBars.innerHTML = "";
+
+
+    console.log(
+        "Creating trend from:",
+        results
+    );
+
+
+    /* ---------------------------------------------
+       NO DATA
+    --------------------------------------------- */
+
+    if (
+        !Array.isArray(results) ||
+        results.length === 0
+    ) {
+
+        trendBars.innerHTML = `
+            <div class="no-activity">
+                No activity recorded yet 🌿
+            </div>
+        `;
+
+
+        document.getElementById(
+            "trendDescription"
+        ).textContent =
+            "Your activity pattern will appear here after you complete an activity.";
+
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       LATEST 5 ACTIVITIES
+    --------------------------------------------- */
+
+    const recentResults =
+        results.slice(-5);
+
+
+    /* ---------------------------------------------
+       CREATE EACH BAR
+    --------------------------------------------- */
+
+    recentResults.forEach(
+        (result, index) => {
+
+
+            /* -----------------------------------------
+               SCORE
+            ----------------------------------------- */
+
+            let value =
+                Number(
+                    result.score
+                );
+
+
+            if (
+                !Number.isFinite(value)
+            ) {
+
+                value = 0;
 
             }
 
 
-            try {
-
-                const response = await fetch(
-                    `/risk/${user.employee_id}`
+            value =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        value
+                    )
                 );
 
 
-                const data = await response.json();
+            /*
+             * Convert score 0-100
+             * into visible height.
+             */
 
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.detail ||
-                        "Unable to load risk information"
-                    );
-
-                }
-
-
-                console.log(
-                    "Risk information:",
-                    data
+            const barHeight =
+                Math.max(
+                    12,
+                    Math.round(
+                        (value / 100) * 180
+                    )
                 );
 
 
-                // ---------------------------------------------
-                // RISK SCORE
-                // ---------------------------------------------
+            /* -----------------------------------------
+               WRAPPER
+            ----------------------------------------- */
 
-                document.getElementById(
-                    "wellbeingScore"
-                ).textContent =
-                    data.risk_score;
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
 
 
-                document.getElementById(
-                    "scoreDescription"
-                ).textContent =
-                    "Activity-based wellbeing risk signal. Not a medical diagnosis.";
+            wrapper.className =
+                "bar-wrapper";
 
 
-                // ---------------------------------------------
-                // RISK LEVEL
-                // ---------------------------------------------
+            /* -----------------------------------------
+               VALUE LABEL
+            ----------------------------------------- */
 
-                const currentStatus =
-                    document.getElementById(
-                        "currentStatus"
-                    );
+            const valueLabel =
+                document.createElement(
+                    "div"
+                );
 
 
-                const statusDescription =
-                    document.getElementById(
-                        "statusDescription"
-                    );
+            valueLabel.className =
+                "bar-value";
 
 
-                const riskLevel =
-                    data.risk_level.toLowerCase();
+            valueLabel.textContent =
+                `${value}`;
 
 
-                const supportGuidance =
-                    document.getElementById(
-                        "supportGuidance"
-                    );
+            /* -----------------------------------------
+               BAR
+            ----------------------------------------- */
 
+            const bar =
+                document.createElement(
+                    "div"
+                );
 
-                const supportTitle =
-                    document.getElementById(
-                        "supportTitle"
-                    );
 
+            bar.className =
+                "bar";
 
-                const supportMessage =
-                    document.getElementById(
-                        "supportMessage"
-                    );
 
+            bar.style.height =
+                `${barHeight}px`;
 
-                // ---------------------------------------------
-                // LOW
-                // ---------------------------------------------
 
-                if (riskLevel === "low") {
+            bar.title =
+                `Score: ${value}`;
 
-                    currentStatus.textContent =
-                        "● Low Risk";
 
+            /* -----------------------------------------
+               DATE
+            ----------------------------------------- */
 
-                    statusDescription.textContent =
-                        data.message;
+            const day =
+                document.createElement(
+                    "div"
+                );
 
 
-                    supportGuidance.style.display =
-                        "none";
+            day.className =
+                "day";
 
-                }
 
+            if (
+                result.created_at
+            ) {
 
-                // ---------------------------------------------
-                // ELEVATED
-                // ---------------------------------------------
-
-                else if (riskLevel === "elevated") {
-
-                    currentStatus.textContent =
-                        "● Elevated";
-
-
-                    statusDescription.textContent =
-                        data.message;
-
-
-                    supportGuidance.style.display =
-                        "block";
-
-
-                    supportTitle.textContent =
-                        "A gentle check-in with yourself";
-
-
-                    supportMessage.textContent =
-                        "We've noticed some changes in your recent activity pattern. " +
-                        "This does not mean something is wrong. If you'd like, " +
-                        "you can take a short break, try a relaxation activity, " +
-                        "or talk about how you're feeling.";
-
-                }
-
-
-                // ---------------------------------------------
-                // HIGH
-                // ---------------------------------------------
-
-                else if (riskLevel === "high") {
-
-                    currentStatus.textContent =
-                        "● High Risk";
-
-
-                    statusDescription.textContent =
-                        data.message;
-
-
-                    supportGuidance.style.display =
-                        "block";
-
-
-                    supportTitle.textContent =
-                        "Consider taking a moment for support";
-
-
-                    supportMessage.textContent =
-                        "We've noticed several changes in your recent activity patterns. " +
-                        "These signals are not a diagnosis. You may want to take a short " +
-                        "break, try Relax & Reset, or talk with our support assistant. " +
-                        "If you'd prefer human support, a responder can also help.";
-
-                }
-
-
-                // ---------------------------------------------
-                // CRITICAL
-                // ---------------------------------------------
-
-                else if (riskLevel === "critical") {
-
-                    currentStatus.textContent =
-                        "● Critical";
-
-
-                    statusDescription.textContent =
-                        data.message;
-
-
-                    supportGuidance.style.display =
-                        "block";
-
-
-                    supportTitle.textContent =
-                        "Additional support is available";
-
-
-                    supportMessage.textContent =
-                        "We've detected significant changes in your recent activity patterns. " +
-                        "These activity signals are not a diagnosis. Please consider connecting " +
-                        "with human support or using one of the wellbeing activities below. " +
-                        "If you feel that you may be in immediate danger, seek appropriate " +
-                        "emergency or trusted-person support.";
-
-                }
-
-
-                // ---------------------------------------------
-                // SIGNALS
-                // ---------------------------------------------
-
-                const riskDetails =
-                    document.getElementById(
-                        "riskDetails"
-                    );
-
-
-                const riskSignals =
-                    document.getElementById(
-                        "riskSignals"
+                const date =
+                    new Date(
+                        result.created_at
                     );
 
 
                 if (
-                    data.signals &&
-                    data.signals.length > 0
+                    !isNaN(
+                        date.getTime()
+                    )
                 ) {
 
-                    riskDetails.style.display =
-                        "block";
-
-
-                    riskSignals.innerHTML =
-                        data.signals
-                            .map(
-                                signal =>
-                                    `<li>${signal}</li>`
-                            )
-                            .join("");
+                    day.textContent =
+                        date.toLocaleDateString(
+                            "en-US",
+                            {
+                                weekday: "short"
+                            }
+                        );
 
                 }
 
                 else {
 
-                    riskDetails.style.display =
-                        "none";
+                    day.textContent =
+                        `#${index + 1}`;
 
                 }
 
             }
-
-
-            catch (error) {
-
-                console.error(
-                    "Error loading risk information:",
-                    error
-                );
-
-
-                document.getElementById(
-                    "wellbeingScore"
-                ).textContent =
-                    "--";
-
-
-                document.getElementById(
-                    "scoreDescription"
-                ).textContent =
-                    "Unable to load recent activity.";
-
-
-                document.getElementById(
-                    "currentStatus"
-                ).textContent =
-                    "● No data";
-
-
-                document.getElementById(
-                    "statusDescription"
-                ).textContent =
-                    "Please try again later.";
-
-            }
-
-        }
-
-
-        // =====================================================
-        // LOAD GAME RESULTS
-        // =====================================================
-
-        async function loadGameResults() {
-
-            if (!user) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const response = await fetch(
-                    `/game-results/${user.employee_id}`
-                );
-
-
-                const results = await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        results.detail ||
-                        "Unable to load game results"
-                    );
-
-                }
-
-
-                console.log(
-                    "Game results:",
-                    results
-                );
-
-
-                createTrend(results);
-
-            }
-
-
-            catch (error) {
-
-                console.error(
-                    "Error loading game results:",
-                    error
-                );
-
-
-                document.getElementById(
-                    "trendBars"
-                ).innerHTML = `
-                    <div class="no-activity">
-                        Unable to load activity pattern.
-                    </div>
-                `;
-
-            }
-
-        }
-
-
-        // =====================================================
-        // CREATE RECENT ACTIVITY TREND
-        // =====================================================
-
-        function createTrend(results) {
-
-            const trendBars =
-                document.getElementById(
-                    "trendBars"
-                );
-
-
-            trendBars.innerHTML = "";
-
-
-            if (
-                !results ||
-                results.length === 0
-            ) {
-
-                trendBars.innerHTML = `
-                    <div class="no-activity">
-                        No activity recorded yet 🌿
-                    </div>
-                `;
-
-
-                document.getElementById(
-                    "trendDescription"
-                ).textContent =
-                    "Your activity pattern will appear here after you complete an activity.";
-
-
-                return;
-
-            }
-
-
-            // -------------------------------------------------
-            // Take latest 5 activities
-            // -------------------------------------------------
-
-            const recentResults =
-                results.slice(-5);
-
-
-            recentResults.forEach(
-                (result, index) => {
-
-
-                    let value =
-                        typeof result.score === "number"
-                            ? result.score
-                            : 50;
-
-
-                    value = Math.max(
-                        0,
-                        Math.min(100, value)
-                    );
-
-
-                    const barHeight =
-                        Math.max(
-                            10,
-                            Math.round(
-                                (value / 100) * 140
-                            )
-                        );
-
-
-                    const wrapper =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    wrapper.className =
-                        "bar-wrapper";
-
-
-                    // -------------------------------------------------
-                    // SCORE
-                    // -------------------------------------------------
-
-                    const valueLabel =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    valueLabel.className =
-                        "bar-value";
-
-
-                    valueLabel.textContent =
-                        `${value}`;
-
-
-                    // -------------------------------------------------
-                    // BAR
-                    // -------------------------------------------------
-
-                    const bar =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    bar.className =
-                        "bar";
-
-
-                    bar.style.height =
-                        `${barHeight}px`;
-
-
-                    // -------------------------------------------------
-                    // DATE
-                    // -------------------------------------------------
-
-                    const day =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    day.className =
-                        "day";
-
-
-                    const date =
-                        new Date(
-                            result.created_at
-                        );
-
-
-                    if (
-                        !isNaN(
-                            date.getTime()
-                        )
-                    ) {
-
-                        day.textContent =
-                            date.toLocaleDateString(
-                                "en-US",
-                                {
-                                    weekday: "short"
-                                }
-                            );
-
-                    }
-
-                    else {
-
-                        day.textContent =
-                            `#${index + 1}`;
-
-                    }
-
-
-                    // -------------------------------------------------
-                    // GAME / ACTIVITY NAME
-                    // -------------------------------------------------
-
-                    const activityName =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    activityName.className =
-                        "activity-name";
-
-
-                    activityName.textContent =
-                        result.game_name ||
-                        "Activity";
-
-
-                    activityName.title =
-                        result.game_name ||
-                        "Activity";
-
-
-                    // -------------------------------------------------
-                    // BUILD BAR
-                    // -------------------------------------------------
-
-                    wrapper.appendChild(
-                        valueLabel
-                    );
-
-
-                    wrapper.appendChild(
-                        bar
-                    );
-
-
-                    wrapper.appendChild(
-                        day
-                    );
-
-
-                    wrapper.appendChild(
-                        activityName
-                    );
-
-
-                    trendBars.appendChild(
-                        wrapper
-                    );
-
-                }
-            );
-
-
-            document.getElementById(
-                "trendDescription"
-            ).textContent =
-                `Showing your latest ${recentResults.length} voluntary activity ${
-                    recentResults.length === 1
-                        ? "result"
-                        : "results"
-                } with activity names and scores.`;
-
-        }
-
-
-        // =====================================================
-        // SHOW GAMES
-        // =====================================================
-
-        function showGames() {
-
-            const games =
-                document.getElementById(
-                    "gameSelection"
-                );
-
-
-            games.style.display =
-                "block";
-
-
-            games.scrollIntoView({
-
-                behavior: "smooth"
-
-            });
-
-        }
-
-
-        // =====================================================
-        // PLAY GAMES
-        // =====================================================
-
-        function playGame(game) {
-
-            localStorage.setItem(
-                "selectedGame",
-                game
-            );
-
-
-            if (game === "focus") {
-
-                window.location.href =
-                    "/game";
-
-            }
-
-
-            else if (game === "reaction") {
-
-                window.location.href =
-                    "/reaction";
-
-            }
-
-
-            else if (game === "memory") {
-
-                window.location.href =
-                    "/memory";
-
-            }
-
-
-            else if (game === "color") {
-
-                window.location.href =
-                    "/color";
-
-            }
-
-
-            else if (game === "choice") {
-
-                window.location.href =
-                    "/choice";
-
-            }
-
 
             else {
 
-                alert(
-                    "This activity is coming next 🎮"
-                );
+                day.textContent =
+                    `#${index + 1}`;
 
             }
 
-        }
+
+            /* -----------------------------------------
+               ACTIVITY NAME
+            ----------------------------------------- */
+
+            const activityName =
+                document.createElement(
+                    "div"
+                );
 
 
-        // =====================================================
-        // AI SUPPORT
-        // =====================================================
+            activityName.className =
+                "activity-name";
 
-        function talkToAI() {
 
-            alert(
-                "AI Support is coming next 💬"
+            activityName.textContent =
+                result.game_name ||
+                "Activity";
+
+
+            activityName.title =
+                result.game_name ||
+                "Activity";
+
+
+            /* -----------------------------------------
+               ADD ELEMENTS
+            ----------------------------------------- */
+
+            wrapper.appendChild(
+                valueLabel
+            );
+
+
+            wrapper.appendChild(
+                bar
+            );
+
+
+            wrapper.appendChild(
+                day
+            );
+
+
+            wrapper.appendChild(
+                activityName
+            );
+
+
+            trendBars.appendChild(
+                wrapper
             );
 
         }
+    );
 
 
-        // =====================================================
-        // RELAX & RESET
-        // =====================================================
+    /* ---------------------------------------------
+       DESCRIPTION
+    --------------------------------------------- */
 
-        function relax() {
+    document.getElementById(
+        "trendDescription"
+    ).textContent =
+        `Showing your latest ${recentResults.length} voluntary activity ${
+            recentResults.length === 1
+                ? "result"
+                : "results"
+        } with activity names and scores.`;
 
-            window.location.href =
-                "/relax";
-
-        }
+}
 
 
-        // =====================================================
-        // LOAD DATA WHEN PAGE OPENS
-        // =====================================================
+/* =====================================================
+   SHOW GAME SELECTION
+===================================================== */
 
-        if (user) {
+function showGames() {
 
-            loadWellbeing();
+    const games =
+        document.getElementById(
+            "gameSelection"
+        );
 
-            loadGameResults();
 
-        }
+    games.style.display =
+        "block";
 
-    </script>
+
+    games.scrollIntoView({
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+/* =====================================================
+   PLAY GAME
+===================================================== */
+
+function playGame(game) {
+
+    localStorage.setItem(
+        "selectedGame",
+        game
+    );
+
+
+    if (game === "focus") {
+
+        window.location.href =
+            "/game";
+
+    }
+
+    else if (game === "reaction") {
+
+        window.location.href =
+            "/reaction";
+
+    }
+
+    else if (game === "memory") {
+
+        window.location.href =
+            "/memory";
+
+    }
+
+    else if (game === "color") {
+
+        window.location.href =
+            "/color";
+
+    }
+
+    else if (game === "choice") {
+
+        window.location.href =
+            "/choice";
+
+    }
+
+    else {
+
+        alert(
+            "This activity is coming next 🎮"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   TALK & SHARE
+===================================================== */
+
+function talkToAI() {
+
+    window.location.href =
+        "/talk";
+
+}
+
+
+/* =====================================================
+   RELAX & RESET
+===================================================== */
+
+function relax() {
+
+    window.location.href =
+        "/relax";
+
+}
+
+
+/* =====================================================
+   LOAD EVERYTHING
+===================================================== */
+
+if (user) {
+
+    loadWellbeing();
+
+    loadGameResults();
+
+}
+
+</script>
 
 
 </body>

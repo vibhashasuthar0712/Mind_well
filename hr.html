@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Wellora | HR Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fbff,
+                    #eef5ff
+                );
+
+            color: #172033;
+
+        }
+
+        /* ================================
+           NAVBAR
+        ================================= */
+
+        .navbar {
+
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 42px;
+
+            background: rgba(
+                255,
+                255,
+                255,
+                0.82
+            );
+
+            backdrop-filter: blur(18px);
+
+            border-bottom:
+                1px solid rgba(
+                    20,
+                    40,
+                    80,
+                    0.08
+                );
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 10;
+
+        }
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 23px;
+
+            font-weight: 700;
+
+            letter-spacing: -0.5px;
+
+        }
+
+        .brand-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eaf2ff;
+
+            font-size: 20px;
+
+        }
+
+        .role {
+
+            padding: 9px 15px;
+
+            border-radius: 20px;
+
+            background: #f1f5fb;
+
+            color: #526078;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 45px 28px 60px;
+
+        }
+
+        .hero {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            margin-bottom: 32px;
+
+        }
+
+        .hero h1 {
+
+            font-size: 34px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .hero p {
+
+            color: #68758b;
+
+            font-size: 15px;
+
+        }
+
+        .refresh-btn {
+
+            border: none;
+
+            background: #172033;
+
+            color: white;
+
+            padding: 12px 19px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            transition: 0.2s;
+
+        }
+
+        .refresh-btn:hover {
+
+            transform: translateY(-1px);
+
+            opacity: 0.92;
+
+        }
+
+        /* ================================
+           STATUS CARD
+        ================================= */
+
+        .status-card {
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(30, 60, 100, 0.07);
+
+            border:
+                1px solid rgba(
+                    30,
+                    60,
+                    100,
+                    0.07
+                );
+
+        }
+
+        .status-label {
+
+            color: #7b879a;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+
+            margin-bottom: 9px;
+
+        }
+
+        .status-value {
+
+            font-size: 26px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+
+        }
+
+        .status-description {
+
+            color: #6c788c;
+
+            font-size: 14px;
+
+        }
+
+        /* ================================
+           METRIC CARDS
+        ================================= */
+
+        .metrics {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .metric {
+
+            background: white;
+
+            padding: 23px;
+
+            border-radius: 19px;
+
+            box-shadow:
+                0 8px 28px
+                rgba(30, 60, 100, 0.055);
+
+            border:
+                1px solid rgba(
+                    30,
+                    60,
+                    100,
+                    0.07
+                );
+
+        }
+
+        .metric-title {
+
+            color: #758197;
+
+            font-size: 13px;
+
+            margin-bottom: 13px;
+
+        }
+
+        .metric-value {
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+        }
+
+        .metric-sub {
+
+            margin-top: 6px;
+
+            color: #8a95a7;
+
+            font-size: 12px;
+
+        }
+
+        /* ================================
+           OVERVIEW GRID
+        ================================= */
+
+        .overview {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 22px;
+
+        }
+
+        .card {
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 10px 35px
+                rgba(30, 60, 100, 0.06);
+
+            border:
+                1px solid rgba(
+                    30,
+                    60,
+                    100,
+                    0.07
+                );
+
+        }
+
+        .card h2 {
+
+            font-size: 19px;
+
+            margin-bottom: 22px;
+
+        }
+
+        /* ================================
+           RISK DISTRIBUTION
+        ================================= */
+
+        .risk-row {
+
+            margin-bottom: 20px;
+
+        }
+
+        .risk-info {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+        }
+
+        .risk-name {
+
+            font-weight: 600;
+
+        }
+
+        .risk-count {
+
+            color: #738096;
+
+        }
+
+        .bar {
+
+            height: 9px;
+
+            background: #edf1f7;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+        .bar-fill {
+
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: 10px;
+
+            transition: width 0.5s ease;
+
+        }
+
+        .stable-bar {
+            background: #54b88a;
+        }
+
+        .elevated-bar {
+            background: #e3ad4b;
+        }
+
+        .high-bar {
+            background: #e67d54;
+        }
+
+        .critical-bar {
+            background: #d95365;
+        }
+
+        /* ================================
+           PRIVACY CARD
+        ================================= */
+
+        .privacy-card {
+
+            margin-top: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f5f9ff,
+                    #edf5ff
+                );
+
+            border:
+                1px solid #dce9fb;
+
+        }
+
+        .privacy-icon {
+
+            font-size: 25px;
+
+            margin-bottom: 13px;
+
+        }
+
+        .privacy-card h2 {
+
+            margin-bottom: 10px;
+
+        }
+
+        .privacy-card p {
+
+            color: #68758b;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+        }
+
+        /* ================================
+           LOADING
+        ================================= */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 50px;
+
+            color: #7c8798;
+
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 1000px) {
+
+            .metrics {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .navbar {
+
+                padding: 0 20px;
+
+            }
+
+            .container {
+
+                padding: 30px 18px;
+
+            }
+
+            .hero {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 18px;
+
+            }
+
+            .metrics {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+            .overview {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .metrics {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<nav class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🌿
+        </div>
+
+        <span>Wellora</span>
+
+    </div>
+
+    <div class="role">
+        HR Dashboard
+    </div>
+
+</nav>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="container">
+
+
+    <div class="hero">
+
+        <div>
+
+            <h1>
+                Workplace Wellbeing
+            </h1>
+
+            <p>
+                Organization-level wellbeing overview
+            </p>
+
+        </div>
+
+        <button
+            class="refresh-btn"
+            onclick="loadDashboard()"
+        >
+            ↻ Refresh
+        </button>
+
+    </div>
+
+
+    <!-- =====================================
+         OVERALL STATUS
+    ====================================== -->
+
+    <div class="status-card">
+
+        <div class="status-label">
+            Overall Organization Status
+        </div>
+
+        <div
+            class="status-value"
+            id="overallStatus"
+        >
+            Loading...
+        </div>
+
+        <div
+            class="status-description"
+            id="statusDescription"
+        >
+            Analyzing aggregate wellbeing patterns...
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         METRICS
+    ====================================== -->
+
+    <div class="metrics">
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                Total Employees
+            </div>
+
+            <div
+                class="metric-value"
+                id="totalEmployees"
+            >
+                —
+            </div>
+
+            <div class="metric-sub">
+                Active employee accounts
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                Stable
+            </div>
+
+            <div
+                class="metric-value"
+                id="stableCount"
+            >
+                —
+            </div>
+
+            <div class="metric-sub">
+                Relatively stable patterns
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                Elevated
+            </div>
+
+            <div
+                class="metric-value"
+                id="elevatedCount"
+            >
+                —
+            </div>
+
+            <div class="metric-sub">
+                Worth monitoring
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                High
+            </div>
+
+            <div
+                class="metric-value"
+                id="highCount"
+            >
+                —
+            </div>
+
+            <div class="metric-sub">
+                Human check-in may help
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-title">
+                Critical
+            </div>
+
+            <div
+                class="metric-value"
+                id="criticalCount"
+            >
+                —
+            </div>
+
+            <div class="metric-sub">
+                Safety workflow required
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================
+         OVERVIEW
+    ====================================== -->
+
+    <div class="overview">
+
+
+        <!-- RISK DISTRIBUTION -->
+
+        <div class="card">
+
+            <h2>
+                Wellbeing Pattern Distribution
+            </h2>
+
+
+            <div class="risk-row">
+
+                <div class="risk-info">
+
+                    <span class="risk-name">
+                        Stable
+                    </span>
+
+                    <span
+                        class="risk-count"
+                        id="stableText"
+                    >
+                        0 employees
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill stable-bar"
+                        id="stableBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="risk-row">
+
+                <div class="risk-info">
+
+                    <span class="risk-name">
+                        Elevated
+                    </span>
+
+                    <span
+                        class="risk-count"
+                        id="elevatedText"
+                    >
+                        0 employees
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill elevated-bar"
+                        id="elevatedBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="risk-row">
+
+                <div class="risk-info">
+
+                    <span class="risk-name">
+                        High
+                    </span>
+
+                    <span
+                        class="risk-count"
+                        id="highText"
+                    >
+                        0 employees
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill high-bar"
+                        id="highBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="risk-row">
+
+                <div class="risk-info">
+
+                    <span class="risk-name">
+                        Critical
+                    </span>
+
+                    <span
+                        class="risk-count"
+                        id="criticalText"
+                    >
+                        0 employees
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div
+                        class="bar-fill critical-bar"
+                        id="criticalBar"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WELLBEING SCORE -->
+
+        <div class="card">
+
+            <h2>
+                Organization Overview
+            </h2>
+
+
+            <div style="
+                display:flex;
+                align-items:center;
+                gap:25px;
+                margin-bottom:25px;
+            ">
+
+                <div style="
+                    width:105px;
+                    height:105px;
+                    border-radius:50%;
+                    background:#f1f5fb;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:30px;
+                    font-weight:700;
+                "
+                id="averageRisk"
+                >
+                    —
+                </div>
+
+
+                <div>
+
+                    <div style="
+                        font-size:16px;
+                        font-weight:600;
+                        margin-bottom:7px;
+                    ">
+                        Average Risk Score
+                    </div>
+
+                    <div style="
+                        color:#748096;
+                        font-size:13px;
+                        line-height:1.6;
+                    ">
+                        This is an aggregate indicator
+                        across employee activity patterns.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div style="
+                padding:18px;
+                background:#f8fafc;
+                border-radius:15px;
+            ">
+
+                <div style="
+                    font-size:13px;
+                    color:#7a8698;
+                    margin-bottom:7px;
+                ">
+                    What HR should do
+                </div>
+
+                <div style="
+                    font-size:14px;
+                    line-height:1.6;
+                    color:#4f5c70;
+                " id="hrAction">
+                    Monitoring wellbeing trends can help
+                    organizations identify where additional
+                    support may be useful.
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================
+         PRIVACY
+    ====================================== -->
+
+    <div class="card privacy-card">
+
+        <div class="privacy-icon">
+            🔐
+        </div>
+
+        <h2>
+            Privacy by Design
+        </h2>
+
+        <p id="privacyNote">
+
+            HR receives aggregate wellbeing trends only.
+            Private employee conversations, detailed game
+            activity records, personal reflections and
+            responder notes are not exposed through this
+            dashboard.
+
+        </p>
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+// =========================================
+// LOAD HR DASHBOARD
+// =========================================
+
+async function loadDashboard() {
+
+    try {
+
+        const response = await fetch(
+            "/hr/overview"
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load HR overview"
+            );
+
+        }
+
+
+        const data = await response.json();
+
+
+        // -------------------------------------
+        // Basic metrics
+        // -------------------------------------
+
+        document.getElementById(
+            "totalEmployees"
+        ).textContent =
+            data.total_employees;
+
+
+        document.getElementById(
+            "stableCount"
+        ).textContent =
+            data.stable;
+
+
+        document.getElementById(
+            "elevatedCount"
+        ).textContent =
+            data.elevated;
+
+
+        document.getElementById(
+            "highCount"
+        ).textContent =
+            data.high;
+
+
+        document.getElementById(
+            "criticalCount"
+        ).textContent =
+            data.critical;
+
+
+        // -------------------------------------
+        // Overall status
+        // -------------------------------------
+
+        document.getElementById(
+            "overallStatus"
+        ).textContent =
+            data.overall_status;
+
+
+        // -------------------------------------
+        // Status description
+        // -------------------------------------
+
+        let description =
+            "Current organization-level wellbeing patterns.";
+
+        if (
+            data.overall_status ===
+            "Attention Required"
+        ) {
+
+            description =
+                "Critical wellbeing signals are currently present. Follow the organization's human safety process.";
+
+        }
+        else if (
+            data.overall_status ===
+            "Needs Attention"
+        ) {
+
+            description =
+                "Some higher-risk patterns are present and may require human follow-up.";
+
+        }
+        else if (
+            data.overall_status ===
+            "Monitor"
+        ) {
+
+            description =
+                "Some activity patterns have changed and may be worth monitoring.";
+
+        }
+        else {
+
+            description =
+                "Current aggregate activity patterns appear relatively stable.";
+
+        }
+
+
+        document.getElementById(
+            "statusDescription"
+        ).textContent =
+            description;
+
+
+        // -------------------------------------
+        // Average risk
+        // -------------------------------------
+
+        document.getElementById(
+            "averageRisk"
+        ).textContent =
+            data.average_risk_score;
+
+
+        // -------------------------------------
+        // Distribution
+        // -------------------------------------
+
+        const total =
+            data.total_employees;
+
+
+        function percentage(count) {
+
+            if (total === 0) {
+
+                return 0;
+
+            }
+
+            return (
+                count / total
+            ) * 100;
+
+        }
+
+
+        document.getElementById(
+            "stableText"
+        ).textContent =
+            `${data.stable} employees`;
+
+
+        document.getElementById(
+            "elevatedText"
+        ).textContent =
+            `${data.elevated} employees`;
+
+
+        document.getElementById(
+            "highText"
+        ).textContent =
+            `${data.high} employees`;
+
+
+        document.getElementById(
+            "criticalText"
+        ).textContent =
+            `${data.critical} employees`;
+
+
+        document.getElementById(
+            "stableBar"
+        ).style.width =
+            percentage(data.stable) + "%";
+
+
+        document.getElementById(
+            "elevatedBar"
+        ).style.width =
+            percentage(data.elevated) + "%";
+
+
+        document.getElementById(
+            "highBar"
+        ).style.width =
+            percentage(data.high) + "%";
+
+
+        document.getElementById(
+            "criticalBar"
+        ).style.width =
+            percentage(data.critical) + "%";
+
+
+        // -------------------------------------
+        // HR action
+        // -------------------------------------
+
+        let action =
+            "Continue monitoring aggregate wellbeing trends and keep voluntary support resources available.";
+
+        if (data.critical > 0) {
+
+            action =
+                "Critical cases exist in the safety workflow. HR should ensure the designated responder process is active without accessing private employee details.";
+
+        }
+        else if (data.high > 0) {
+
+            action =
+                "Higher-risk patterns are present. Ensure human support and appropriate wellbeing resources are available.";
+
+        }
+        else if (data.elevated > 0) {
+
+            action =
+                "Some employees show changes from their activity patterns. Continue monitoring aggregate trends and encourage voluntary support.";
+
+        }
+
+
+        document.getElementById(
+            "hrAction"
+        ).textContent =
+            action;
+
+
+        // -------------------------------------
+        // Privacy note from backend
+        // -------------------------------------
+
+        if (data.privacy_note) {
+
+            document.getElementById(
+                "privacyNote"
+            ).textContent =
+                data.privacy_note;
+
+        }
+
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "overallStatus"
+        ).textContent =
+            "Unable to load";
+
+
+        document.getElementById(
+            "statusDescription"
+        ).textContent =
+            "Please make sure the Wellora API is running and try again.";
+
+    }
+
+}
+
+
+// =========================================
+// INITIAL LOAD
+// =========================================
+
+loadDashboard();
+
+
+</script>
+
+
+</body>
+
+</html>
