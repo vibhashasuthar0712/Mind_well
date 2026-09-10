@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>MindWell - Employee Dashboard</title>
+    <title>Wellora - Employee Dashboard</title>
 
     <style>
 
@@ -26,12 +26,10 @@
             color: #222;
         }
 
-
         /* ================= NAVBAR ================= */
 
         nav {
             height: 70px;
-
             background: white;
 
             display: flex;
@@ -43,19 +41,16 @@
             box-shadow: 0 2px 12px rgba(0,0,0,0.05);
         }
 
-
         .logo {
             font-size: 25px;
             font-weight: bold;
             color: #5f5bd8;
         }
 
-
         .user {
             color: #555;
             font-size: 14px;
         }
-
 
         /* ================= MAIN ================= */
 
@@ -67,22 +62,18 @@
             padding: 0 25px;
         }
 
-
         .welcome {
             margin-bottom: 30px;
         }
-
 
         .welcome h1 {
             font-size: 30px;
             margin-bottom: 8px;
         }
 
-
         .welcome p {
             color: #777;
         }
-
 
         /* ================= SCORE ================= */
 
@@ -95,7 +86,6 @@
 
             margin-bottom: 30px;
         }
-
 
         .score-card,
         .status-card {
@@ -110,7 +100,6 @@
                 0 5px 20px rgba(0,0,0,0.05);
         }
 
-
         .score {
             font-size: 42px;
 
@@ -121,7 +110,6 @@
             margin: 10px 0;
         }
 
-
         .small-text {
             color: #777;
 
@@ -129,7 +117,6 @@
 
             line-height: 1.5;
         }
-
 
         .status {
             display: inline-block;
@@ -149,7 +136,6 @@
             font-weight: bold;
         }
 
-
         /* ================= RISK DETAILS ================= */
 
         .risk-details {
@@ -161,18 +147,14 @@
             padding: 15px;
 
             border-radius: 12px;
-
         }
-
 
         .risk-details h4 {
 
             margin-bottom: 8px;
 
             font-size: 14px;
-
         }
-
 
         .risk-details ul {
 
@@ -183,9 +165,61 @@
             font-size: 13px;
 
             line-height: 1.6;
-
         }
 
+        /* ================= SUPPORT GUIDANCE ================= */
+
+        .support-guidance {
+
+            display: none;
+
+            margin-bottom: 30px;
+
+            background: white;
+
+            padding: 24px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
+
+            border-left: 4px solid #5f5bd8;
+        }
+
+        .support-guidance h3 {
+
+            margin-bottom: 10px;
+
+            font-size: 19px;
+        }
+
+        .support-guidance p {
+
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 15px;
+        }
+
+        .support-note {
+
+            background: #f5f5ff;
+
+            padding: 12px 14px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+
+            color: #666;
+
+            line-height: 1.5;
+
+        }
 
         /* ================= CHOICES ================= */
 
@@ -194,7 +228,6 @@
 
             font-size: 22px;
         }
-
 
         .choices {
 
@@ -207,7 +240,6 @@
 
             margin-bottom: 35px;
         }
-
 
         .choice-card {
 
@@ -223,12 +255,10 @@
             transition: 0.2s;
         }
 
-
         .choice-card:hover {
 
             transform: translateY(-4px);
         }
-
 
         .choice-icon {
 
@@ -237,12 +267,10 @@
             margin-bottom: 15px;
         }
 
-
         .choice-card h3 {
 
             margin-bottom: 10px;
         }
-
 
         .choice-card p {
 
@@ -254,7 +282,6 @@
 
             min-height: 65px;
         }
-
 
         .choice-btn {
 
@@ -279,12 +306,10 @@
             font-size: 14px;
         }
 
-
         .choice-btn:hover {
 
             opacity: 0.9;
         }
-
 
         /* ================= GAME SELECTION ================= */
 
@@ -297,14 +322,12 @@
             margin-bottom: 40px;
         }
 
-
         .selection-header {
 
             text-align: center;
 
             margin-bottom: 25px;
         }
-
 
         .selection-header h2 {
 
@@ -313,14 +336,12 @@
             margin-bottom: 8px;
         }
 
-
         .selection-header p {
 
             color: #777;
 
             font-size: 14px;
         }
-
 
         .game-grid {
 
@@ -331,7 +352,6 @@
 
             gap: 20px;
         }
-
 
         .game-card {
 
@@ -347,12 +367,10 @@
             transition: 0.2s;
         }
 
-
         .game-card:hover {
 
             transform: translateY(-4px);
         }
-
 
         .game-icon {
 
@@ -361,12 +379,10 @@
             margin-bottom: 15px;
         }
 
-
         .game-card h3 {
 
             margin-bottom: 10px;
         }
-
 
         .game-card p {
 
@@ -378,7 +394,6 @@
 
             min-height: 75px;
         }
-
 
         .game-card button {
 
@@ -401,18 +416,15 @@
             cursor: pointer;
         }
 
-
         .game-card button:hover {
 
             opacity: 0.9;
         }
 
-
         .not-today {
 
             background: #eef8f5;
         }
-
 
         /* ================= TREND ================= */
 
@@ -430,10 +442,9 @@
             margin-bottom: 30px;
         }
 
-
         .bars {
 
-            height: 180px;
+            min-height: 220px;
 
             display: flex;
 
@@ -441,17 +452,23 @@
 
             justify-content: space-around;
 
-            margin-top: 25px;
-        }
+            gap: 15px;
 
+            margin-top: 25px;
+
+            overflow-x: auto;
+
+            padding-bottom: 5px;
+        }
 
         .bar-wrapper {
 
             text-align: center;
 
-            width: 60px;
-        }
+            min-width: 90px;
 
+            width: 90px;
+        }
 
         .bar {
 
@@ -468,16 +485,31 @@
             transition: height 0.5s ease;
         }
 
-
         .day {
 
-            font-size: 12px;
+            font-size: 11px;
 
             color: #777;
 
             margin-top: 8px;
         }
 
+        .activity-name {
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            color: #444;
+
+            margin-top: 5px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
 
         .bar-value {
 
@@ -487,7 +519,6 @@
 
             margin-bottom: 5px;
         }
-
 
         .no-activity {
 
@@ -501,7 +532,6 @@
 
             font-size: 14px;
         }
-
 
         /* ================= PRIVACY ================= */
 
@@ -520,7 +550,6 @@
             line-height: 1.5;
         }
 
-
         /* ================= MOBILE ================= */
 
         @media (max-width: 850px) {
@@ -530,22 +559,24 @@
                 grid-template-columns: 1fr;
             }
 
-
             .choices {
 
                 grid-template-columns: 1fr;
             }
-
 
             .game-grid {
 
                 grid-template-columns: 1fr;
             }
 
-
             nav {
 
                 padding: 0 20px;
+            }
+
+            .bars {
+
+                justify-content: flex-start;
             }
 
         }
@@ -568,7 +599,6 @@
 
         </div>
 
-
         <div class="user" id="userInfo">
 
             Loading...
@@ -576,7 +606,6 @@
         </div>
 
     </nav>
-
 
 
     <!-- ================= MAIN CONTAINER ================= -->
@@ -594,7 +623,6 @@
 
             </h1>
 
-
             <p>
 
                 Take a moment for yourself.
@@ -603,7 +631,6 @@
             </p>
 
         </div>
-
 
 
         <!-- ================= OVERVIEW ================= -->
@@ -621,7 +648,6 @@
 
                 </h3>
 
-
                 <div
                     class="score"
                     id="wellbeingScore"
@@ -630,7 +656,6 @@
                     --
 
                 </div>
-
 
                 <p
                     class="small-text"
@@ -644,7 +669,6 @@
             </div>
 
 
-
             <!-- ================= STATUS ================= -->
 
             <div class="status-card">
@@ -655,7 +679,6 @@
 
                 </h3>
 
-
                 <span
                     class="status"
                     id="currentStatus"
@@ -664,7 +687,6 @@
                     ● Loading...
 
                 </span>
-
 
                 <p
                     class="small-text"
@@ -689,7 +711,6 @@
 
                     </h4>
 
-
                     <ul id="riskSignals">
 
                     </ul>
@@ -701,6 +722,35 @@
         </div>
 
 
+        <!-- ================= SUPPORT GUIDANCE ================= -->
+
+        <div
+            class="support-guidance"
+            id="supportGuidance"
+        >
+
+            <h3 id="supportTitle">
+
+                A small next step
+
+            </h3>
+
+            <p id="supportMessage">
+
+                You can choose whatever feels comfortable for you.
+
+            </p>
+
+            <div class="support-note">
+
+                💡 These activity patterns are only wellbeing signals,
+                not a diagnosis. You remain in control of what support
+                you choose.
+
+            </div>
+
+        </div>
+
 
         <!-- ================= THREE CHOICES ================= -->
 
@@ -709,7 +759,6 @@
             How can we support you?
 
         </h2>
-
 
 
         <div class="choices">
@@ -725,13 +774,11 @@
 
                 </div>
 
-
                 <h3>
 
                     Play & Check
 
                 </h3>
-
 
                 <p>
 
@@ -740,7 +787,6 @@
                     changes over time.
 
                 </p>
-
 
                 <button
                     class="choice-btn"
@@ -754,7 +800,6 @@
             </div>
 
 
-
             <!-- ================= TALK ================= -->
 
             <div class="choice-card">
@@ -765,13 +810,11 @@
 
                 </div>
 
-
                 <h3>
 
                     Talk & Share
 
                 </h3>
-
 
                 <p>
 
@@ -780,7 +823,6 @@
                     our AI support assistant.
 
                 </p>
-
 
                 <button
                     class="choice-btn"
@@ -794,7 +836,6 @@
             </div>
 
 
-
             <!-- ================= RELAX ================= -->
 
             <div class="choice-card">
@@ -805,13 +846,11 @@
 
                 </div>
 
-
                 <h3>
 
                     Relax & Reset
 
                 </h3>
-
 
                 <p>
 
@@ -819,7 +858,6 @@
                     relaxation activity whenever you need it.
 
                 </p>
-
 
                 <button
                     class="choice-btn"
@@ -835,7 +873,6 @@
         </div>
 
 
-
         <!-- ================= GAME SELECTION ================= -->
 
         <div id="gameSelection">
@@ -849,7 +886,6 @@
 
                 </h2>
 
-
                 <p>
 
                     Pick whatever feels right for you today.
@@ -858,7 +894,6 @@
                 </p>
 
             </div>
-
 
 
             <div class="game-grid">
@@ -874,13 +909,11 @@
 
                     </div>
 
-
                     <h3>
 
                         Focus Hunt
 
                     </h3>
-
 
                     <p>
 
@@ -889,7 +922,6 @@
                         as you can.
 
                     </p>
-
 
                     <button
                         onclick="playGame('focus')"
@@ -902,7 +934,6 @@
                 </div>
 
 
-
                 <!-- ================= REACTION RUSH ================= -->
 
                 <div class="game-card">
@@ -913,13 +944,11 @@
 
                     </div>
 
-
                     <h3>
 
                         Reaction Rush
 
                     </h3>
-
 
                     <p>
 
@@ -927,7 +956,6 @@
                         the target when it appears.
 
                     </p>
-
 
                     <button
                         onclick="playGame('reaction')"
@@ -940,7 +968,6 @@
                 </div>
 
 
-
                 <!-- ================= MEMORY MATCH ================= -->
 
                 <div class="game-card">
@@ -951,13 +978,11 @@
 
                     </div>
 
-
                     <h3>
 
                         Memory Match
 
                     </h3>
-
 
                     <p>
 
@@ -965,7 +990,6 @@
                         matching pairs.
 
                     </p>
-
 
                     <button
                         onclick="playGame('memory')"
@@ -978,7 +1002,6 @@
                 </div>
 
 
-
                 <!-- ================= COLOR FLOW ================= -->
 
                 <div class="game-card">
@@ -989,13 +1012,11 @@
 
                     </div>
 
-
                     <h3>
 
                         Color Flow
 
                     </h3>
-
 
                     <p>
 
@@ -1003,7 +1024,6 @@
                         how quickly you can adapt.
 
                     </p>
-
 
                     <button
                         onclick="playGame('color')"
@@ -1016,7 +1036,6 @@
                 </div>
 
 
-
                 <!-- ================= CHOICE QUEST ================= -->
 
                 <div class="game-card">
@@ -1027,13 +1046,11 @@
 
                     </div>
 
-
                     <h3>
 
                         Choice Quest
 
                     </h3>
-
 
                     <p>
 
@@ -1041,7 +1058,6 @@
                         choose what feels most natural.
 
                     </p>
-
 
                     <button
                         onclick="playGame('choice')"
@@ -1054,7 +1070,6 @@
                 </div>
 
 
-
                 <!-- ================= NOT TODAY ================= -->
 
                 <div class="game-card not-today">
@@ -1065,13 +1080,11 @@
 
                     </div>
 
-
                     <h3>
 
                         Not in the mood?
 
                     </h3>
-
 
                     <p>
 
@@ -1080,7 +1093,6 @@
                         back later.
 
                     </p>
-
 
                     <button
                         onclick="relax()"
@@ -1097,7 +1109,6 @@
         </div>
 
 
-
         <!-- ================= TREND ================= -->
 
         <div class="trend-card">
@@ -1108,7 +1119,6 @@
 
             </h3>
 
-
             <p
                 class="small-text"
                 id="trendDescription"
@@ -1117,7 +1127,6 @@
                 Based on your recent voluntary activities.
 
             </p>
-
 
 
             <div
@@ -1136,7 +1145,6 @@
         </div>
 
 
-
         <!-- ================= PRIVACY ================= -->
 
         <div class="privacy">
@@ -1153,7 +1161,6 @@
 
 
     </div>
-
 
 
     <!-- ================= JAVASCRIPT ================= -->
@@ -1176,7 +1183,6 @@
 
         }
 
-
         else {
 
             document.getElementById(
@@ -1191,7 +1197,6 @@
                 `Welcome back, ${user.name} 👋`;
 
         }
-
 
 
         // =====================================================
@@ -1269,46 +1274,134 @@
                     data.risk_level.toLowerCase();
 
 
+                const supportGuidance =
+                    document.getElementById(
+                        "supportGuidance"
+                    );
+
+
+                const supportTitle =
+                    document.getElementById(
+                        "supportTitle"
+                    );
+
+
+                const supportMessage =
+                    document.getElementById(
+                        "supportMessage"
+                    );
+
+
+                // ---------------------------------------------
+                // LOW
+                // ---------------------------------------------
+
                 if (riskLevel === "low") {
 
                     currentStatus.textContent =
                         "● Low Risk";
 
+
                     statusDescription.textContent =
                         data.message;
 
+
+                    supportGuidance.style.display =
+                        "none";
+
                 }
 
+
+                // ---------------------------------------------
+                // ELEVATED
+                // ---------------------------------------------
 
                 else if (riskLevel === "elevated") {
 
                     currentStatus.textContent =
                         "● Elevated";
 
+
                     statusDescription.textContent =
                         data.message;
 
+
+                    supportGuidance.style.display =
+                        "block";
+
+
+                    supportTitle.textContent =
+                        "A gentle check-in with yourself";
+
+
+                    supportMessage.textContent =
+                        "We've noticed some changes in your recent activity pattern. " +
+                        "This does not mean something is wrong. If you'd like, " +
+                        "you can take a short break, try a relaxation activity, " +
+                        "or talk about how you're feeling.";
+
                 }
 
+
+                // ---------------------------------------------
+                // HIGH
+                // ---------------------------------------------
 
                 else if (riskLevel === "high") {
 
                     currentStatus.textContent =
                         "● High Risk";
 
+
                     statusDescription.textContent =
                         data.message;
 
+
+                    supportGuidance.style.display =
+                        "block";
+
+
+                    supportTitle.textContent =
+                        "Consider taking a moment for support";
+
+
+                    supportMessage.textContent =
+                        "We've noticed several changes in your recent activity patterns. " +
+                        "These signals are not a diagnosis. You may want to take a short " +
+                        "break, try Relax & Reset, or talk with our support assistant. " +
+                        "If you'd prefer human support, a responder can also help.";
+
                 }
 
+
+                // ---------------------------------------------
+                // CRITICAL
+                // ---------------------------------------------
 
                 else if (riskLevel === "critical") {
 
                     currentStatus.textContent =
                         "● Critical";
 
+
                     statusDescription.textContent =
                         data.message;
+
+
+                    supportGuidance.style.display =
+                        "block";
+
+
+                    supportTitle.textContent =
+                        "Additional support is available";
+
+
+                    supportMessage.textContent =
+                        "We've detected significant changes in your recent activity patterns. " +
+                        "These activity signals are not a diagnosis. Please consider connecting " +
+                        "with human support or using one of the wellbeing activities below. " +
+                        "If you feel that you may be in immediate danger, seek appropriate " +
+                        "emergency or trusted-person support.";
 
                 }
 
@@ -1348,7 +1441,6 @@
 
                 }
 
-
                 else {
 
                     riskDetails.style.display =
@@ -1369,7 +1461,8 @@
 
                 document.getElementById(
                     "wellbeingScore"
-                ).textContent = "--";
+                ).textContent =
+                    "--";
 
 
                 document.getElementById(
@@ -1392,7 +1485,6 @@
             }
 
         }
-
 
 
         // =====================================================
@@ -1434,7 +1526,6 @@
                 );
 
 
-                // Create recent activity trend
                 createTrend(results);
 
             }
@@ -1461,13 +1552,11 @@
         }
 
 
-
         // =====================================================
         // CREATE RECENT ACTIVITY TREND
         // =====================================================
 
         function createTrend(results) {
-
 
             const trendBars =
                 document.getElementById(
@@ -1501,7 +1590,9 @@
             }
 
 
+            // -------------------------------------------------
             // Take latest 5 activities
+            // -------------------------------------------------
 
             const recentResults =
                 results.slice(-5);
@@ -1542,6 +1633,10 @@
                         "bar-wrapper";
 
 
+                    // -------------------------------------------------
+                    // SCORE
+                    // -------------------------------------------------
+
                     const valueLabel =
                         document.createElement(
                             "div"
@@ -1556,6 +1651,10 @@
                         `${value}`;
 
 
+                    // -------------------------------------------------
+                    // BAR
+                    // -------------------------------------------------
+
                     const bar =
                         document.createElement(
                             "div"
@@ -1569,6 +1668,10 @@
                     bar.style.height =
                         `${barHeight}px`;
 
+
+                    // -------------------------------------------------
+                    // DATE
+                    // -------------------------------------------------
 
                     const day =
                         document.createElement(
@@ -1610,6 +1713,34 @@
                     }
 
 
+                    // -------------------------------------------------
+                    // GAME / ACTIVITY NAME
+                    // -------------------------------------------------
+
+                    const activityName =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    activityName.className =
+                        "activity-name";
+
+
+                    activityName.textContent =
+                        result.game_name ||
+                        "Activity";
+
+
+                    activityName.title =
+                        result.game_name ||
+                        "Activity";
+
+
+                    // -------------------------------------------------
+                    // BUILD BAR
+                    // -------------------------------------------------
+
                     wrapper.appendChild(
                         valueLabel
                     );
@@ -1622,6 +1753,11 @@
 
                     wrapper.appendChild(
                         day
+                    );
+
+
+                    wrapper.appendChild(
+                        activityName
                     );
 
 
@@ -1640,10 +1776,9 @@
                     recentResults.length === 1
                         ? "result"
                         : "results"
-                }.`;
+                } with activity names and scores.`;
 
         }
-
 
 
         // =====================================================
@@ -1651,7 +1786,6 @@
         // =====================================================
 
         function showGames() {
-
 
             const games =
                 document.getElementById(
@@ -1672,13 +1806,11 @@
         }
 
 
-
         // =====================================================
         // PLAY GAMES
         // =====================================================
 
         function playGame(game) {
-
 
             localStorage.setItem(
                 "selectedGame",
@@ -1737,7 +1869,6 @@
         }
 
 
-
         // =====================================================
         // AI SUPPORT
         // =====================================================
@@ -1749,7 +1880,6 @@
             );
 
         }
-
 
 
         // =====================================================
@@ -1764,7 +1894,6 @@
         }
 
 
-
         // =====================================================
         // LOAD DATA WHEN PAGE OPENS
         // =====================================================
@@ -1776,7 +1905,6 @@
             loadGameResults();
 
         }
-
 
     </script>
 
