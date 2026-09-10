@@ -951,3 +951,104 @@ def escalate_case(
         "escalated_at":
             case.escalated_at
     }
+
+# =====================================================
+# HR DASHBOARD
+# PRIVACY-SAFE AGGREGATE OVERVIEW
+# =====================================================
+
+@app.get("/hr/overview")
+def get_hr_overview(
+    db: Session = Depends(get_db)
+):
+
+    # Only employees, not responders/HR accounts
+    employees = db.query(Employee).filter(
+        Employee.role == "employee"
+    ).all()
+
+    total_employees = len(employees)
+
+    stable_count = 0
+    elevated_count = 0
+    high_count = 0
+    critical_count = 0
+
+    risk_scores = []
+
+    for employee in employees:
+
+        results = db.query(GameResult).filter(
+            GameResult.employee_id == employee.id
+        ).order_by(
+            GameResult.created_at.asc()
+        ).all()
+
+        risk = calculate_risk(results)
+
+        risk_level = risk["risk_level"]
+        risk_score = risk["risk_score"]
+
+        risk_scores.append(risk_score)
+
+        if risk_level == "low":
+            stable_count += 1
+
+        elif risk_level == "elevated":
+            elevated_count += 1
+
+        elif risk_level == "high":
+            high_count += 1
+
+        elif risk_level == "critical":
+            critical_count += 1
+
+    # Overall average wellbeing risk score
+    if risk_scores:
+
+        average_risk_score = round(
+            sum(risk_scores) / len(risk_scores)
+        )
+
+    else:
+
+        average_risk_score = 0
+
+    # Overall organization status
+    if critical_count > 0:
+
+        overall_status = "Attention Required"
+
+    elif high_count > 0:
+
+        overall_status = "Needs Attention"
+
+    elif elevated_count > 0:
+
+        overall_status = "Monitor"
+
+    else:
+
+        overall_status = "Stable"
+
+    return {
+
+        "total_employees": total_employees,
+
+        "stable": stable_count,
+
+        "elevated": elevated_count,
+
+        "high": high_count,
+
+        "critical": critical_count,
+
+        "average_risk_score": average_risk_score,
+
+        "overall_status": overall_status,
+
+        "privacy_note":
+            "HR receives aggregate wellbeing trends only. "
+            "Private conversations, detailed activity records, "
+            "and individual responder notes are not exposed."
+    }
