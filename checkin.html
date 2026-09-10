@@ -1,0 +1,1238 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Wellora — Check-in</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fafc,
+                    #eef4ff
+                );
+
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 72px;
+
+            background: rgba(255,255,255,0.88);
+
+            backdrop-filter: blur(14px);
+
+            border-bottom:
+                1px solid #e6eaf0;
+
+            display: flex;
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 42px;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .brand span {
+            color: #667eea;
+        }
+
+        .secure {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .container {
+            max-width: 900px;
+
+            margin: 45px auto;
+
+            padding: 0 22px;
+        }
+
+        .back {
+            border: none;
+            background: transparent;
+
+            color: #667eea;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            margin-bottom: 20px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+
+            font-size: 32px;
+
+            letter-spacing: -0.8px;
+        }
+
+        .header p {
+            margin: 0;
+
+            color: #64748b;
+
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid #e8ecf2;
+
+            box-shadow:
+                0 12px 35px
+                rgba(30, 41, 59, 0.07);
+        }
+
+        .employee-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .employee-name {
+            font-size: 21px;
+
+            font-weight: 650;
+        }
+
+        .employee-email {
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .risk {
+            padding: 9px 14px;
+
+            border-radius: 999px;
+
+            background: #fff4e5;
+
+            color: #b45309;
+
+            font-size: 13px;
+
+            font-weight: 650;
+
+            white-space: nowrap;
+        }
+
+        .section-title {
+            font-size: 18px;
+
+            font-weight: 650;
+
+            margin-bottom: 8px;
+        }
+
+        .section-text {
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 22px;
+        }
+
+        .signals {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+        .signal {
+            padding: 7px 11px;
+
+            border-radius: 10px;
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+            font-size: 13px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question label {
+            display: block;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            margin-bottom: 12px;
+        }
+
+        .choices {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .choice {
+            border: 1px solid #dbe2ea;
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 12px 18px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            font-size: 14px;
+        }
+
+        .choice:hover {
+            border-color: #667eea;
+
+            transform: translateY(-1px);
+        }
+
+        .choice.selected {
+            background: #eef2ff;
+
+            border-color: #667eea;
+
+            color: #4f46e5;
+
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+
+            min-height: 130px;
+
+            resize: vertical;
+
+            border:
+                1px solid #dbe2ea;
+
+            border-radius: 14px;
+
+            padding: 14px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #667eea;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(102,126,234,0.10);
+        }
+
+        .actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .btn {
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 13px 20px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+
+            color: #475569;
+        }
+
+        .btn-primary {
+            background: #667eea;
+
+            color: white;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+
+            color: #b91c1c;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .success {
+            display: none;
+
+            background: #ecfdf5;
+
+            border:
+                1px solid #bbf7d0;
+
+            color: #166534;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+        }
+
+        .error {
+            display: none;
+
+            background: #fef2f2;
+
+            border:
+                1px solid #fecaca;
+
+            color: #b91c1c;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+
+            padding: 80px 20px;
+
+            color: #64748b;
+        }
+
+        .footer-note {
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+
+            margin-top: 25px;
+
+            line-height: 1.5;
+        }
+
+        @media(max-width: 650px) {
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .employee-row {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="brand">
+        Well<span>ora</span>
+    </div>
+
+    <div class="secure">
+        Responder Check-in
+    </div>
+
+</header>
+
+
+<main class="container">
+
+
+    <button
+        class="back"
+        onclick="goBack()"
+    >
+        ← Back to Responder
+    </button>
+
+
+    <div class="header">
+
+        <h1>Support Check-in</h1>
+
+        <p>
+            Connect with the employee, understand what
+            support may be needed, and decide the next
+            appropriate step.
+        </p>
+
+    </div>
+
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Loading case information...
+    </div>
+
+
+    <div
+        id="error"
+        class="error"
+    ></div>
+
+
+    <div
+        id="success"
+        class="success"
+    ></div>
+
+
+    <div
+        id="content"
+        style="display:none;"
+    >
+
+
+        <!-- EMPLOYEE INFORMATION -->
+
+        <div class="card">
+
+            <div class="employee-row">
+
+                <div>
+
+                    <div
+                        class="employee-name"
+                        id="employeeName"
+                    >
+                        Employee
+                    </div>
+
+                    <div
+                        class="employee-email"
+                        id="employeeEmail"
+                    >
+                    </div>
+
+                </div>
+
+                <div
+                    class="risk"
+                    id="riskBadge"
+                >
+                    Risk Case
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIGNALS -->
+
+        <div class="card">
+
+            <div class="section-title">
+                Wellbeing signals
+            </div>
+
+            <div class="section-text">
+                These are system-generated signals from
+                Wellora activities. They are indicators
+                for human review, not a diagnosis.
+            </div>
+
+            <div
+                class="signals"
+                id="signals"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- CHECK-IN -->
+
+        <div class="card">
+
+            <div class="section-title">
+                Check-in
+            </div>
+
+            <div class="section-text">
+                Record what happened during the human
+                check-in. Keep the notes factual and
+                relevant to the support decision.
+            </div>
+
+
+            <!-- CONTACTED -->
+
+            <div class="question">
+
+                <label>
+                    Was the employee contacted?
+                </label>
+
+                <div class="choices">
+
+                    <button
+                        class="choice"
+                        id="contactYes"
+                        onclick="selectContact(true)"
+                    >
+                        Yes
+                    </button>
+
+                    <button
+                        class="choice"
+                        id="contactNo"
+                        onclick="selectContact(false)"
+                    >
+                        No
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUPPORT -->
+
+            <div class="question">
+
+                <label>
+                    Is additional support required?
+                </label>
+
+                <div class="choices">
+
+                    <button
+                        class="choice"
+                        id="supportYes"
+                        onclick="selectSupport(true)"
+                    >
+                        Yes
+                    </button>
+
+                    <button
+                        class="choice"
+                        id="supportNo"
+                        onclick="selectSupport(false)"
+                    >
+                        No
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTES -->
+
+            <div class="question">
+
+                <label>
+                    Check-in notes
+                </label>
+
+                <textarea
+                    id="notes"
+                    placeholder="Record relevant observations, employee concerns, support discussed, or next steps..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- ACTION -->
+
+            <div class="question">
+
+                <label>
+                    What should happen next?
+                </label>
+
+                <div class="choices">
+
+                    <button
+                        class="choice selected"
+                        id="continueChoice"
+                        onclick="selectOutcome('continue_support')"
+                    >
+                        Continue Support
+                    </button>
+
+                    <button
+                        class="choice"
+                        id="escalateChoice"
+                        onclick="selectOutcome('escalate')"
+                    >
+                        Escalate
+                    </button>
+
+                    <button
+                        class="choice"
+                        id="resolveChoice"
+                        onclick="selectOutcome('resolve')"
+                    >
+                        Resolve Case
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="goBack()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="submitCheckin()"
+                    id="submitButton"
+                >
+                    Save Check-in
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-note">
+
+            Wellora uses activity patterns as wellbeing
+            signals. Human review remains an important
+            part of the support and escalation process.
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+    // ========================================================
+    // STATE
+    // ========================================================
+
+    let caseId = null;
+
+    let employeeContacted = false;
+
+    let supportRequired = false;
+
+    let outcome = "continue_support";
+
+
+    // ========================================================
+    // GET CASE ID
+    // ========================================================
+
+    function getCaseId() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        return params.get("case_id");
+    }
+
+
+    // ========================================================
+    // LOAD CASE
+    // ========================================================
+
+    async function loadCase() {
+
+        caseId = getCaseId();
+
+        if (!caseId) {
+
+            showError(
+                "No case ID was provided. Please open the check-in from the Responder dashboard."
+            );
+
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                `/checkin/${caseId}`
+            );
+
+
+            if (!response.ok) {
+
+                const data =
+                    await response.json();
+
+                throw new Error(
+                    data.detail ||
+                    "Unable to load case."
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            document.getElementById(
+                "loading"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "content"
+            ).style.display = "block";
+
+
+            // ------------------------------------------------
+            // Employee
+            // ------------------------------------------------
+
+            document.getElementById(
+                "employeeName"
+            ).textContent =
+                data.employee_name;
+
+
+            document.getElementById(
+                "employeeEmail"
+            ).textContent =
+                data.employee_email;
+
+
+            // ------------------------------------------------
+            // Risk
+            // ------------------------------------------------
+
+            document.getElementById(
+                "riskBadge"
+            ).textContent =
+                `${data.risk_level} · Score ${data.risk_score}`;
+
+
+            // ------------------------------------------------
+            // Signals
+            // ------------------------------------------------
+
+            const signalsContainer =
+                document.getElementById(
+                    "signals"
+                );
+
+
+            signalsContainer.innerHTML = "";
+
+
+            if (
+                data.signals &&
+                data.signals.length
+            ) {
+
+                data.signals.forEach(
+                    signal => {
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+                        item.className =
+                            "signal";
+
+                        item.textContent =
+                            signal;
+
+                        signalsContainer.appendChild(
+                            item
+                        );
+                    }
+                );
+
+            } else {
+
+                signalsContainer.innerHTML =
+                    `<div class="signal">
+                        No additional signals recorded
+                    </div>`;
+
+            }
+
+
+            // ------------------------------------------------
+            // Existing values
+            // ------------------------------------------------
+
+            if (
+                data.employee_contacted
+            ) {
+
+                selectContact(true);
+
+            }
+
+
+            if (
+                data.support_required
+            ) {
+
+                selectSupport(true);
+
+            }
+
+
+            if (
+                data.responder_notes
+            ) {
+
+                document.getElementById(
+                    "notes"
+                ).value =
+                    data.responder_notes;
+
+            }
+
+        }
+
+        catch(error) {
+
+            showError(
+                error.message
+            );
+
+        }
+
+    }
+
+
+    // ========================================================
+    // CONTACT SELECTION
+    // ========================================================
+
+    function selectContact(value) {
+
+        employeeContacted = value;
+
+
+        document
+            .getElementById("contactYes")
+            .classList.toggle(
+                "selected",
+                value === true
+            );
+
+
+        document
+            .getElementById("contactNo")
+            .classList.toggle(
+                "selected",
+                value === false
+            );
+
+    }
+
+
+    // ========================================================
+    // SUPPORT SELECTION
+    // ========================================================
+
+    function selectSupport(value) {
+
+        supportRequired = value;
+
+
+        document
+            .getElementById("supportYes")
+            .classList.toggle(
+                "selected",
+                value === true
+            );
+
+
+        document
+            .getElementById("supportNo")
+            .classList.toggle(
+                "selected",
+                value === false
+            );
+
+    }
+
+
+    // ========================================================
+    // OUTCOME
+    // ========================================================
+
+    function selectOutcome(value) {
+
+        outcome = value;
+
+
+        document
+            .getElementById(
+                "continueChoice"
+            )
+            .classList.toggle(
+                "selected",
+                value === "continue_support"
+            );
+
+
+        document
+            .getElementById(
+                "escalateChoice"
+            )
+            .classList.toggle(
+                "selected",
+                value === "escalate"
+            );
+
+
+        document
+            .getElementById(
+                "resolveChoice"
+            )
+            .classList.toggle(
+                "selected",
+                value === "resolve"
+            );
+
+    }
+
+
+    // ========================================================
+    // SUBMIT
+    // ========================================================
+
+    async function submitCheckin() {
+
+        if (!caseId) {
+
+            showError(
+                "Invalid case."
+            );
+
+            return;
+        }
+
+
+        const notes =
+            document.getElementById(
+                "notes"
+            ).value.trim();
+
+
+        const button =
+            document.getElementById(
+                "submitButton"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Saving...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/checkin/${caseId}/submit`,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            employee_contacted:
+                                employeeContacted,
+
+                            support_required:
+                                supportRequired,
+
+                            checkin_notes:
+                                notes,
+
+                            outcome:
+                                outcome
+
+                        })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Unable to save check-in."
+                );
+
+            }
+
+
+            let message =
+                "Check-in recorded successfully.";
+
+
+            if (
+                outcome === "escalate"
+            ) {
+
+                message +=
+                    " The case has been marked for secondary support.";
+
+            }
+            else if (
+                outcome === "resolve"
+            ) {
+
+                message +=
+                    " The case has been resolved.";
+
+            }
+            else {
+
+                message +=
+                    " The case remains in progress.";
+
+            }
+
+
+            showSuccess(
+                message
+            );
+
+
+            button.textContent =
+                "Saved";
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "/responder";
+
+                },
+                1800
+            );
+
+        }
+
+        catch(error) {
+
+            showError(
+                error.message
+            );
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Save Check-in";
+
+        }
+
+    }
+
+
+    // ========================================================
+    // UI HELPERS
+    // ========================================================
+
+    function showError(message) {
+
+        const error =
+            document.getElementById(
+                "error"
+            );
+
+        error.textContent =
+            message;
+
+        error.style.display =
+            "block";
+
+        document.getElementById(
+            "loading"
+        ).style.display =
+            "none";
+
+    }
+
+
+    function showSuccess(message) {
+
+        const success =
+            document.getElementById(
+                "success"
+            );
+
+        success.textContent =
+            message;
+
+        success.style.display =
+            "block";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    // ========================================================
+    // BACK
+    // ========================================================
+
+    function goBack() {
+
+        window.location.href =
+            "/responder";
+
+    }
+
+
+    // ========================================================
+    // START
+    // ========================================================
+
+    loadCase();
+
+</script>
+
+
+</body>
+
+</html>

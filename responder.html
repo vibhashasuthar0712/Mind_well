@@ -1,116 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Wellora - Responder Dashboard</title>
-
+    <title>Wellora — Responder Dashboard</title>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
         }
-
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
             background: #f5f7fb;
-            color: #1f2937;
+            color: #172033;
+            min-height: 100vh;
         }
 
-
-        /* ================= HEADER ================= */
+        /* =====================================================
+           HEADER
+        ===================================================== */
 
         header {
-            background: white;
-            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid #e7eaf0;
+            height: 72px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e5e7eb;
+            justify-content: space-between;
+            padding: 0 42px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-
-        .role {
-            font-size: 14px;
-            color: #6b7280;
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
         }
 
-
-        /* ================= MAIN ================= */
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+        .brand-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
 
-
-        .welcome {
-            margin-bottom: 25px;
+        .brand-text p {
+            color: #7b8496;
+            font-size: 12px;
+            margin-top: 2px;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .welcome h1 {
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: #4d5a70;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #39b87f;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(57, 184, 127, 0.12);
+        }
+
+        .refresh-btn {
+            border: 1px solid #e1e5ed;
+            background: white;
+            padding: 9px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #4c5870;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: #f6f7fa;
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 34px 38px 60px;
+        }
+
+        .page-heading {
+            margin-bottom: 26px;
+        }
+
+        .page-heading h2 {
             font-size: 28px;
-            margin-bottom: 8px;
+            letter-spacing: -0.7px;
+            margin-bottom: 7px;
         }
 
-
-        .welcome p {
-            color: #6b7280;
+        .page-heading p {
+            color: #737d90;
+            font-size: 14px;
+            max-width: 760px;
+            line-height: 1.6;
         }
 
+        /* =====================================================
+           PRIVACY NOTICE
+        ===================================================== */
 
-        /* ================= STATS ================= */
+        .privacy-banner {
+            background: linear-gradient(
+                135deg,
+                #f0f5ff,
+                #f8f5ff
+            );
+            border: 1px solid #dfe6fb;
+            border-radius: 16px;
+            padding: 16px 19px;
+            margin-bottom: 28px;
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
 
-        .stats {
+        .privacy-icon {
+            font-size: 20px;
+        }
+
+        .privacy-banner strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: #33415f;
+        }
+
+        .privacy-banner p {
+            font-size: 12px;
+            line-height: 1.55;
+            color: #667189;
+        }
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
+            gap: 16px;
             margin-bottom: 30px;
         }
 
-
         .stat-card {
             background: white;
-            padding: 22px;
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e8ebf1;
+            border-radius: 17px;
+            padding: 20px;
+            box-shadow: 0 8px 28px rgba(35, 45, 70, 0.045);
         }
 
-
-        .stat-card h3 {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 10px;
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
+        .stat-label {
+            color: #7a8497;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #f2f4fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
 
         .stat-number {
-            font-size: 30px;
-            font-weight: bold;
+            font-size: 27px;
+            font-weight: 750;
+            letter-spacing: -0.7px;
         }
 
-
-        /* ================= CASE SECTION ================= */
+        /* =====================================================
+           SECTION
+        ===================================================== */
 
         .section-header {
             display: flex;
@@ -119,612 +231,537 @@
             margin-bottom: 15px;
         }
 
-
-        .section-header h2 {
-            font-size: 21px;
+        .section-header h3 {
+            font-size: 17px;
+            letter-spacing: -0.2px;
         }
 
-
-        .refresh-btn {
-            border: none;
-            background: #2563eb;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            min-width: 110px;
-            transition: 0.2s;
+        .section-header span {
+            font-size: 12px;
+            color: #8992a3;
         }
 
+        /* =====================================================
+           CASES
+        ===================================================== */
 
-        .refresh-btn:hover {
-            background: #1d4ed8;
-        }
-
-
-        .refresh-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-
-        /* ================= CASE CARD ================= */
-
-        .cases {
+        #casesContainer {
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
         }
-
 
         .case-card {
             background: white;
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e7eaf0;
+            border-radius: 19px;
+            padding: 22px;
+            box-shadow: 0 10px 32px rgba(35, 45, 70, 0.05);
+            transition: 0.2s;
         }
 
+        .case-card:hover {
+            box-shadow: 0 14px 38px rgba(35, 45, 70, 0.075);
+            transform: translateY(-1px);
+        }
 
-        .case-top {
+        .case-header {
             display: flex;
             justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .employee-info {
+            display: flex;
+            gap: 13px;
             align-items: center;
-            margin-bottom: 18px;
         }
 
-
-        .employee-name {
-            font-size: 20px;
-            font-weight: bold;
+        .employee-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #eef1ff, #f3ecff);
+            color: #5967b5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 750;
+            font-size: 17px;
         }
 
+        .employee-info h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
 
-        .case-id {
+        .employee-info p {
+            color: #8a93a5;
             font-size: 12px;
-            color: #9ca3af;
-            margin-top: 4px;
         }
 
-
-        /* ================= RISK BADGES ================= */
+        .case-right {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
 
         .risk-badge {
-            padding: 7px 13px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
         }
 
+        .risk-low {
+            background: #eaf8f1;
+            color: #28845c;
+        }
+
+        .risk-elevated {
+            background: #fff7df;
+            color: #a27418;
+        }
 
         .risk-high {
-            background: #fff7ed;
-            color: #c2410c;
+            background: #fff0e9;
+            color: #c65b32;
         }
-
 
         .risk-critical {
-            background: #fef2f2;
-            color: #dc2626;
+            background: #ffe8eb;
+            color: #bd3042;
         }
 
-
-        /* ================= DETAILS ================= */
-
-        .details {
-            display: grid;
-            grid-template-columns: 150px 150px 1fr;
-            gap: 20px;
-            margin-bottom: 18px;
+        .status-badge {
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: #f1f3f7;
+            color: #687287;
+            text-transform: capitalize;
         }
 
+        /* =====================================================
+           CASE BODY
+        ===================================================== */
 
-        .detail h4 {
+        .case-body {
+            margin-top: 19px;
+            border-top: 1px solid #edf0f4;
+            padding-top: 18px;
+        }
+
+        .signal-title {
             font-size: 12px;
-            color: #9ca3af;
-            margin-bottom: 6px;
-            text-transform: uppercase;
+            font-weight: 700;
+            color: #596378;
+            margin-bottom: 10px;
         }
-
-
-        .detail p {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-
-        /* ================= SIGNALS ================= */
 
         .signals {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-        }
-
-
-        .signals h4 {
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-
-        .signals ul {
-            padding-left: 20px;
-        }
-
-
-        .signals li {
-            margin-bottom: 5px;
-            color: #4b5563;
-        }
-
-
-        /* ================= STATUS ================= */
-
-        .status {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 7px;
-            background: #eff6ff;
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-
-        /* ================= ESCALATION INFO ================= */
-
-        .escalation-box {
-            background: #fff7ed;
-            border: 1px solid #fed7aa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 18px;
-        }
-
-
-        .escalation-box h4 {
-            color: #c2410c;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-
-        .escalation-box p {
-            font-size: 14px;
-            color: #4b5563;
-            margin-bottom: 5px;
-        }
-
-
-        .escalation-critical {
-            background: #fef2f2;
-            border-color: #fecaca;
-        }
-
-
-        .escalation-critical h4 {
-            color: #dc2626;
-        }
-
-
-        /* ================= ACTIONS ================= */
-
-        .actions {
             display: flex;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .signal {
+            background: #f6f7fa;
+            border: 1px solid #e8ebf0;
+            color: #626d81;
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 11px;
+        }
+
+        .risk-note {
+            margin-top: 13px;
+            background: #fafbfc;
+            border-radius: 11px;
+            padding: 11px 13px;
+            font-size: 11px;
+            color: #7b8495;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           WORKFLOW
+        ===================================================== */
+
+        .workflow {
+            margin-top: 18px;
+            background: #fafbfe;
+            border: 1px solid #edf0f5;
+            border-radius: 13px;
+            padding: 14px;
+        }
+
+        .workflow-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #667085;
+            margin-bottom: 11px;
+        }
+
+        .workflow-steps {
+            display: flex;
+            align-items: center;
+            gap: 7px;
             flex-wrap: wrap;
         }
 
-
-        .action-btn {
-            border: none;
-            padding: 10px 16px;
+        .workflow-step {
+            padding: 6px 9px;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+            font-size: 10px;
+            color: #8a92a1;
+            background: white;
+            border: 1px solid #e8ebf0;
         }
 
+        .workflow-step.active {
+            background: #eef1ff;
+            color: #5666bd;
+            border-color: #dfe4ff;
+            font-weight: 700;
+        }
 
-        .ack-btn {
-            background: #2563eb;
+        .workflow-arrow {
+            color: #b4bac6;
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .case-actions {
+            display: flex;
+            gap: 9px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        button.action-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button.action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: #5f6fd1;
             color: white;
         }
 
-
-        .check-btn {
-            background: #f3f4f6;
-            color: #374151;
+        .btn-primary:hover {
+            background: #5363c5;
         }
 
-
-        .resolve-btn {
-            background: #ecfdf5;
-            color: #047857;
+        .btn-secondary {
+            background: #f0f2f7;
+            color: #566174;
         }
 
-
-        .escalate-btn {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
+        .btn-warning {
+            background: #fff2df;
+            color: #a46b18;
         }
 
-
-        .action-btn:hover {
-            opacity: 0.85;
+        .btn-danger {
+            background: #ffecef;
+            color: #b83243;
         }
 
-
-        /* ================= NOTES ================= */
-
-        .notes-area {
-            width: 100%;
-            min-height: 80px;
-            margin-top: 15px;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            resize: vertical;
-            display: none;
+        .btn-success {
+            background: #eaf8f1;
+            color: #28845c;
         }
 
+        /* =====================================================
+           EMPTY / LOADING / ERROR
+        ===================================================== */
 
-        /* ================= PRIVACY ================= */
+        .empty-state,
+        .loading-state,
+        .error-state {
+            background: white;
+            border: 1px solid #e7eaf0;
+            border-radius: 18px;
+            padding: 45px 25px;
+            text-align: center;
+            color: #7c8597;
+        }
 
-        .privacy {
-            margin-top: 30px;
-            background: #eff6ff;
-            padding: 18px;
-            border-radius: 12px;
-            color: #374151;
-            font-size: 13px;
+        .empty-icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h4 {
+            color: #3d4659;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .empty-state p,
+        .loading-state p,
+        .error-state p {
+            font-size: 12px;
             line-height: 1.6;
         }
 
-
-        /* ================= MODAL ================= */
+        /* =====================================================
+           MODAL
+        ===================================================== */
 
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.55);
+            background: rgba(21, 27, 42, 0.38);
+            backdrop-filter: blur(7px);
             display: none;
             align-items: center;
             justify-content: center;
+            z-index: 500;
             padding: 20px;
-            z-index: 1000;
         }
-
 
         .modal-overlay.show {
             display: flex;
         }
 
-
         .modal {
             width: 100%;
-            max-width: 520px;
+            max-width: 510px;
             background: white;
-            border-radius: 18px;
-            padding: 28px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(20, 30, 55, 0.22);
+            overflow: hidden;
         }
-
 
         .modal-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid #edf0f4;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            align-items: center;
         }
 
-
-        .modal-header h2 {
-            font-size: 22px;
-            margin-bottom: 5px;
+        .modal-header h3 {
+            font-size: 17px;
         }
-
-
-        .modal-header p {
-            color: #6b7280;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
 
         .close-btn {
+            width: 32px;
+            height: 32px;
             border: none;
-            background: #f3f4f6;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
+            border-radius: 9px;
+            background: #f3f4f7;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 17px;
+            color: #667085;
         }
 
+        .modal-body {
+            padding: 22px;
+        }
+
+        .modal-body p {
+            font-size: 12px;
+            color: #6e788b;
+            line-height: 1.6;
+            margin-bottom: 17px;
+        }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
-
 
         .form-group label {
             display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #586277;
+            margin-bottom: 7px;
         }
-
 
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 9px;
-            font-size: 14px;
+            border: 1px solid #dfe3eb;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-family: inherit;
+            font-size: 12px;
             outline: none;
+            background: white;
         }
 
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
 
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: #2563eb;
+            border-color: #7a88dc;
+            box-shadow: 0 0 0 3px rgba(95, 111, 209, 0.09);
         }
 
-
-        .form-group textarea {
-            min-height: 90px;
-            resize: vertical;
-        }
-
-
-        .checkbox-group {
+        .checkbox-row {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-
-        .checkbox-item {
-            display: flex;
+            gap: 9px;
             align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            color: #374151;
+            margin-bottom: 11px;
+            font-size: 12px;
+            color: #626d80;
         }
 
-
-        .checkbox-item input {
-            width: 17px;
-            height: 17px;
+        .checkbox-row input {
+            accent-color: #5f6fd1;
         }
-
 
         .modal-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 9px;
+            margin-top: 19px;
         }
 
+        /* =====================================================
+           TOAST
+        ===================================================== */
 
-        .cancel-btn {
-            border: none;
-            background: #f3f4f6;
-            color: #374151;
-            padding: 11px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-
-        .submit-escalation-btn {
-            border: none;
-            background: #dc2626;
+        .toast {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            background: #202638;
             color: white;
-            padding: 11px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
+            padding: 12px 16px;
+            border-radius: 11px;
+            font-size: 12px;
+            box-shadow: 0 12px 30px rgba(20, 25, 40, 0.2);
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: 0.25s;
+            z-index: 1000;
         }
 
-
-        .submit-escalation-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
 
-        /* ================= EMPTY STATE ================= */
+        @media (max-width: 900px) {
 
-        .empty {
-            background: white;
-            padding: 50px;
-            text-align: center;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-        }
+            header {
+                padding: 0 20px;
+            }
 
+            main {
+                padding: 25px 20px 45px;
+            }
 
-        .empty-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-
-        .empty h3 {
-            margin-bottom: 8px;
-        }
-
-
-        .empty p {
-            color: #6b7280;
-        }
-
-
-        /* ================= RESPONSIVE ================= */
-
-        @media (max-width: 800px) {
-
-            .stats {
+            .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-
-            .details {
-                grid-template-columns: 1fr 1fr;
+            .case-header {
+                flex-direction: column;
             }
 
+            .case-right {
+                align-self: flex-start;
+            }
         }
 
+        @media (max-width: 560px) {
 
-        @media (max-width: 500px) {
+            .brand-text p {
+                display: none;
+            }
+
+            .live-badge {
+                display: none;
+            }
 
             header {
-                padding: 18px;
+                height: 64px;
             }
 
-
-            .container {
-                padding: 0 12px;
-            }
-
-
-            .stats {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
 
-
-            .details {
-                grid-template-columns: 1fr;
+            .page-heading h2 {
+                font-size: 23px;
             }
 
-
-            .section-header {
-                align-items: flex-start;
-                gap: 10px;
+            .case-card {
+                padding: 17px;
             }
 
-
-            .modal {
-                padding: 20px;
+            .workflow-steps {
+                gap: 5px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header>
 
-    <div class="logo">
-        🌿 Wellora
-    </div>
+    <div class="brand">
 
-
-    <div class="role">
-        Responder Dashboard
-    </div>
-
-</header>
-
-
-<main class="container">
-
-
-    <div class="welcome">
-
-        <h1>Responder Dashboard</h1>
-
-        <p>
-            Review wellbeing risk cases and provide timely human support.
-        </p>
-
-    </div>
-
-
-    <!-- ================= STATS ================= -->
-
-    <div class="stats">
-
-        <div class="stat-card">
-
-            <h3>Active Cases</h3>
-
-            <div
-                class="stat-number"
-                id="activeCases"
-            >
-                0
-            </div>
-
+        <div class="brand-icon">
+            ♡
         </div>
 
+        <div class="brand-text">
 
-        <div class="stat-card">
+            <h1>Wellora</h1>
 
-            <h3>Critical</h3>
-
-            <div
-                class="stat-number"
-                id="criticalCases"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h3>High Risk</h3>
-
-            <div
-                class="stat-number"
-                id="highCases"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h3>In Progress</h3>
-
-            <div
-                class="stat-number"
-                id="progressCases"
-            >
-                0
-            </div>
+            <p>Human Support & Safety</p>
 
         </div>
 
     </div>
 
 
-    <!-- ================= CASES ================= -->
+    <div class="header-right">
 
-    <div class="section-header">
+        <div class="live-badge">
 
-        <h2>Active Risk Cases</h2>
+            <span class="live-dot"></span>
 
+            Live monitoring
+
+        </div>
 
         <button
             class="refresh-btn"
-            id="refreshBtn"
             onclick="loadCases()"
         >
             ↻ Refresh
@@ -732,24 +769,51 @@
 
     </div>
 
-
-    <div
-        class="cases"
-        id="casesContainer"
-    >
-
-        <div class="empty">
-
-            <div class="empty-icon">
-                ⏳
-            </div>
+</header>
 
 
-            <h3>Loading cases...</h3>
+<!-- =========================================================
+     MAIN
+========================================================= -->
 
+<main>
+
+    <div class="page-heading">
+
+        <h2>Responder Dashboard</h2>
+
+        <p>
+            Review wellbeing signals that may need human
+            attention and follow the appropriate support
+            workflow.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRIVACY
+    ====================================================== -->
+
+    <div class="privacy-banner">
+
+        <div class="privacy-icon">
+            🔒
+        </div>
+
+        <div>
+
+            <strong>
+                Privacy-first responder view
+            </strong>
 
             <p>
-                Please wait while we retrieve active cases.
+                Wellora shows the minimum information needed
+                for a support decision. Activity signals are
+                not a medical diagnosis, and private employee
+                conversations or reflections are not shown
+                here unless they are explicitly shared through
+                the safety workflow.
             </p>
 
         </div>
@@ -757,49 +821,158 @@
     </div>
 
 
-    <!-- ================= PRIVACY ================= -->
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
 
-    <div class="privacy">
+    <div class="stats-grid">
 
-        🔒 <strong>Privacy & Safety:</strong>
+        <div class="stat-card">
 
-        This dashboard shows only the minimum information
-        required for human intervention. Private employee
-        conversations and personal reflections are not shown
-        here unless explicitly shared through the appropriate
-        safety workflow.
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    Active cases
+                </span>
+
+                <div class="stat-icon">
+                    📋
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="activeCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    New
+                </span>
+
+                <div class="stat-icon">
+                    🆕
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="newCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    High
+                </span>
+
+                <div class="stat-icon">
+                    ⚠️
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="highCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <span class="stat-label">
+                    Critical
+                </span>
+
+                <div class="stat-icon">
+                    🚨
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="criticalCount"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CASE SECTION
+    ====================================================== -->
+
+    <div class="section-header">
+
+        <h3>
+            Cases requiring attention
+        </h3>
+
+        <span id="lastUpdated">
+            Not updated yet
+        </span>
+
+    </div>
+
+
+    <div id="casesContainer">
+
+        <div class="loading-state">
+
+            <p>
+                Loading active cases...
+            </p>
+
+        </div>
 
     </div>
 
 </main>
 
 
-<!-- =====================================================
+<!-- =========================================================
      ESCALATION MODAL
-===================================================== -->
+========================================================= -->
 
 <div
     class="modal-overlay"
     id="escalationModal"
 >
 
-
     <div class="modal">
-
 
         <div class="modal-header">
 
-            <div>
-
-                <h2>🚨 Safety Escalation</h2>
-
-                <p>
-                    Escalate this case according to your
-                    organization's safety protocol.
-                </p>
-
-            </div>
-
+            <h3>
+                Record safety escalation
+            </h3>
 
             <button
                 class="close-btn"
@@ -811,1176 +984,1098 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="modal-body">
 
-            <label for="escalationLevel">
-                Escalation Level
-            </label>
-
-
-            <select id="escalationLevel">
-
-                <option value="secondary_responder">
-                    Secondary Responder
-                </option>
-
-                <option value="safety_lead">
-                    Safety Lead
-                </option>
-
-                <option value="emergency_protocol">
-                    Emergency Protocol
-                </option>
-
-            </select>
-
-        </div>
+            <p>
+                Use this when the human check-in indicates
+                that additional support is required. Follow
+                your organization's safety protocol for
+                urgent or immediate concerns.
+            </p>
 
 
-        <div class="checkbox-group">
+            <div class="form-group">
+
+                <label>
+                    Escalation level
+                </label>
+
+                <select id="escalationLevel">
+
+                    <option value="secondary_responder">
+                        Secondary responder
+                    </option>
+
+                    <option value="manager">
+                        Manager / designated workplace support
+                    </option>
+
+                    <option value="hr">
+                        HR / wellbeing team
+                    </option>
+
+                    <option value="emergency_protocol">
+                        Emergency / safety protocol
+                    </option>
+
+                </select>
+
+            </div>
 
 
-            <label class="checkbox-item">
+            <div class="checkbox-row">
 
                 <input
                     type="checkbox"
                     id="employeeContacted"
                 >
 
-                Employee has been contacted
+                <label for="employeeContacted">
+                    Employee has been contacted through an
+                    approved channel
+                </label>
 
-            </label>
+            </div>
 
 
-            <label class="checkbox-item">
+            <div class="checkbox-row">
 
                 <input
                     type="checkbox"
                     id="supportRequired"
                 >
 
-                Additional support is required
+                <label for="supportRequired">
+                    Additional human support is required
+                </label>
 
-            </label>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label for="escalationReason">
-                Reason / Responder Note
-            </label>
+            </div>
 
 
-            <textarea
-                id="escalationReason"
-                placeholder="Briefly record why additional support is required..."
-            ></textarea>
+            <div class="form-group">
 
-        </div>
+                <label>
+                    Reason / minimum necessary note
+                </label>
 
+                <textarea
+                    id="escalationReason"
+                    placeholder="Record only information necessary for the support workflow..."
+                ></textarea>
 
-        <div class="modal-actions">
-
-
-            <button
-                class="cancel-btn"
-                onclick="closeEscalationModal()"
-            >
-                Cancel
-            </button>
+            </div>
 
 
-            <button
-                class="submit-escalation-btn"
-                id="submitEscalationBtn"
-                onclick="submitEscalation()"
-            >
-                Escalate Case
-            </button>
+            <div class="modal-actions">
+
+                <button
+                    class="action-btn btn-secondary"
+                    onclick="closeEscalationModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="action-btn btn-warning"
+                    onclick="submitEscalation()"
+                >
+                    Record escalation
+                </button>
+
+            </div>
 
         </div>
-
 
     </div>
 
 </div>
 
 
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
 <script>
 
+/* ============================================================
+   GLOBAL STATE
+============================================================ */
 
-    // =================================================
-    // CURRENT ESCALATION CASE
-    // =================================================
-
-    let currentEscalationCaseId = null;
-
-
-    // =================================================
-    // LOAD RESPONDER CASES
-    // =================================================
-
-    async function loadCases() {
-
-        const container =
-            document.getElementById("casesContainer");
+let currentCases = [];
+let selectedCaseId = null;
 
 
-        const refreshBtn =
-            document.getElementById("refreshBtn");
+/* ============================================================
+   LOAD CASES
+============================================================ */
+
+async function loadCases() {
+
+    const container =
+        document.getElementById("casesContainer");
+
+    container.innerHTML = `
+        <div class="loading-state">
+            <p>Loading active cases...</p>
+        </div>
+    `;
+
+    try {
+
+        const response = await fetch(
+            "/responder/cases?refresh=" + Date.now()
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load responder cases."
+            );
+        }
+
+        const cases = await response.json();
+
+        currentCases = Array.isArray(cases)
+            ? cases
+            : [];
+
+        updateStats(currentCases);
+
+        renderCases(currentCases);
+
+        document.getElementById(
+            "lastUpdated"
+        ).textContent =
+            "Updated " +
+            new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="error-state">
+
+                <p>
+                    Unable to load active cases.
+                    Please refresh and try again.
+                </p>
+
+            </div>
+        `;
+
+        showToast(
+            "Could not load responder cases."
+        );
+    }
+}
 
 
-        refreshBtn.disabled = true;
+/* ============================================================
+   UPDATE STATS
+============================================================ */
 
-        refreshBtn.textContent =
-            "⟳ Refreshing...";
+function updateStats(cases) {
 
+    const active =
+        cases.length;
+
+    const newCases =
+        cases.filter(
+            c => c.status === "new"
+        ).length;
+
+    const high =
+        cases.filter(
+            c => c.risk_level === "high"
+        ).length;
+
+    const critical =
+        cases.filter(
+            c => c.risk_level === "critical"
+        ).length;
+
+
+    document.getElementById(
+        "activeCount"
+    ).textContent = active;
+
+    document.getElementById(
+        "newCount"
+    ).textContent = newCases;
+
+    document.getElementById(
+        "highCount"
+    ).textContent = high;
+
+    document.getElementById(
+        "criticalCount"
+    ).textContent = critical;
+}
+
+
+/* ============================================================
+   RENDER CASES
+============================================================ */
+
+function renderCases(cases) {
+
+    const container =
+        document.getElementById("casesContainer");
+
+
+    if (!cases.length) {
 
         container.innerHTML = `
 
-            <div class="empty">
+            <div class="empty-state">
 
                 <div class="empty-icon">
-                    ⟳
+                    ✓
                 </div>
 
-                <h3>Refreshing cases...</h3>
+                <h4>
+                    No active cases
+                </h4>
 
                 <p>
-                    Checking for new risk cases.
+                    There are currently no new or
+                    in-progress cases requiring
+                    responder attention.
                 </p>
 
             </div>
 
         `;
 
-
-        try {
-
-            const response =
-                await fetch(
-                    "/responder/cases?refresh=" +
-                    Date.now()
-                );
-
-
-            const cases =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    cases.detail ||
-                    "Unable to load cases"
-                );
-
-            }
-
-
-            updateStats(cases);
-
-            renderCases(cases);
-
-
-            refreshBtn.textContent =
-                "✓ Updated";
-
-
-            setTimeout(() => {
-
-                refreshBtn.textContent =
-                    "↻ Refresh";
-
-            }, 1500);
-
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Error loading responder cases:",
-                error
-            );
-
-
-            container.innerHTML = `
-
-                <div class="empty">
-
-                    <div class="empty-icon">
-                        ⚠️
-                    </div>
-
-                    <h3>Unable to load cases</h3>
-
-                    <p>
-                        ${escapeHtml(error.message)}
-                    </p>
-
-                </div>
-
-            `;
-
-
-            refreshBtn.textContent =
-                "↻ Try Again";
-
-        }
-
-
-        finally {
-
-            refreshBtn.disabled = false;
-
-        }
-
+        return;
     }
 
 
-    // =================================================
-    // UPDATE STATISTICS
-    // =================================================
+    container.innerHTML =
+        cases.map(
+            caseData => createCaseCard(caseData)
+        ).join("");
+}
 
-    function updateStats(cases) {
 
-        const critical =
-            cases.filter(
-                c => c.risk_level === "critical"
-            ).length;
+/* ============================================================
+   CREATE CASE CARD
+============================================================ */
 
+function createCaseCard(caseData) {
 
-        const high =
-            cases.filter(
-                c => c.risk_level === "high"
-            ).length;
+    /*
+     * IMPORTANT:
+     * Backend /responder/cases returns:
+     *
+     * {
+     *     "id": case.id,
+     *     ...
+     * }
+     *
+     * Therefore we MUST use caseData.id.
+     *
+     * NOT caseData.case_id.
+     */
 
+    const caseId =
+        caseData.id;
 
-        const inProgress =
-            cases.filter(
-                c => c.status === "in_progress"
-            ).length;
 
+    const employeeName =
+        caseData.employee_name ||
+        "Unknown employee";
 
-        document.getElementById(
-            "activeCases"
-        ).textContent = cases.length;
 
+    const email =
+        caseData.employee_email ||
+        "";
 
-        document.getElementById(
-            "criticalCases"
-        ).textContent = critical;
 
+    const riskLevel =
+        String(
+            caseData.risk_level || "elevated"
+        ).toLowerCase();
 
-        document.getElementById(
-            "highCases"
-        ).textContent = high;
 
+    const status =
+        caseData.status ||
+        "new";
 
-        document.getElementById(
-            "progressCases"
-        ).textContent = inProgress;
 
-    }
+    const riskScore =
+        caseData.risk_score ??
+        "—";
 
 
-    // =================================================
-    // RENDER CASES
-    // =================================================
+    const signals =
+        Array.isArray(caseData.signals)
+            ? caseData.signals
+            : [];
 
-    function renderCases(cases) {
 
-        const container =
-            document.getElementById(
-                "casesContainer"
-            );
+    const initials =
+        getInitials(employeeName);
 
 
-        if (cases.length === 0) {
+    const riskClass =
+        "risk-" +
+        riskLevel;
 
-            container.innerHTML = `
 
-                <div class="empty">
-
-                    <div class="empty-icon">
-                        ✅
-                    </div>
-
-                    <h3>No active risk cases</h3>
-
-                    <p>
-                        There are currently no high or critical
-                        cases requiring responder attention.
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-        }
-
-
-        container.innerHTML =
-            cases.map(caseData => {
-
-
-                const riskClass =
-                    caseData.risk_level === "critical"
-                        ? "risk-critical"
-                        : "risk-high";
-
-
-                const riskText =
-                    caseData.risk_level
-                        .charAt(0)
-                        .toUpperCase()
-                    +
-                    caseData.risk_level
-                        .slice(1);
-
-
-                const signals =
-                    caseData.signals || [];
-
-
-                const isEscalated =
-                    caseData.escalation_level &&
-                    caseData.escalation_level !== "none";
-
-
-                const escalationClass =
-                    caseData.risk_level === "critical"
-                        ? "escalation-box escalation-critical"
-                        : "escalation-box";
-
-
-                return `
-
-                    <div
-                        class="case-card"
-                        id="case-${caseData.case_id}"
-                    >
-
-
-                        <div class="case-top">
-
-
-                            <div>
-
-                                <div class="employee-name">
-
-                                    ${escapeHtml(
-                                        caseData.employee_name
-                                    )}
-
-                                </div>
-
-
-                                <div class="case-id">
-
-                                    Case #${caseData.case_id}
-
-                                </div>
-
-                            </div>
-
-
-                            <div
-                                class="risk-badge ${riskClass}"
-                            >
-
-                                ${riskText}
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="details">
-
-
-                            <div class="detail">
-
-                                <h4>Risk Score</h4>
-
-                                <p>
-                                    ${caseData.risk_score}/100
-                                </p>
-
-                            </div>
-
-
-                            <div class="detail">
-
-                                <h4>Status</h4>
-
-                                <p>
-                                    ${formatStatus(
-                                        caseData.status
-                                    )}
-                                </p>
-
-                            </div>
-
-
-                            <div class="detail">
-
-                                <h4>Created</h4>
-
-                                <p>
-                                    ${formatDate(
-                                        caseData.created_at
-                                    )}
-                                </p>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="signals">
-
-                            <h4>
-                                Detected Activity Signals
-                            </h4>
-
-
-                            <ul>
-
-                                ${
-                                    signals.length
-                                    ?
-                                    signals.map(
-                                        signal =>
-                                        `<li>${escapeHtml(signal)}</li>`
-                                    ).join("")
-                                    :
-                                    "<li>No signals available</li>"
-                                }
-
-                            </ul>
-
-                        </div>
-
-
-                        ${
-                            isEscalated
-
-                            ?
-
-                            `
-
-                            <div class="${escalationClass}">
-
-                                <h4>
-                                    🚨 Safety Escalation Active
-                                </h4>
-
-
-                                <p>
-                                    <strong>Level:</strong>
-                                    ${formatStatus(
-                                        caseData.escalation_level
-                                    )}
-                                </p>
-
-
-                                <p>
-                                    <strong>Employee Contacted:</strong>
-                                    ${
-                                        caseData.employee_contacted
-                                        ? "Yes"
-                                        : "No"
-                                    }
-                                </p>
-
-
-                                <p>
-                                    <strong>Additional Support:</strong>
-                                    ${
-                                        caseData.support_required
-                                        ? "Required"
-                                        : "Not marked"
-                                    }
-                                </p>
-
-
-                                ${
-                                    caseData.escalation_reason
-                                    ?
-
-                                    `<p>
-                                        <strong>Reason:</strong>
-                                        ${escapeHtml(
-                                            caseData.escalation_reason
-                                        )}
-                                    </p>`
-
-                                    :
-
-                                    ""
-                                }
-
-
-                                <p>
-                                    <strong>Escalated:</strong>
-                                    ${formatDate(
-                                        caseData.escalated_at
-                                    )}
-                                </p>
-
-                            </div>
-
-                            `
-
-                            :
-
-                            ""
-
-                        }
-
-
-                        <div class="status">
-
-                            ● ${formatStatus(
-                                caseData.status
-                            )}
-
-                        </div>
-
-
-                        <div class="actions">
-
-
-                            ${
-                                caseData.status === "new"
-
-                                ?
-
-                                `
-
-                                <button
-                                    class="action-btn ack-btn"
-                                    onclick="acknowledgeCase(
-                                        ${caseData.case_id}
-                                    )"
-                                >
-                                    ✓ Acknowledge
-                                </button>
-
-                                `
-
-                                :
-
-                                ""
-
-                            }
-
-
-                            ${
-                                caseData.status === "acknowledged"
-
-                                ?
-
-                                `
-
-                                <button
-                                    class="action-btn check-btn"
-                                    onclick="startCheckIn(
-                                        ${caseData.case_id}
-                                    )"
-                                >
-                                    💬 Start Check-in
-                                </button>
-
-                                `
-
-                                :
-
-                                ""
-
-                            }
-
-
-                            ${
-                                caseData.status === "in_progress"
-
-                                ?
-
-                                `
-
-                                <button
-                                    class="action-btn escalate-btn"
-                                    onclick="openEscalationModal(
-                                        ${caseData.case_id}
-                                    )"
-                                >
-                                    🚨 Escalate
-                                </button>
-
-
-                                <button
-                                    class="action-btn resolve-btn"
-                                    onclick="resolveCase(
-                                        ${caseData.case_id}
-                                    )"
-                                >
-                                    ✓ Resolve Case
-                                </button>
-
-                                `
-
-                                :
-
-                                ""
-
-                            }
-
-
-                        </div>
-
-
-                        <textarea
-                            class="notes-area"
-                            id="notes-${caseData.case_id}"
-                            placeholder="Add responder notes..."
-                        ></textarea>
-
-
-                    </div>
-
-                `;
-
-            }).join("");
-
-    }
-
-
-    // =================================================
-    // ACKNOWLEDGE CASE
-    // =================================================
-
-    async function acknowledgeCase(caseId) {
-
-        try {
-
-            const response =
-                await fetch(
-                    `/responder/cases/${caseId}/acknowledge`,
-                    {
-                        method: "POST"
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.detail ||
-                    "Unable to acknowledge case"
-                );
-
-            }
-
-
-            alert(
-                "Case acknowledged successfully."
-            );
-
-
-            loadCases();
-
-        }
-
-
-        catch (error) {
-
-            console.error(error);
-
-            alert(
-                error.message
-            );
-
-        }
-
-    }
-
-
-    // =================================================
-    // START CHECK-IN
-    // =================================================
-
-    async function startCheckIn(caseId) {
-
-        try {
-
-            const response =
-                await fetch(
-                    `/responder/cases/${caseId}/status`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            status: "in_progress",
-
-                            responder_notes:
-                                "Human check-in started."
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.detail ||
-                    "Unable to start check-in"
-                );
-
-            }
-
-
-            alert(
-                "Check-in started. Please follow your organization's support protocol."
-            );
-
-
-            loadCases();
-
-        }
-
-
-        catch (error) {
-
-            console.error(error);
-
-            alert(
-                error.message
-            );
-
-        }
-
-    }
-
-
-    // =================================================
-    // OPEN ESCALATION MODAL
-    // =================================================
-
-    function openEscalationModal(caseId) {
-
-        currentEscalationCaseId = caseId;
-
-
-        document.getElementById(
-            "escalationLevel"
-        ).value = "secondary_responder";
-
-
-        document.getElementById(
-            "employeeContacted"
-        ).checked = false;
-
-
-        document.getElementById(
-            "supportRequired"
-        ).checked = false;
-
-
-        document.getElementById(
-            "escalationReason"
-        ).value = "";
-
-
-        document.getElementById(
-            "escalationModal"
-        ).classList.add("show");
-
-    }
-
-
-    // =================================================
-    // CLOSE ESCALATION MODAL
-    // =================================================
-
-    function closeEscalationModal() {
-
-        currentEscalationCaseId = null;
-
-
-        document.getElementById(
-            "escalationModal"
-        ).classList.remove("show");
-
-    }
-
-
-    // =================================================
-    // SUBMIT ESCALATION
-    // =================================================
-
-    async function submitEscalation() {
-
-        if (!currentEscalationCaseId) {
-
-            return;
-
-        }
-
-
-        const escalationLevel =
-            document.getElementById(
-                "escalationLevel"
-            ).value;
-
-
-        const employeeContacted =
-            document.getElementById(
-                "employeeContacted"
-            ).checked;
-
-
-        const supportRequired =
-            document.getElementById(
-                "supportRequired"
-            ).checked;
-
-
-        const reason =
-            document.getElementById(
-                "escalationReason"
-            ).value.trim();
-
-
-        if (!reason) {
-
-            alert(
-                "Please provide a brief reason for escalation."
-            );
-
-            return;
-
-        }
-
-
-        const submitBtn =
-            document.getElementById(
-                "submitEscalationBtn"
-            );
-
-
-        submitBtn.disabled = true;
-
-        submitBtn.textContent =
-            "Escalating...";
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `/responder/cases/${currentEscalationCaseId}/escalate`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            escalation_level:
-                                escalationLevel,
-
-                            escalation_reason:
-                                reason,
-
-                            employee_contacted:
-                                employeeContacted,
-
-                            support_required:
-                                supportRequired
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.detail ||
-                    "Unable to escalate case"
-                );
-
-            }
-
-
-            closeEscalationModal();
-
-
-            alert(
-                "Safety escalation recorded successfully. Follow your organization's safety protocol."
-            );
-
-
-            loadCases();
-
-        }
-
-
-        catch (error) {
-
-            console.error(
-                "Escalation error:",
-                error
-            );
-
-
-            alert(
-                error.message
-            );
-
-        }
-
-
-        finally {
-
-            submitBtn.disabled = false;
-
-            submitBtn.textContent =
-                "Escalate Case";
-
-        }
-
-    }
-
-
-    // =================================================
-    // RESOLVE CASE
-    // =================================================
-
-    async function resolveCase(caseId) {
-
-        const notes =
-            document.getElementById(
-                `notes-${caseId}`
-            );
-
-
-        const responderNotes =
-            notes
-                ? notes.value.trim()
-                : "";
-
-
-        const confirmed =
-            confirm(
-                "Are you sure you want to mark this case as resolved?"
-            );
-
-
-        if (!confirmed) {
-
-            return;
-
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `/responder/cases/${caseId}/status`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            status: "resolved",
-
-                            responder_notes:
-                                responderNotes ||
-                                "Case resolved after human follow-up."
-
-                        })
-
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.detail ||
-                    "Unable to resolve case"
-                );
-
-            }
-
-
-            alert(
-                "Case resolved successfully."
-            );
-
-
-            loadCases();
-
-        }
-
-
-        catch (error) {
-
-            console.error(error);
-
-            alert(
-                error.message
-            );
-
-        }
-
-    }
-
-
-    // =================================================
-    // FORMAT STATUS
-    // =================================================
-
-    function formatStatus(status) {
-
-        if (!status) {
-
-            return "Unknown";
-
-        }
-
-
-        return status
-            .replace(/_/g, " ")
-            .replace(
-                /\b\w/g,
-                letter => letter.toUpperCase()
-            );
-
-    }
-
-
-    // =================================================
-    // FORMAT DATE
-    // =================================================
-
-    function formatDate(dateString) {
-
-        if (!dateString) {
-
-            return "Unknown";
-
-        }
-
-
-        const date =
-            new Date(dateString);
-
-
-        return date.toLocaleString();
-
-    }
-
-
-    // =================================================
-    // BASIC HTML ESCAPE
-    // =================================================
-
-    function escapeHtml(value) {
-
-        if (
-            value === null ||
-            value === undefined
-        ) {
-
-            return "";
-
-        }
-
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    // =================================================
-    // CLOSE MODAL WHEN CLICKING OUTSIDE
-    // =================================================
-
-    document
-        .getElementById("escalationModal")
-        .addEventListener(
-            "click",
-            function(event) {
-
-                if (
-                    event.target === this
-                ) {
-
-                    closeEscalationModal();
-
-                }
-
-            }
+    const statusText =
+        status.replace(
+            "_",
+            " "
         );
 
 
-    // =================================================
-    // INITIAL LOAD
-    // =================================================
+    const workflow =
+        getWorkflowSteps(status);
 
-    loadCases();
 
+    const signalHTML =
+        signals.length
+            ? signals.map(
+                signal => `
+                    <span class="signal">
+                        ${escapeHTML(
+                            formatSignal(signal)
+                        )}
+                    </span>
+                `
+            ).join("")
+            : `
+                <span class="signal">
+                    No additional signal details
+                </span>
+            `;
+
+
+    const acknowledgeButton =
+        status === "new"
+            ? `
+                <button
+                    class="action-btn btn-primary"
+                    onclick="acknowledgeCase(${caseId})"
+                >
+                    Acknowledge
+                </button>
+              `
+            : "";
+
+
+    const checkinButton =
+        status === "in_progress"
+            ? `
+                <button
+                    class="action-btn btn-secondary"
+                    onclick="openCheckin(${caseId})"
+                >
+                    Human Check-in
+                </button>
+              `
+            : "";
+
+
+    return `
+
+        <div class="case-card">
+
+            <div class="case-header">
+
+                <div class="employee-info">
+
+                    <div class="employee-avatar">
+                        ${escapeHTML(initials)}
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            ${escapeHTML(employeeName)}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(email)}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="case-right">
+
+                    <span class="risk-badge ${riskClass}">
+                        ${escapeHTML(riskLevel)}
+                    </span>
+
+                    <span class="status-badge">
+                        ${escapeHTML(statusText)}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="case-body">
+
+                <div class="signal-title">
+                    Wellora activity signals
+                </div>
+
+                <div class="signals">
+                    ${signalHTML}
+                </div>
+
+
+                <div class="risk-note">
+
+                    <strong>
+                        Signal score:
+                    </strong>
+
+                    ${escapeHTML(String(riskScore))}
+
+                    <br>
+
+                    These signals indicate a possible
+                    need for human attention. They are
+                    <strong>not a medical diagnosis</strong>.
+
+                </div>
+
+
+                <div class="workflow">
+
+                    <div class="workflow-title">
+                        Human support workflow
+                    </div>
+
+                    <div class="workflow-steps">
+                        ${workflow}
+                    </div>
+
+                </div>
+
+
+                <div class="case-actions">
+
+                    ${acknowledgeButton}
+
+                    ${checkinButton}
+
+
+                    <button
+                        class="action-btn btn-warning"
+                        onclick="openEscalationModal(${caseId})"
+                    >
+                        Escalate
+                    </button>
+
+
+                    <button
+                        class="action-btn btn-success"
+                        onclick="resolveCase(${caseId})"
+                    >
+                        Resolve
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* ============================================================
+   WORKFLOW STEPS
+============================================================ */
+
+function getWorkflowSteps(status) {
+
+    let acknowledgeActive =
+        status === "new" ||
+        status === "in_progress";
+
+    let checkinActive =
+        status === "in_progress";
+
+    let resolveActive =
+        status === "resolved";
+
+
+    return `
+
+        <span class="workflow-step ${
+            acknowledgeActive
+                ? "active"
+                : ""
+        }">
+            1. Acknowledge
+        </span>
+
+        <span class="workflow-arrow">
+            →
+        </span>
+
+        <span class="workflow-step ${
+            checkinActive
+                ? "active"
+                : ""
+        }">
+            2. Human check-in
+        </span>
+
+        <span class="workflow-arrow">
+            →
+        </span>
+
+        <span class="workflow-step">
+            3. Escalate if required
+        </span>
+
+        <span class="workflow-arrow">
+            →
+        </span>
+
+        <span class="workflow-step ${
+            resolveActive
+                ? "active"
+                : ""
+        }">
+            4. Resolve & follow up
+        </span>
+
+    `;
+}
+
+
+/* ============================================================
+   ACKNOWLEDGE CASE
+============================================================ */
+
+async function acknowledgeCase(caseId) {
+
+    if (!caseId) {
+
+        showToast(
+            "Invalid case ID."
+        );
+
+        console.error(
+            "Missing case ID:",
+            caseId
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/responder/cases/${caseId}/acknowledge`,
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to acknowledge case."
+            );
+        }
+
+
+        showToast(
+            "Case acknowledged."
+        );
+
+
+        await loadCases();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+/* ============================================================
+   HUMAN CHECK-IN
+============================================================ */
+
+function openCheckin(caseId) {
+
+    if (!caseId) {
+
+        showToast(
+            "Invalid case ID."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Your backend already has:
+     *
+     * GET  /checkin/{case_id}
+     * POST /checkin/{case_id}/submit
+     *
+     * Therefore we use the case ID directly.
+     */
+
+    window.location.href =
+        `/checkin?case_id=${encodeURIComponent(caseId)}`;
+}
+
+
+/* ============================================================
+   ESCALATION MODAL
+============================================================ */
+
+function openEscalationModal(caseId) {
+
+    if (!caseId) {
+
+        showToast(
+            "Invalid case ID."
+        );
+
+        return;
+    }
+
+
+    selectedCaseId =
+        caseId;
+
+
+    document.getElementById(
+        "employeeContacted"
+    ).checked = false;
+
+
+    document.getElementById(
+        "supportRequired"
+    ).checked = false;
+
+
+    document.getElementById(
+        "escalationReason"
+    ).value = "";
+
+
+    document.getElementById(
+        "escalationLevel"
+    ).value =
+        "secondary_responder";
+
+
+    document.getElementById(
+        "escalationModal"
+    ).classList.add("show");
+}
+
+
+/* ============================================================
+   CLOSE ESCALATION MODAL
+============================================================ */
+
+function closeEscalationModal() {
+
+    selectedCaseId =
+        null;
+
+    document.getElementById(
+        "escalationModal"
+    ).classList.remove("show");
+}
+
+
+/* ============================================================
+   SUBMIT ESCALATION
+============================================================ */
+
+async function submitEscalation() {
+
+    const caseId =
+        selectedCaseId;
+
+
+    if (!caseId) {
+
+        showToast(
+            "Invalid case ID."
+        );
+
+        return;
+    }
+
+
+    const escalationLevel =
+        document.getElementById(
+            "escalationLevel"
+        ).value;
+
+
+    const employeeContacted =
+        document.getElementById(
+            "employeeContacted"
+        ).checked;
+
+
+    const supportRequired =
+        document.getElementById(
+            "supportRequired"
+        ).checked;
+
+
+    const escalationReason =
+        document.getElementById(
+            "escalationReason"
+        ).value.trim();
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/responder/cases/${caseId}/escalate`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        employee_contacted:
+                            employeeContacted,
+
+                        support_required:
+                            supportRequired,
+
+                        escalation_level:
+                            escalationLevel,
+
+                        escalation_reason:
+                            escalationReason ||
+                            null
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to record escalation."
+            );
+        }
+
+
+        closeEscalationModal();
+
+
+        showToast(
+            "Safety escalation recorded."
+        );
+
+
+        await loadCases();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+/* ============================================================
+   RESOLVE CASE
+============================================================ */
+
+async function resolveCase(caseId) {
+
+    if (!caseId) {
+
+        showToast(
+            "Invalid case ID."
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Have you completed the appropriate human follow-up for this case?\n\n" +
+            "Resolve only after the support workflow is complete."
+        );
+
+
+    if (!confirmed) {
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/responder/cases/${caseId}/status`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        status:
+                            "resolved"
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to resolve case."
+            );
+        }
+
+
+        showToast(
+            "Case resolved."
+        );
+
+
+        await loadCases();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            error.message
+        );
+    }
+}
+
+
+/* ============================================================
+   INITIALS
+============================================================ */
+
+function getInitials(name) {
+
+    if (!name) {
+        return "?";
+    }
+
+
+    const parts =
+        name.trim().split(/\s+/);
+
+
+    if (parts.length === 1) {
+
+        return parts[0]
+            .substring(0, 2)
+            .toUpperCase();
+    }
+
+
+    return (
+        parts[0][0] +
+        parts[parts.length - 1][0]
+    ).toUpperCase();
+}
+
+
+/* ============================================================
+   FORMAT SIGNAL
+============================================================ */
+
+function formatSignal(signal) {
+
+    if (typeof signal === "string") {
+
+        return signal;
+    }
+
+
+    if (
+        signal !== null &&
+        typeof signal === "object"
+    ) {
+
+        try {
+
+            return Object.entries(signal)
+                .map(
+                    ([key, value]) =>
+                        `${key}: ${value}`
+                )
+                .join(" · ");
+
+        } catch {
+
+            return "Activity signal";
+        }
+    }
+
+
+    return String(signal);
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+let toastTimer = null;
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2800
+        );
+}
+
+
+/* ============================================================
+   MODAL OUTSIDE CLICK
+============================================================ */
+
+document
+    .getElementById("escalationModal")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeEscalationModal();
+            }
+
+        }
+    );
+
+
+/* ============================================================
+   INITIAL LOAD
+============================================================ */
+
+loadCases();
+
+
+/* ============================================================
+   AUTO REFRESH
+============================================================ */
+
+setInterval(
+    loadCases,
+    30000
+);
 
 </script>
 
-
 </body>
-
 </html>

@@ -87,6 +87,12 @@ class EscalationRequest(BaseModel):
     escalation_level: str = "secondary_responder"
     escalation_reason: str | None = None
 
+class CheckinRequest(BaseModel):
+    employee_contacted: bool = False
+    support_required: bool = False
+    checkin_notes: str = ""
+    outcome: str = "continue_support"
+
 
 class TalkRequest(BaseModel):
     employee_id: int | None = None
@@ -1754,6 +1760,207 @@ Important rules:
 # ============================================================
 # HEALTH CHECK
 # ============================================================
+# ============================================================
+# CHECK-IN - GET CASE DETAILS
+# ============================================================
+
+@app.get("/checkin/{case_id}")
+def get_checkin_case(
+    case_id: int,
+    db: Session = Depends(get_db)
+):
+
+    case = (
+        db.query(RiskCase)
+        .filter(
+            RiskCase.id == case_id
+        )
+        .first()
+    )
+
+    if not case:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Risk case not found."
+        )
+
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == case.employee_id
+        )
+        .first()
+    )
+
+    return {
+
+        "case_id":
+            case.id,
+
+        "employee_id":
+            case.employee_id,
+
+        "employee_name":
+            employee.name
+            if employee
+            else "Unknown",
+
+        "employee_email":
+            employee.email
+            if employee
+            else "",
+
+        "risk_score":
+            case.risk_score,
+
+        "risk_level":
+            case.risk_level,
+
+        "signals":
+            (
+                json.loads(case.signals)
+                if case.signals
+                else []
+            ),
+
+        "status":
+            case.status,
+
+        "employee_contacted":
+            bool(
+                case.employee_contacted
+            ),
+
+        "support_required":
+            bool(
+                case.support_required
+            ),
+
+        "responder_notes":
+            case.responder_notes
+            or "",
+
+        "acknowledged_at":
+            case.acknowledged_at
+    }
+
+
+# ============================================================
+# CHECK-IN - SUBMIT CHECK-IN
+# ============================================================
+
+@app.post("/checkin/{case_id}/submit")
+def submit_checkin(
+    case_id: int,
+    request: CheckinRequest,
+    db: Session = Depends(get_db)
+):
+
+    case = (
+        db.query(RiskCase)
+        .filter(
+            RiskCase.id == case_id
+        )
+        .first()
+    )
+
+    if not case:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Risk case not found."
+        )
+
+    # --------------------------------------------------------
+    # Save employee contact status
+    # --------------------------------------------------------
+
+    case.employee_contacted = (
+        1
+        if request.employee_contacted
+        else 0
+    )
+
+    case.support_required = (
+        1
+        if request.support_required
+        else 0
+    )
+
+    # --------------------------------------------------------
+    # Save responder check-in notes
+    # --------------------------------------------------------
+
+    case.responder_notes = (
+        request.checkin_notes.strip()
+    )
+
+    # --------------------------------------------------------
+    # Decide workflow outcome
+    # --------------------------------------------------------
+
+    if request.outcome == "escalate":
+
+        case.status = "in_progress"
+
+        case.escalation_level = (
+            "secondary_responder"
+        )
+
+        case.escalation_reason = (
+            request.checkin_notes.strip()
+            if request.checkin_notes.strip()
+            else "Support required after check-in."
+        )
+
+        case.escalated_at = (
+            datetime.utcnow()
+        )
+
+    elif request.outcome == "resolve":
+
+        case.status = "resolved"
+
+        case.resolved_at = (
+            datetime.utcnow()
+        )
+
+    else:
+
+        # Continue support
+        case.status = "in_progress"
+
+    db.commit()
+    db.refresh(case)
+
+    return {
+
+        "message":
+            "Check-in recorded successfully.",
+
+        "case_id":
+            case.id,
+
+        "status":
+            case.status,
+
+        "employee_contacted":
+            bool(
+                case.employee_contacted
+            ),
+
+        "support_required":
+            bool(
+                case.support_required
+            ),
+
+        "escalation_level":
+            case.escalation_level,
+
+        "resolved_at":
+            case.resolved_at
+    }
 
 @app.get("/health")
 def health():
