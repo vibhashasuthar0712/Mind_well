@@ -73,7 +73,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .live-badge {
@@ -82,6 +82,7 @@
             gap: 7px;
             font-size: 13px;
             color: #4d5a70;
+            margin-right: 5px;
         }
 
         .live-dot {
@@ -105,6 +106,29 @@
 
         .refresh-btn:hover {
             background: #f6f7fa;
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           LOGOUT BUTTON
+        ===================================================== */
+
+        .logout-btn {
+            border: 1px solid #e1e5ed;
+            background: white;
+            padding: 9px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #4c5870;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #fff1f2;
+            color: #b83243;
+            border-color: #f0cdd2;
             transform: translateY(-1px);
         }
 
@@ -690,6 +714,7 @@
             .case-right {
                 align-self: flex-start;
             }
+
         }
 
         @media (max-width: 560px) {
@@ -704,6 +729,17 @@
 
             header {
                 height: 64px;
+                padding: 0 15px;
+            }
+
+            .header-right {
+                gap: 6px;
+            }
+
+            .refresh-btn,
+            .logout-btn {
+                padding: 8px 10px;
+                font-size: 12px;
             }
 
             .stats-grid {
@@ -721,6 +757,7 @@
             .workflow-steps {
                 gap: 5px;
             }
+
         }
     </style>
 </head>
@@ -765,6 +802,13 @@
             onclick="loadCases()"
         >
             ↻ Refresh
+        </button>
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
         </button>
 
     </div>
@@ -1109,6 +1153,18 @@
 
 let currentCases = [];
 let selectedCaseId = null;
+
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+function logout() {
+
+    localStorage.removeItem("mindwell_user");
+
+    window.location.href = "/";
+}
 
 
 /* ============================================================
