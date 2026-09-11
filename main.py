@@ -1,4 +1,3 @@
-
 import os
 import json
 import hashlib
@@ -108,7 +107,7 @@ class TalkRequest(BaseModel):
 class JournalEntryRequest(BaseModel):
     employee_id: int
     content: str
-    feeling: str | None = None
+    feeling_after: str | None = None
 
 
 # ============================================================
@@ -1815,17 +1814,17 @@ def save_journal_entry(
         "Prefer not to say"
     ]
 
-    feeling = request.feeling
+    feeling_after = request.feeling_after
 
-    if feeling is not None:
+    if feeling_after is not None:
 
-        feeling = feeling.strip()
+        feeling_after = feeling_after.strip()
 
-        if feeling == "":
+        if feeling_after == "":
 
-            feeling = None
+            feeling_after = None
 
-        elif feeling not in allowed_feelings:
+        elif feeling_after not in allowed_feelings:
 
             raise HTTPException(
                 status_code=400,
@@ -1869,7 +1868,7 @@ def save_journal_entry(
 
         content=content,
 
-        feeling=feeling
+        feeling_after=feeling_after
     )
 
     db.add(entry)
@@ -1884,8 +1883,8 @@ def save_journal_entry(
         "entry_id":
             entry.id,
 
-        "feeling":
-            entry.feeling,
+        "feeling_after":
+            entry.feeling_after,
 
         "created_at":
             entry.created_at
@@ -1946,8 +1945,8 @@ def get_journal_entries(
             "content":
                 entry.content,
 
-            "feeling":
-                entry.feeling,
+            "feeling_after":
+                entry.feeling_after,
 
             "created_at":
                 entry.created_at

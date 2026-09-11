@@ -258,10 +258,7 @@ class JournalEntry(Base):
         nullable=False
     )
 
-    feeling = Column(
-        String,
-        nullable=True
-    )
+    feeling_after = Column(String, nullable=True)
 
     created_at = Column(
         DateTime,
