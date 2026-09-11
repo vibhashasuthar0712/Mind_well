@@ -230,6 +230,14 @@ class RiskCase(Base):
 # PRIVATE JOURNAL
 # =====================================================
 
+# =====================================================
+# PRIVATE JOURNAL
+# =====================================================
+
+# =====================================================
+# PRIVATE JOURNAL
+# =====================================================
+
 class JournalEntry(Base):
 
     __tablename__ = "journal_entries"
@@ -240,16 +248,19 @@ class JournalEntry(Base):
         index=True
     )
 
-    # Employee who owns the journal entry
     employee_id = Column(
         Integer,
         nullable=False
     )
 
-    # Private journal content
     content = Column(
         Text,
         nullable=False
+    )
+
+    feeling = Column(
+        String,
+        nullable=True
     )
 
     created_at = Column(

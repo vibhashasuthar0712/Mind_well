@@ -1,2151 +1,1740 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>Wellora - Private Journal</title>
-
-
-<style>
-
-/* =====================================================
-   GLOBAL
-===================================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
-
-    background:
-        linear-gradient(
-            135deg,
-            #f7f8fc,
-            #f3f2ff
-        );
-
-    color: #222;
-
-    min-height: 100vh;
-}
-
-
-/* =====================================================
-   NAVBAR
-===================================================== */
-
-nav {
-
-    height: 70px;
-
-    background: white;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 0 50px;
-
-    box-shadow:
-        0 2px 12px rgba(0,0,0,0.05);
-}
-
-.logo {
-
-    font-size: 25px;
-
-    font-weight: bold;
-
-    color: #5f5bd8;
-}
-
-.nav-right {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-}
-
-.user {
-
-    color: #666;
-
-    font-size: 14px;
-}
-
-.back-nav-btn {
-
-    border: 1px solid #e3e3e3;
-
-    background: white;
-
-    color: #555;
-
-    padding: 9px 15px;
-
-    border-radius: 9px;
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.back-nav-btn:hover {
-
-    background: #f5f5ff;
-
-    color: #5f5bd8;
-
-    border-color: #dcdafa;
-}
-
-
-/* =====================================================
-   MAIN CONTAINER
-===================================================== */
-
-.container {
-
-    max-width: 950px;
-
-    margin: 45px auto;
-
-    padding: 0 25px;
-}
-
-
-/* =====================================================
-   BACK BUTTON
-===================================================== */
-
-.back-section {
-
-    margin-bottom: 25px;
-}
-
-.back-btn {
-
-    border: none;
-
-    background: transparent;
-
-    color: #5f5bd8;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    padding: 5px 0;
-}
-
-.back-btn:hover {
-
-    text-decoration: underline;
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-.journal-header {
-
-    text-align: center;
-
-    margin-bottom: 30px;
-}
-
-.journal-header .icon {
-
-    font-size: 48px;
-
-    margin-bottom: 12px;
-}
-
-.journal-header h1 {
-
-    font-size: 30px;
-
-    margin-bottom: 10px;
-
-    color: #29283d;
-}
-
-.journal-header p {
-
-    color: #777;
-
-    font-size: 15px;
-
-    line-height: 1.6;
-
-    max-width: 650px;
-
-    margin: auto;
-}
-
-
-/* =====================================================
-   PRIVACY BANNER
-===================================================== */
-
-.privacy-banner {
-
-    background: #f0f1ff;
-
-    border: 1px solid #e3e2fa;
-
-    padding: 16px 18px;
-
-    border-radius: 14px;
-
-    margin-bottom: 25px;
-
-    color: #555;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-.privacy-banner strong {
-
-    color: #4d49bd;
-}
-
-
-/* =====================================================
-   JOURNAL CARD
-===================================================== */
-
-.journal-card {
-
-    background: white;
-
-    border-radius: 20px;
-
-    padding: 30px;
-
-    box-shadow:
-        0 8px 30px rgba(0,0,0,0.06);
-
-    border: 1px solid #eeeeF5;
-
-    margin-bottom: 35px;
-}
-
-
-/* =====================================================
-   DATE
-===================================================== */
-
-.entry-top {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 18px;
-}
-
-.entry-label {
-
-    color: #666;
-
-    font-size: 13px;
-
-    font-weight: bold;
-}
-
-.entry-date {
-
-    color: #999;
-
-    font-size: 12px;
-}
-
-
-/* =====================================================
-   OPTIONAL DEAR SELF
-===================================================== */
-
-.dear-self {
-
-    font-size: 14px;
-
-    color: #777;
-
-    margin-bottom: 10px;
-}
-
-
-/* =====================================================
-   TEXT AREA
-===================================================== */
-
-textarea {
-
-    width: 100%;
-
-    min-height: 300px;
-
-    resize: vertical;
-
-    border: none;
-
-    outline: none;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            transparent 0px,
-            transparent 31px,
-            #eeeeee 32px
-        );
-
-    padding: 5px 5px 5px 2px;
-
-    font-size: 15px;
-
-    line-height: 32px;
-
-    color: #333;
-}
-
-textarea::placeholder {
-
-    color: #aaa;
-
-    line-height: 32px;
-}
-
-
-/* =====================================================
-   CHARACTER COUNT
-===================================================== */
-
-.editor-footer {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-top: 15px;
-
-    padding-top: 15px;
-
-    border-top: 1px solid #eeeeee;
-}
-
-.character-count {
-
-    color: #999;
-
-    font-size: 12px;
-}
-
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.button-group {
-
-    display: flex;
-
-    gap: 10px;
-}
-
-.clear-btn {
-
-    padding: 11px 18px;
-
-    border: 1px solid #e3e3e3;
-
-    background: white;
-
-    color: #666;
-
-    border-radius: 9px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-.clear-btn:hover {
-
-    background: #f7f7f7;
-}
-
-.save-btn {
-
-    padding: 11px 20px;
-
-    border: none;
-
-    background: #5f5bd8;
-
-    color: white;
-
-    border-radius: 9px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.save-btn:hover {
-
-    opacity: 0.9;
-
-    transform: translateY(-1px);
-}
-
-.save-btn:disabled {
-
-    opacity: 0.6;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-.message {
-
-    display: none;
-
-    margin-top: 18px;
-
-    padding: 13px 15px;
-
-    border-radius: 10px;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-.message.success {
-
-    display: block;
-
-    background: #edf8f1;
-
-    color: #28764b;
-}
-
-.message.error {
-
-    display: block;
-
-    background: #fff2f3;
-
-    color: #a33a45;
-}
-
-
-/* =====================================================
-   SAVED MESSAGE
-===================================================== */
-
-.saved-message {
-
-    display: none;
-
-    background: #f5f5ff;
-
-    padding: 15px 18px;
-
-    border-radius: 12px;
-
-    color: #5a5685;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-
-    margin-bottom: 30px;
-}
-
-
-/* =====================================================
-   PREVIOUS ENTRIES
-===================================================== */
-
-.previous-section {
-
-    margin-top: 40px;
-}
-
-.previous-header {
-
-    margin-bottom: 18px;
-}
-
-.previous-header h2 {
-
-    font-size: 21px;
-
-    margin-bottom: 5px;
-}
-
-.previous-header p {
-
-    color: #888;
-
-    font-size: 13px;
-}
-
-
-/* =====================================================
-   ENTRY LIST
-===================================================== */
-
-.entries {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 14px;
-}
-
-.entry-item {
-
-    background: white;
-
-    border-radius: 14px;
-
-    padding: 18px 20px;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.04);
-
-    border: 1px solid #eeeeF5;
-}
-
-.entry-item-top {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 10px;
-}
-
-.entry-item-date {
-
-    color: #777;
-
-    font-size: 12px;
-
-    font-weight: bold;
-}
-
-.entry-actions {
-
-    display: flex;
-
-    gap: 8px;
-}
-
-.view-btn,
-.delete-btn {
-
-    border: none;
-
-    background: transparent;
-
-    font-size: 12px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-}
-
-.view-btn {
-
-    color: #5f5bd8;
-}
-
-.delete-btn {
-
-    color: #a45c66;
-}
-
-.view-btn:hover,
-.delete-btn:hover {
-
-    text-decoration: underline;
-}
-
-.entry-preview {
-
-    color: #666;
-
-    font-size: 14px;
-
-    line-height: 1.6;
-
-    white-space: pre-wrap;
-
-    word-break: break-word;
-}
-
-
-/* =====================================================
-   EMPTY STATE
-===================================================== */
-
-.empty-state {
-
-    text-align: center;
-
-    background: white;
-
-    border-radius: 16px;
-
-    padding: 35px 20px;
-
-    color: #888;
-
-    box-shadow:
-        0 4px 15px rgba(0,0,0,0.04);
-}
-
-.empty-state .empty-icon {
-
-    font-size: 35px;
-
-    margin-bottom: 10px;
-}
-
-.empty-state h3 {
-
-    color: #555;
-
-    font-size: 17px;
-
-    margin-bottom: 7px;
-}
-
-.empty-state p {
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* =====================================================
-   FOOTER NOTE
-===================================================== */
-
-.footer-note {
-
-    text-align: center;
-
-    margin-top: 40px;
-
-    color: #999;
-
-    font-size: 13px;
-
-    line-height: 1.6;
-
-    padding-bottom: 30px;
-}
-
-
-/* =====================================================
-   VIEW ENTRY MODAL
-===================================================== */
-
-.modal {
-
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    background: rgba(25,25,45,0.35);
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    z-index: 1000;
-}
-
-.modal.show {
-
-    display: flex;
-}
-
-.modal-content {
-
-    background: white;
-
-    width: 100%;
-
-    max-width: 650px;
-
-    max-height: 80vh;
-
-    overflow-y: auto;
-
-    border-radius: 18px;
-
-    padding: 25px;
-
-    box-shadow:
-        0 15px 50px rgba(0,0,0,0.15);
-}
-
-.modal-header {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 20px;
-}
-
-.modal-header h3 {
-
-    font-size: 19px;
-}
-
-.close-btn {
-
-    border: none;
-
-    background: #f4f4f7;
-
-    width: 32px;
-
-    height: 32px;
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    font-size: 17px;
-
-    color: #666;
-}
-
-.modal-date {
-
-    color: #999;
-
-    font-size: 12px;
-
-    margin-bottom: 15px;
-}
-
-.modal-text {
-
-    color: #444;
-
-    font-size: 15px;
-
-    line-height: 1.8;
-
-    white-space: pre-wrap;
-
-    word-break: break-word;
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 700px) {
-
-    nav {
-
-        padding: 0 20px;
-    }
-
-    .logo {
-
-        font-size: 21px;
-    }
-
-    .user {
-
-        display: none;
-    }
-
-    .container {
-
-        margin: 30px auto;
-
-        padding: 0 16px;
-    }
-
-    .journal-header h1 {
-
-        font-size: 25px;
-    }
-
-    .journal-card {
-
-        padding: 20px;
-    }
-
-    textarea {
-
-        min-height: 260px;
-    }
-
-    .editor-footer {
-
-        flex-direction: column;
-
-        align-items: stretch;
-
-        gap: 15px;
-    }
-
-    .button-group {
-
-        width: 100%;
-    }
-
-    .clear-btn,
-    .save-btn {
-
-        flex: 1;
-    }
-
-    .entry-item-top {
-
-        align-items: flex-start;
-
-        gap: 10px;
-    }
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Private Journal | Wellora</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Arial, sans-serif;
+            background: #f6f8f7;
+            color: #26352f;
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        .navbar {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.94);
+            border-bottom: 1px solid #e8ecea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 750;
+            color: #315b48;
+            letter-spacing: -0.4px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .user-info {
+            font-size: 13px;
+            color: #718078;
+        }
+
+        .dashboard-btn {
+            border: 1px solid #dfe7e3;
+            background: white;
+            color: #486157;
+            padding: 9px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .dashboard-btn:hover {
+            background: #f0f7f3;
+            border-color: #b9d3c5;
+        }
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .container {
+            width: min(940px, 92%);
+            margin: 0 auto;
+            padding: 48px 0 70px;
+        }
+
+        .back-btn {
+            border: none;
+            background: transparent;
+            color: #688078;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+
+        .back-btn:hover {
+            color: #315b48;
+        }
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: #edf6f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            margin-bottom: 18px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            line-height: 1.2;
+            letter-spacing: -0.7px;
+            margin-bottom: 10px;
+            color: #26352f;
+        }
+
+        .page-header p {
+            max-width: 680px;
+            color: #718078;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           PRIVACY BANNER
+        ========================================= */
+
+        .privacy-banner {
+            background: #f0f7f3;
+            border: 1px solid #dcebe3;
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .privacy-icon {
+            font-size: 18px;
+            margin-top: 1px;
+        }
+
+        .privacy-text strong {
+            display: block;
+            color: #315b48;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .privacy-text span {
+            color: #6e7c75;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* =========================================
+           JOURNAL CARD
+        ========================================= */
+
+        .journal-card {
+            background: white;
+            border: 1px solid #e8ecea;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(42, 66, 56, 0.06);
+        }
+
+        .journal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .journal-date {
+            font-size: 12px;
+            color: #87938e;
+        }
+
+        .dear-self {
+            font-size: 14px;
+            font-weight: 600;
+            color: #53645c;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 290px;
+            resize: vertical;
+            border: 1px solid #e2e8e5;
+            border-radius: 16px;
+            padding: 18px;
+            outline: none;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.75;
+            color: #35443d;
+            background: #fcfdfc;
+            transition: 0.2s ease;
+        }
+
+        textarea::placeholder {
+            color: #a3ada8;
+        }
+
+        textarea:focus {
+            border-color: #a7c7b6;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(112, 158, 134, 0.08);
+        }
+
+        .editor-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .char-count {
+            font-size: 11px;
+            color: #9aa49f;
+        }
+
+        .clear-btn {
+            border: none;
+            background: transparent;
+            color: #78857f;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .clear-btn:hover {
+            color: #b14b59;
+        }
+
+        /* =========================================
+           FEELING FEEDBACK
+        ========================================= */
+
+        .feeling-section {
+            margin-top: 25px;
+            padding: 22px;
+            background: #f8faf9;
+            border: 1px solid #e8eeeb;
+            border-radius: 18px;
+        }
+
+        .feeling-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #26352f;
+            margin-bottom: 6px;
+        }
+
+        .feeling-subtitle {
+            font-size: 13px;
+            color: #7b8782;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .feeling-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .feeling-option {
+            border: 1px solid #dfe7e3;
+            background: white;
+            color: #4d5d56;
+            padding: 11px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .feeling-option:hover {
+            border-color: #9fc5b4;
+            transform: translateY(-1px);
+        }
+
+        .feeling-option.selected {
+            border-color: #78a992;
+            background: #edf7f1;
+            color: #315b48;
+            box-shadow: 0 2px 8px rgba(70, 120, 95, 0.10);
+        }
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .save-btn {
+            border: none;
+            background: #315b48;
+            color: white;
+            padding: 12px 21px;
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 650;
+            transition: 0.2s ease;
+        }
+
+        .save-btn:hover {
+            background: #274c3b;
+            transform: translateY(-1px);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* =========================================
+           MESSAGE
+        ========================================= */
+
+        .message {
+            display: none;
+            margin-top: 16px;
+            padding: 13px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            display: block;
+            background: #eef8f2;
+            color: #356149;
+            border: 1px solid #d8ecdf;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff4f4;
+            color: #9b4650;
+            border: 1px solid #efd9dc;
+        }
+
+        /* =========================================
+           PREVIOUS ENTRIES
+        ========================================= */
+
+        .entries-section {
+            margin-top: 38px;
+        }
+
+        .entries-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .entries-heading h2 {
+            font-size: 19px;
+            color: #2f4038;
+        }
+
+        .entries-heading span {
+            font-size: 12px;
+            color: #909b96;
+        }
+
+        .entry-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .entry-item {
+            background: white;
+            border: 1px solid #e8ecea;
+            border-radius: 16px;
+            padding: 17px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .entry-info {
+            min-width: 0;
+        }
+
+        .entry-date {
+            font-size: 11px;
+            color: #909b96;
+            margin-bottom: 7px;
+        }
+
+        .entry-preview {
+            font-size: 13px;
+            color: #586760;
+            line-height: 1.5;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 600px;
+        }
+
+        .entry-feeling {
+            margin-top: 7px;
+            font-size: 11px;
+            color: #718078;
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .view-btn,
+        .delete-btn {
+            border-radius: 9px;
+            padding: 8px 12px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .view-btn {
+            border: 1px solid #dfe7e3;
+            background: white;
+            color: #4f665b;
+        }
+
+        .view-btn:hover {
+            background: #f1f7f4;
+        }
+
+        .delete-btn {
+            border: 1px solid #efd9dc;
+            background: white;
+            color: #a24d58;
+        }
+
+        .delete-btn:hover {
+            background: #fff4f5;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px dashed #dce5e1;
+            border-radius: 17px;
+            padding: 35px 20px;
+            text-align: center;
+            color: #89958f;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .empty-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        /* =========================================
+           CLOSING NOTE
+        ========================================= */
+
+        .closing-note {
+            text-align: center;
+            margin-top: 35px;
+            color: #839089;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           MODAL
+        ========================================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(38, 53, 47, 0.35);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            width: min(650px, 100%);
+            max-height: 85vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 20px;
+            padding: 27px;
+            box-shadow: 0 20px 60px rgba(30, 50, 42, 0.18);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: #2f4038;
+        }
+
+        .modal-date {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #909b96;
+        }
+
+        .close-modal {
+            border: none;
+            background: #f3f6f4;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #617069;
+            font-size: 18px;
+        }
+
+        .close-modal:hover {
+            background: #eaf0ed;
+        }
+
+        .modal-content {
+            white-space: pre-wrap;
+            color: #4d5d56;
+            font-size: 14px;
+            line-height: 1.8;
+            background: #fafcfb;
+            border: 1px solid #edf0ee;
+            border-radius: 15px;
+            padding: 18px;
+        }
+
+        .modal-feeling {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #718078;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+                padding-top: 35px;
+            }
+
+            .page-header h1 {
+                font-size: 27px;
+            }
+
+            .journal-card {
+                padding: 20px;
+                border-radius: 18px;
+            }
+
+            textarea {
+                min-height: 240px;
+            }
+
+            .feeling-options {
+                flex-direction: column;
+            }
+
+            .feeling-option {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .actions {
+                justify-content: stretch;
+            }
+
+            .save-btn {
+                width: 100%;
+            }
+
+            .entry-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .entry-preview {
+                max-width: 100%;
+                white-space: normal;
+            }
+
+            .entry-actions {
+                width: 100%;
+            }
+
+            .view-btn,
+            .delete-btn {
+                flex: 1;
+            }
+        }
+
+    </style>
 </head>
-
 
 <body>
 
+    <!-- NAVBAR -->
 
-<!-- =====================================================
-     NAVBAR
-===================================================== -->
+    <nav class="navbar">
 
-<nav>
-
-    <div class="logo">
-
-        🧠Wellora
-
-    </div>
-
-
-    <div class="nav-right">
-
-        <div
-            class="user"
-            id="userInfo"
-        >
-
-            Loading...
-
+        <div class="brand">
+            Wellora
         </div>
 
+        <div class="nav-right">
 
-        <button
-            class="back-nav-btn"
-            onclick="goBack()"
-        >
-
-            Dashboard
-
-        </button>
-
-    </div>
-
-</nav>
-
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<div class="container">
-
-
-    <!-- =================================================
-         BACK
-    ================================================== -->
-
-    <div class="back-section">
-
-        <button
-            class="back-btn"
-            onclick="goBack()"
-        >
-
-            ← Back to Dashboard
-
-        </button>
-
-    </div>
-
-
-
-    <!-- =================================================
-         HEADER
-    ================================================== -->
-
-    <div class="journal-header">
-
-        <div class="icon">
-
-            📝
-
-        </div>
-
-        <h1>
-
-            A space just for you.
-
-        </h1>
-
-        <p>
-
-            You don't have to explain everything.
-            Write whatever is on your mind —
-            how you're feeling, what happened today,
-            or simply what you can't say out loud.
-
-        </p>
-
-    </div>
-
-
-
-    <!-- =================================================
-         PRIVACY
-    ================================================== -->
-
-    <div class="privacy-banner">
-
-        🔒
-        <strong>Private Journal</strong>
-
-        — This space is separate from your wellbeing
-        activity signals. Your journal entries are not
-        shown through the HR or responder wellbeing
-        dashboards.
-
-    </div>
-
-
-
-    <!-- =================================================
-         SAVED MESSAGE
-    ================================================== -->
-
-    <div
-        class="saved-message"
-        id="savedMessage"
-    >
-
-        🤍 Your thoughts are saved privately.
-        Sometimes putting things into words is enough
-        for today.
-
-    </div>
-
-
-
-    <!-- =================================================
-         JOURNAL EDITOR
-    ================================================== -->
-
-    <div class="journal-card">
-
-
-        <div class="entry-top">
-
-            <div class="entry-label">
-
-                Today's Journal
-
+            <div class="user-info" id="userInfo">
+                Loading...
             </div>
-
-            <div
-                class="entry-date"
-                id="todayDate"
-            >
-
-                Loading date...
-
-            </div>
-
-        </div>
-
-
-        <div class="dear-self">
-
-            Dear self,
-
-        </div>
-
-
-        <textarea
-            id="journalText"
-            maxlength="10000"
-            placeholder="Start writing...
-
-You can write about anything.
-
-How your day went...
-Something that is on your mind...
-Something you don't want to say out loud...
-Or simply whatever you're feeling right now."
-        ></textarea>
-
-
-        <div class="editor-footer">
-
-            <div
-                class="character-count"
-                id="characterCount"
-            >
-
-                0 / 10000
-
-            </div>
-
-
-            <div class="button-group">
-
-                <button
-                    class="clear-btn"
-                    onclick="clearJournal()"
-                >
-
-                    Clear
-
-                </button>
-
-
-                <button
-                    class="save-btn"
-                    id="saveButton"
-                    onclick="saveJournal()"
-                >
-
-                    Save Entry
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div
-            class="message"
-            id="message"
-        ></div>
-
-    </div>
-
-
-
-    <!-- =================================================
-         PREVIOUS ENTRIES
-    ================================================== -->
-
-    <div class="previous-section">
-
-
-        <div class="previous-header">
-
-            <h2>
-
-                Your Previous Entries
-
-            </h2>
-
-            <p>
-
-                These are your saved journal entries.
-
-            </p>
-
-        </div>
-
-
-        <div
-            class="entries"
-            id="entries"
-        >
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-
-                    🌱
-
-                </div>
-
-                <h3>
-
-                    Your journal is waiting.
-
-                </h3>
-
-                <p>
-
-                    Write your first entry whenever
-                    you feel ready.
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =================================================
-         FOOTER
-    ================================================== -->
-
-    <div class="footer-note">
-
-        You don't have to share every thought
-        to take care of yourself. 🌱
-
-    </div>
-
-
-</div>
-
-
-
-<!-- =====================================================
-     VIEW ENTRY MODAL
-===================================================== -->
-
-<div
-    class="modal"
-    id="entryModal"
->
-
-    <div class="modal-content">
-
-
-        <div class="modal-header">
-
-            <h3>
-
-                📝 Journal Entry
-
-            </h3>
-
 
             <button
-                class="close-btn"
-                onclick="closeModal()"
-            >
-
-                ×
-
+                class="dashboard-btn"
+                onclick="goDashboard()">
+                Dashboard
             </button>
 
         </div>
 
+    </nav>
 
-        <div
-            class="modal-date"
-            id="modalDate"
-        >
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+        <button
+            class="back-btn"
+            onclick="goDashboard()">
+            ← Back to Dashboard
+        </button>
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <div class="page-icon">
+                📝
+            </div>
+
+            <h1>
+                A space just for you.
+            </h1>
+
+            <p>
+                You don't have to explain everything.
+                Write whatever is on your mind — how you're
+                feeling, what happened today, or simply what
+                you can't say out loud.
+            </p>
+
+        </section>
+
+
+        <!-- PRIVACY -->
+
+        <div class="privacy-banner">
+
+            <div class="privacy-icon">
+                🔒
+            </div>
+
+            <div class="privacy-text">
+
+                <strong>
+                    Private Journal
+                </strong>
+
+                <span>
+                    Your journal is separate from Wellora's
+                    wellbeing activity signals and is not part
+                    of the HR or responder wellbeing dashboards.
+                </span>
+
+            </div>
 
         </div>
 
 
+        <!-- JOURNAL EDITOR -->
+
+        <section class="journal-card">
+
+            <div class="journal-top">
+
+                <div class="journal-date" id="todayDate">
+                    Today
+                </div>
+
+            </div>
+
+
+            <div class="dear-self">
+                Dear self,
+            </div>
+
+
+            <textarea
+                id="journalText"
+                maxlength="10000"
+                placeholder="Start writing... You can write about anything."
+                oninput="updateCharacterCount()"></textarea>
+
+
+            <div class="editor-bottom">
+
+                <div
+                    class="char-count"
+                    id="charCount">
+                    0 / 10000
+                </div>
+
+                <button
+                    class="clear-btn"
+                    onclick="clearJournal()">
+                    Clear
+                </button>
+
+            </div>
+
+
+            <!-- OPTIONAL FEELING FEEDBACK -->
+
+            <div class="feeling-section">
+
+                <div class="feeling-title">
+                    After writing your thoughts, how do you feel?
+                </div>
+
+                <div class="feeling-subtitle">
+                    This is completely optional. Choose what
+                    feels closest to you — or simply leave it blank.
+                </div>
+
+
+                <div class="feeling-options">
+
+                    <button
+                        type="button"
+                        class="feeling-option"
+                        data-feeling="A little better"
+                        onclick="selectFeeling(this)">
+
+                        🌿
+                        <span>
+                            A little better
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="feeling-option"
+                        data-feeling="Same as before"
+                        onclick="selectFeeling(this)">
+
+                        🙂
+                        <span>
+                            Same as before
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="feeling-option"
+                        data-feeling="Still overwhelmed"
+                        onclick="selectFeeling(this)">
+
+                        😔
+                        <span>
+                            Still overwhelmed
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="feeling-option"
+                        data-feeling="More calm"
+                        onclick="selectFeeling(this)">
+
+                        😌
+                        <span>
+                            More calm
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="feeling-option"
+                        data-feeling="Prefer not to say"
+                        onclick="selectFeeling(this)">
+
+                        💭
+                        <span>
+                            Prefer not to say
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+                <button
+                    class="save-btn"
+                    id="saveBtn"
+                    onclick="saveEntry()">
+                    Save Entry
+                </button>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                class="message"
+                id="message">
+            </div>
+
+        </section>
+
+
+        <!-- PREVIOUS ENTRIES -->
+
+        <section class="entries-section">
+
+            <div class="entries-heading">
+
+                <h2>
+                    Your previous entries
+                </h2>
+
+                <span id="entryCount">
+                    0 entries
+                </span>
+
+            </div>
+
+
+            <div
+                class="entry-list"
+                id="entryList">
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🌱
+                    </div>
+
+                    No journal entries yet.
+                    <br>
+                    Whenever you're ready, this space is here for you.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="closing-note">
+
+            You don't have to share every thought
+            to take care of yourself. 🌱
+
+        </div>
+
+    </main>
+
+
+    <!-- VIEW ENTRY MODAL -->
+
+    <div
+        class="modal-overlay"
+        id="modalOverlay"
+        onclick="closeModal(event)">
+
         <div
-            class="modal-text"
-            id="modalText"
-        >
+            class="modal"
+            onclick="event.stopPropagation()">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h3>
+                        Journal Entry
+                    </h3>
+
+                    <div
+                        class="modal-date"
+                        id="modalDate">
+                    </div>
+
+                </div>
+
+                <button
+                    class="close-modal"
+                    onclick="closeModal()">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                class="modal-content"
+                id="modalContent">
+            </div>
+
+
+            <div
+                class="modal-feeling"
+                id="modalFeeling">
+            </div>
 
         </div>
 
     </div>
 
-</div>
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        /* =========================================
+           AUTHENTICATION
+        ========================================== */
+
+        const user = JSON.parse(
+            localStorage.getItem("mindwell_user")
+        );
 
 
+        if (!user) {
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
+            window.location.href = "/";
 
-<script>
-
-
-/* =====================================================
-   GET LOGGED-IN USER
-===================================================== */
-
-const user = JSON.parse(
-    localStorage.getItem("mindwell_user")
-);
+        }
 
 
-/* =====================================================
-   CHECK LOGIN
-===================================================== */
+        /* =========================================
+           USER INFO
+        ========================================== */
 
-if (!user) {
+        if (user) {
 
-    window.location.href = "/";
+            const userInfo =
+                document.getElementById("userInfo");
 
-}
+            userInfo.textContent =
+                `${user.name || "Employee"} · Employee`;
 
-
-/* =====================================================
-   DISPLAY USER
-===================================================== */
-
-if (user) {
-
-    document.getElementById(
-        "userInfo"
-    ).textContent =
-        `${user.name} · ${user.role}`;
-
-}
+        }
 
 
-/* =====================================================
-   TODAY'S DATE
-===================================================== */
+        /* =========================================
+           SELECTED FEELING
+        ========================================== */
 
-function displayTodayDate() {
+        let selectedFeeling = null;
 
-    const today =
-        new Date();
 
-    document.getElementById(
-        "todayDate"
-    ).textContent =
-        today.toLocaleDateString(
-            "en-US",
-            {
+        function selectFeeling(button) {
+
+            document
+                .querySelectorAll(".feeling-option")
+                .forEach(option => {
+
+                    option.classList.remove("selected");
+
+                });
+
+
+            button.classList.add("selected");
+
+
+            selectedFeeling =
+                button.dataset.feeling;
+
+        }
+
+
+        /* =========================================
+           TODAY DATE
+        ========================================== */
+
+        function showTodayDate() {
+
+            const today =
+                new Date();
+
+            const options = {
                 weekday: "long",
+                year: "numeric",
                 month: "long",
-                day: "numeric",
-                year: "numeric"
+                day: "numeric"
+            };
+
+            document.getElementById("todayDate")
+                .textContent =
+                today.toLocaleDateString(
+                    "en-US",
+                    options
+                );
+
+        }
+
+
+        /* =========================================
+           CHARACTER COUNT
+        ========================================== */
+
+        function updateCharacterCount() {
+
+            const text =
+                document.getElementById("journalText");
+
+            const counter =
+                document.getElementById("charCount");
+
+            counter.textContent =
+                `${text.value.length} / 10000`;
+
+        }
+
+
+        /* =========================================
+           CLEAR JOURNAL
+        ========================================== */
+
+        function clearJournal() {
+
+            const text =
+                document.getElementById("journalText");
+
+            text.value = "";
+
+            updateCharacterCount();
+
+            selectedFeeling = null;
+
+            document
+                .querySelectorAll(".feeling-option")
+                .forEach(option => {
+
+                    option.classList.remove("selected");
+
+                });
+
+            hideMessage();
+
+        }
+
+
+        /* =========================================
+           SAVE JOURNAL ENTRY
+        ========================================== */
+
+        async function saveEntry() {
+
+            const text =
+                document.getElementById("journalText");
+
+            const saveBtn =
+                document.getElementById("saveBtn");
+
+            const content =
+                text.value.trim();
+
+
+            if (!content) {
+
+                showMessage(
+                    "Please write something before saving your entry.",
+                    "error"
+                );
+
+                return;
+
             }
-        );
 
-}
 
+            saveBtn.disabled = true;
 
-/* =====================================================
-   CHARACTER COUNT
-===================================================== */
+            saveBtn.textContent = "Saving...";
 
-const journalText =
-    document.getElementById(
-        "journalText"
-    );
 
+            try {
 
-journalText.addEventListener(
-    "input",
-    function() {
+                const response =
+                    await fetch("/journal", {
 
-        document.getElementById(
-            "characterCount"
-        ).textContent =
-            `${this.value.length} / 10000`;
+                        method: "POST",
 
-    }
-);
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
+                        body: JSON.stringify({
 
-/* =====================================================
-   SHOW MESSAGE
-===================================================== */
+                            employee_id:
+                                user.employee_id,
 
-function showMessage(
-    text,
-    type
-) {
+                            content:
+                                content,
 
-    const message =
-        document.getElementById(
-            "message"
-        );
+                            /* IMPORTANT:
+                               Backend/model field */
+                            feeling_after:
+                                selectedFeeling
 
+                        })
 
-    message.textContent =
-        text;
+                    });
 
 
-    message.className =
-        `message ${type}`;
+                const data =
+                    await response.json();
 
 
-    setTimeout(
-        () => {
+                if (!response.ok) {
 
-            message.className =
-                "message";
+                    throw new Error(
+                        data.detail ||
+                        "Unable to save journal entry."
+                    );
 
-        },
-        4000
-    );
-
-}
-
-
-/* =====================================================
-   CLEAR JOURNAL
-===================================================== */
-
-function clearJournal() {
-
-    const text =
-        document.getElementById(
-            "journalText"
-        );
-
-
-    if (!text.value.trim()) {
-
-        return;
-
-    }
-
-
-    const confirmed =
-        confirm(
-            "Clear what you've written?"
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    text.value = "";
-
-
-    document.getElementById(
-        "characterCount"
-    ).textContent =
-        "0 / 10000";
-
-}
-
-
-/* =====================================================
-   SAVE JOURNAL
-===================================================== */
-
-async function saveJournal() {
-
-    if (!user) {
-
-        return;
-
-    }
-
-
-    const content =
-        journalText.value.trim();
-
-
-    /* ---------------------------------------------
-       VALIDATION
-    --------------------------------------------- */
-
-    if (!content) {
-
-        showMessage(
-            "Write something first. Even a few words are enough. 🌱",
-            "error"
-        );
-
-        journalText.focus();
-
-        return;
-
-    }
-
-
-    if (content.length > 10000) {
-
-        showMessage(
-            "Your entry is too long. Please keep it under 10,000 characters.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const saveButton =
-        document.getElementById(
-            "saveButton"
-        );
-
-
-    saveButton.disabled =
-        true;
-
-
-    saveButton.textContent =
-        "Saving...";
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/journal",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        employee_id:
-                            user.employee_id,
-
-                        content:
-                            content
-                    })
                 }
-            );
 
 
-        const data =
-            await response.json();
+                /* ==============================
+                   SUCCESS
+                =============================== */
+
+                text.value = "";
+
+                updateCharacterCount();
 
 
-        if (!response.ok) {
+                selectedFeeling = null;
 
-            throw new Error(
-                data.detail ||
-                "Unable to save journal entry."
-            );
+
+                document
+                    .querySelectorAll(".feeling-option")
+                    .forEach(option => {
+
+                        option.classList.remove("selected");
+
+                    });
+
+
+                showMessage(
+                    "Your thoughts are saved privately. 🤍 Sometimes putting things into words is enough for today.",
+                    "success"
+                );
+
+
+                loadEntries();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    error.message ||
+                    "Something went wrong while saving your entry.",
+                    "error"
+                );
+
+            } finally {
+
+                saveBtn.disabled = false;
+
+                saveBtn.textContent =
+                    "Save Entry";
+
+            }
 
         }
 
 
-        /* -----------------------------------------
-           SUCCESS
-        ----------------------------------------- */
+        /* =========================================
+           LOAD JOURNAL ENTRIES
+        ========================================== */
 
-        journalText.value = "";
+        async function loadEntries() {
 
+            const entryList =
+                document.getElementById("entryList");
 
-        document.getElementById(
-            "characterCount"
-        ).textContent =
-            "0 / 10000";
+            try {
 
-
-        const savedMessage =
-            document.getElementById(
-                "savedMessage"
-            );
-
-
-        savedMessage.style.display =
-            "block";
-
-
-        setTimeout(
-            () => {
-
-                savedMessage.style.display =
-                    "none";
-
-            },
-            5000
-        );
-
-
-        showMessage(
-            "Your journal entry was saved privately. 🤍",
-            "success"
-        );
-
-
-        await loadEntries();
-
-    }
-
-
-    catch (error) {
-
-        console.error(
-            "Journal save error:",
-            error
-        );
-
-
-        showMessage(
-            error.message ||
-            "Something went wrong while saving your entry.",
-            "error"
-        );
-
-    }
-
-
-    finally {
-
-        saveButton.disabled =
-            false;
-
-
-        saveButton.textContent =
-            "Save Entry";
-
-    }
-
-}
-
-
-/* =====================================================
-   LOAD JOURNAL ENTRIES
-===================================================== */
-
-async function loadEntries() {
-
-    if (!user) {
-
-        return;
-
-    }
-
-
-    const entriesContainer =
-        document.getElementById(
-            "entries"
-        );
-
-
-    try {
-
-        const response =
-            await fetch(
-                `/journal/${user.employee_id}`
-            );
-
-
-        const entries =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                entries.detail ||
-                "Unable to load journal entries."
-            );
-
-        }
-
-
-        renderEntries(entries);
-
-    }
-
-
-    catch (error) {
-
-        console.error(
-            "Journal loading error:",
-            error
-        );
-
-
-        entriesContainer.innerHTML = `
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-
-                    🌿
-
-                </div>
-
-                <h3>
-
-                    Unable to load entries
-
-                </h3>
-
-                <p>
-
-                    Please refresh the page and try again.
-
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-/* =====================================================
-   RENDER ENTRIES
-===================================================== */
-
-function renderEntries(entries) {
-
-    const container =
-        document.getElementById(
-            "entries"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (
-        !Array.isArray(entries) ||
-        entries.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-
-                    🌱
-
-                </div>
-
-                <h3>
-
-                    Your journal is waiting.
-
-                </h3>
-
-                <p>
-
-                    Write your first entry whenever
-                    you feel ready.
-
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    entries.forEach(
-        entry => {
-
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "entry-item";
-
-
-            /* -----------------------------------------
-               TOP
-            ----------------------------------------- */
-
-            const top =
-                document.createElement(
-                    "div"
-                );
-
-
-            top.className =
-                "entry-item-top";
-
-
-            const date =
-                document.createElement(
-                    "div"
-                );
-
-
-            date.className =
-                "entry-item-date";
-
-
-            date.textContent =
-                formatDate(
-                    entry.created_at
-                );
-
-
-            /* -----------------------------------------
-               ACTIONS
-            ----------------------------------------- */
-
-            const actions =
-                document.createElement(
-                    "div"
-                );
-
-
-            actions.className =
-                "entry-actions";
-
-
-            const viewButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            viewButton.className =
-                "view-btn";
-
-
-            viewButton.textContent =
-                "View";
-
-
-            viewButton.onclick =
-                () => viewEntry(entry);
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            deleteButton.className =
-                "delete-btn";
-
-
-            deleteButton.textContent =
-                "Delete";
-
-
-            deleteButton.onclick =
-                () =>
-                    deleteEntry(
-                        entry.id
+                const response =
+                    await fetch(
+                        `/journal/${user.employee_id}`
                     );
 
 
-            actions.appendChild(
-                viewButton
-            );
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load entries."
+                    );
+
+                }
 
 
-            actions.appendChild(
-                deleteButton
-            );
+                const entries =
+                    await response.json();
 
 
-            top.appendChild(
-                date
-            );
+                renderEntries(entries);
 
 
-            top.appendChild(
-                actions
-            );
+            } catch (error) {
+
+                console.error(error);
+
+                entryList.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            🌱
+                        </div>
+
+                        Unable to load your journal entries right now.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
 
 
-            /* -----------------------------------------
-               PREVIEW
-            ----------------------------------------- */
+        /* =========================================
+           RENDER ENTRIES
+        ========================================== */
 
-            const preview =
-                document.createElement(
-                    "div"
+        function renderEntries(entries) {
+
+            const entryList =
+                document.getElementById("entryList");
+
+            const entryCount =
+                document.getElementById("entryCount");
+
+
+            entryCount.textContent =
+                `${entries.length} ${
+                    entries.length === 1
+                        ? "entry"
+                        : "entries"
+                }`;
+
+
+            if (!entries.length) {
+
+                entryList.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            🌱
+                        </div>
+
+                        No journal entries yet.
+                        <br>
+                        Whenever you're ready,
+                        this space is here for you.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            entryList.innerHTML =
+                entries.map(entry => {
+
+                    const date =
+                        formatDate(entry.created_at);
+
+
+                    const preview =
+                        escapeHtml(
+                            entry.content
+                        );
+
+
+                    const shortPreview =
+                        preview.length > 120
+                            ? preview.substring(0, 120) + "..."
+                            : preview;
+
+
+                    /* IMPORTANT:
+                       Backend field is feeling_after */
+                    const feelingHTML =
+                        entry.feeling_after
+                            ? `
+                                <div class="entry-feeling">
+                                    Feeling after writing:
+                                    ${escapeHtml(entry.feeling_after)}
+                                </div>
+                              `
+                            : "";
+
+
+                    return `
+
+                        <div class="entry-item">
+
+                            <div class="entry-info">
+
+                                <div class="entry-date">
+                                    ${date}
+                                </div>
+
+                                <div class="entry-preview">
+                                    ${shortPreview}
+                                </div>
+
+                                ${feelingHTML}
+
+                            </div>
+
+
+                            <div class="entry-actions">
+
+                                <button
+                                    class="view-btn"
+                                    onclick="viewEntry(${entry.id})">
+
+                                    View
+
+                                </button>
+
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteEntry(${entry.id})">
+
+                                    Delete
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+        }
+
+
+        /* =========================================
+           VIEW ENTRY
+        ========================================== */
+
+        async function viewEntry(entryId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/journal/${user.employee_id}`
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load entry."
+                    );
+
+                }
+
+
+                const entries =
+                    await response.json();
+
+
+                const entry =
+                    entries.find(
+                        item => item.id === entryId
+                    );
+
+
+                if (!entry) {
+
+                    showMessage(
+                        "Journal entry not found.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                document.getElementById("modalDate")
+                    .textContent =
+                    formatDate(entry.created_at);
+
+
+                document.getElementById("modalContent")
+                    .textContent =
+                    entry.content;
+
+
+                const feelingElement =
+                    document.getElementById("modalFeeling");
+
+
+                if (entry.feeling_after) {
+
+                    feelingElement.textContent =
+                        `Feeling after writing: ${entry.feeling_after}`;
+
+                } else {
+
+                    feelingElement.textContent =
+                        "No feeling selected.";
+
+                }
+
+
+                document
+                    .getElementById("modalOverlay")
+                    .classList.add("show");
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showMessage(
+                    "Unable to open this journal entry.",
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           DELETE ENTRY
+        ========================================== */
+
+        async function deleteEntry(entryId) {
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this journal entry?"
                 );
 
 
-            preview.className =
-                "entry-preview";
+            if (!confirmed) {
+
+                return;
+
+            }
 
 
-            preview.textContent =
-                createPreview(
-                    entry.content
+            try {
+
+                const response =
+                    await fetch(
+                        `/journal/${entryId}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.detail ||
+                        "Unable to delete entry."
+                    );
+
+                }
+
+
+                showMessage(
+                    "Journal entry deleted.",
+                    "success"
                 );
 
 
-            item.appendChild(
-                top
-            );
+                loadEntries();
 
 
-            item.appendChild(
-                preview
-            );
+            } catch (error) {
 
+                console.error(error);
 
-            container.appendChild(
-                item
-            );
+                showMessage(
+                    error.message ||
+                    "Unable to delete journal entry.",
+                    "error"
+                );
+
+            }
 
         }
-    );
-
-}
 
 
-/* =====================================================
-   FORMAT DATE
-===================================================== */
+        /* =========================================
+           MODAL
+        ========================================== */
 
-function formatDate(
-    dateString
-) {
+        function closeModal(event) {
 
-    if (!dateString) {
+            if (
+                event &&
+                event.target !==
+                document.getElementById("modalOverlay")
+            ) {
 
-        return "Saved entry";
+                return;
 
-    }
-
-
-    const date =
-        new Date(
-            dateString
-        );
+            }
 
 
-    if (
-        isNaN(
-            date.getTime()
-        )
-    ) {
+            document
+                .getElementById("modalOverlay")
+                .classList.remove("show");
 
-        return "Saved entry";
-
-    }
-
-
-    return date.toLocaleDateString(
-        "en-US",
-        {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-            year: "numeric"
         }
-    );
-
-}
 
 
-/* =====================================================
-   CREATE PREVIEW
-===================================================== */
+        /* =========================================
+           MESSAGE
+        ========================================== */
 
-function createPreview(
-    content
-) {
+        function showMessage(message, type) {
 
-    if (!content) {
-
-        return "";
-
-    }
+            const messageBox =
+                document.getElementById("message");
 
 
-    const cleanContent =
-        content.trim();
+            messageBox.textContent =
+                message;
 
 
-    if (
-        cleanContent.length <= 180
-    ) {
-
-        return cleanContent;
-
-    }
+            messageBox.className =
+                `message ${type}`;
 
 
-    return (
-        cleanContent.substring(
-            0,
-            180
-        ) +
-        "..."
-    );
+            setTimeout(() => {
 
-}
+                hideMessage();
+
+            }, 5000);
+
+        }
 
 
-/* =====================================================
-   VIEW ENTRY
-===================================================== */
+        function hideMessage() {
 
-function viewEntry(entry) {
+            const messageBox =
+                document.getElementById("message");
 
-    document.getElementById(
-        "modalDate"
-    ).textContent =
-        formatDate(
-            entry.created_at
-        );
+            messageBox.className =
+                "message";
 
+            messageBox.textContent = "";
 
-    document.getElementById(
-        "modalText"
-    ).textContent =
-        entry.content;
+        }
 
 
-    document.getElementById(
-        "entryModal"
-    ).classList.add(
-        "show"
-    );
+        /* =========================================
+           DATE FORMAT
+        ========================================== */
 
-}
+        function formatDate(dateString) {
 
+            if (!dateString) {
 
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
+                return "";
 
-function closeModal() {
-
-    document.getElementById(
-        "entryModal"
-    ).classList.remove(
-        "show"
-    );
-
-}
+            }
 
 
-/* =====================================================
-   DELETE ENTRY
-===================================================== */
-
-async function deleteEntry(
-    entryId
-) {
-
-    const confirmed =
-        confirm(
-            "Delete this journal entry? This cannot be undone."
-        );
+            const date =
+                new Date(dateString);
 
 
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `/journal/${entryId}`,
+            return date.toLocaleString(
+                "en-US",
                 {
-                    method: "DELETE"
+                    weekday: "short",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
                 }
             );
 
-
-        const data =
-            await response.json();
+        }
 
 
-        if (!response.ok) {
+        /* =========================================
+           HTML ESCAPE
+        ========================================== */
 
-            throw new Error(
-                data.detail ||
-                "Unable to delete entry."
-            );
+        function escapeHtml(value) {
+
+            if (!value) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 
         }
 
 
-        showMessage(
-            "Journal entry deleted.",
-            "success"
-        );
+        /* =========================================
+           DASHBOARD
+        ========================================== */
 
+        function goDashboard() {
 
-        await loadEntries();
-
-    }
-
-
-    catch (error) {
-
-        console.error(
-            "Journal delete error:",
-            error
-        );
-
-
-        showMessage(
-            error.message ||
-            "Unable to delete journal entry.",
-            "error"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   GO BACK
-===================================================== */
-
-function goBack() {
-
-    window.location.href =
-        "/employee";
-
-}
-
-
-/* =====================================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
-===================================================== */
-
-document.getElementById(
-    "entryModal"
-).addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target === this
-        ) {
-
-            closeModal();
+            window.location.href =
+                "/employee";
 
         }
 
-    }
-);
 
+        /* =========================================
+           INITIAL LOAD
+        ========================================== */
 
-/* =====================================================
-   ESC KEY CLOSE MODAL
-===================================================== */
+        showTodayDate();
 
-document.addEventListener(
-    "keydown",
-    function(event) {
+        loadEntries();
 
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
-
-if (user) {
-
-    displayTodayDate();
-
-    loadEntries();
-
-}
-
-</script>
-
+    </script>
 
 </body>
-
 </html>
-

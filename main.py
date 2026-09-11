@@ -108,6 +108,7 @@ class TalkRequest(BaseModel):
 class JournalEntryRequest(BaseModel):
     employee_id: int
     content: str
+    feeling: str | None = None
 
 
 # ============================================================
@@ -1803,6 +1804,35 @@ def save_journal_entry(
         )
 
     # --------------------------------------------------------
+    # Validate optional feeling
+    # --------------------------------------------------------
+
+    allowed_feelings = [
+        "A little better",
+        "Same as before",
+        "Still overwhelmed",
+        "More calm",
+        "Prefer not to say"
+    ]
+
+    feeling = request.feeling
+
+    if feeling is not None:
+
+        feeling = feeling.strip()
+
+        if feeling == "":
+
+            feeling = None
+
+        elif feeling not in allowed_feelings:
+
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid feeling selection."
+            )
+
+    # --------------------------------------------------------
     # Verify employee exists
     # --------------------------------------------------------
 
@@ -1837,7 +1867,9 @@ def save_journal_entry(
 
         employee_id=request.employee_id,
 
-        content=content
+        content=content,
+
+        feeling=feeling
     )
 
     db.add(entry)
@@ -1851,6 +1883,9 @@ def save_journal_entry(
 
         "entry_id":
             entry.id,
+
+        "feeling":
+            entry.feeling,
 
         "created_at":
             entry.created_at
@@ -1910,6 +1945,9 @@ def get_journal_entries(
 
             "content":
                 entry.content,
+
+            "feeling":
+                entry.feeling,
 
             "created_at":
                 entry.created_at
@@ -2174,4 +2212,3 @@ def health():
         "ai_enabled":
             client is not None
     }
-
