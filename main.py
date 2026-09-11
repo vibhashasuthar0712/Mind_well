@@ -1,3 +1,4 @@
+
 import os
 import json
 import hashlib
@@ -9,7 +10,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import engine, get_db, Base
-from models import Employee, GameResult, RiskCase
+from models import Employee, GameResult, RiskCase, JournalEntry
 from risk_engine import calculate_risk
 
 
@@ -87,6 +88,7 @@ class EscalationRequest(BaseModel):
     escalation_level: str = "secondary_responder"
     escalation_reason: str | None = None
 
+
 class CheckinRequest(BaseModel):
     employee_contacted: bool = False
     support_required: bool = False
@@ -97,6 +99,15 @@ class CheckinRequest(BaseModel):
 class TalkRequest(BaseModel):
     employee_id: int | None = None
     message: str
+
+
+# ============================================================
+# PRIVATE JOURNAL REQUEST MODEL
+# ============================================================
+
+class JournalEntryRequest(BaseModel):
+    employee_id: int
+    content: str
 
 
 # ============================================================
@@ -298,6 +309,33 @@ def talk_page():
 
 
 # ============================================================
+# PRIVATE JOURNAL PAGE
+# ============================================================
+
+@app.get("/journal", response_class=HTMLResponse)
+def journal_page():
+
+    try:
+
+        with open(
+            "journal.html",
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            return HTMLResponse(
+                file.read()
+            )
+
+    except FileNotFoundError:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Journal page not found."
+        )
+
+
+# ============================================================
 # REGISTER
 # ============================================================
 
@@ -455,7 +493,6 @@ def save_game_result(
     db.commit()
     db.refresh(result)
 
-
     # --------------------------------------------------------
     # Calculate current risk
     # --------------------------------------------------------
@@ -475,7 +512,6 @@ def save_game_result(
     risk = calculate_risk(
         all_results
     )
-
 
     # --------------------------------------------------------
     # Create RiskCase for high / critical
@@ -522,7 +558,6 @@ def save_game_result(
             db.add(risk_case)
             db.commit()
             db.refresh(risk_case)
-
 
     return {
 
@@ -1060,7 +1095,6 @@ def hr_overview(
 
             critical += 1
 
-
     average_risk_score = (
 
         round(
@@ -1072,7 +1106,6 @@ def hr_overview(
 
         else 0
     )
-
 
     if critical > 0:
 
@@ -1097,7 +1130,6 @@ def hr_overview(
         organization_status = (
             "Stable"
         )
-
 
     return {
 
@@ -1193,7 +1225,6 @@ def generate_fallback_reply(
         .strip()
     )
 
-
     # --------------------------------------------------------
     # SAFETY
     # --------------------------------------------------------
@@ -1222,7 +1253,6 @@ def generate_fallback_reply(
                 "appropriate emergency/crisis support."
             )
         }
-
 
     # --------------------------------------------------------
     # WORKLOAD
@@ -1279,7 +1309,6 @@ def generate_fallback_reply(
                 None
         }
 
-
     # --------------------------------------------------------
     # BOSS / MANAGER
     # --------------------------------------------------------
@@ -1325,7 +1354,6 @@ def generate_fallback_reply(
             "safety_message":
                 None
         }
-
 
     # --------------------------------------------------------
     # DEADLINE
@@ -1374,7 +1402,6 @@ def generate_fallback_reply(
             "safety_message":
                 None
         }
-
 
     # --------------------------------------------------------
     # TIRED / EXHAUSTED
@@ -1427,7 +1454,6 @@ def generate_fallback_reply(
                 None
         }
 
-
     # --------------------------------------------------------
     # FOCUS
     # --------------------------------------------------------
@@ -1472,7 +1498,6 @@ def generate_fallback_reply(
             "safety_message":
                 None
         }
-
 
     # --------------------------------------------------------
     # STRESS / OVERWHELMED
@@ -1521,7 +1546,6 @@ def generate_fallback_reply(
             "safety_message":
                 None
         }
-
 
     # --------------------------------------------------------
     # HELP / ADVICE
@@ -1575,7 +1599,6 @@ def generate_fallback_reply(
                 None
         }
 
-
     # --------------------------------------------------------
     # GREETING
     # --------------------------------------------------------
@@ -1615,7 +1638,6 @@ def generate_fallback_reply(
                 None
         }
 
-
     # --------------------------------------------------------
     # GENERAL RESPONSE
     # --------------------------------------------------------
@@ -1649,7 +1671,6 @@ def talk(
 
     message = request.message.strip()
 
-
     if not message:
 
         raise HTTPException(
@@ -1657,14 +1678,12 @@ def talk(
             detail="Message cannot be empty."
         )
 
-
     if len(message) > 2000:
 
         raise HTTPException(
             status_code=400,
             detail="Message is too long."
         )
-
 
     # --------------------------------------------------------
     # Safety check first
@@ -1677,7 +1696,6 @@ def talk(
         return generate_fallback_reply(
             message
         )
-
 
     # --------------------------------------------------------
     # OpenAI mode
@@ -1734,7 +1752,6 @@ Important rules:
                     None
             }
 
-
         except Exception as error:
 
             print(
@@ -1742,11 +1759,9 @@ Important rules:
                 str(error)
             )
 
-            # Fall back to local assistant
             return generate_fallback_reply(
                 message
             )
-
 
     # --------------------------------------------------------
     # No API key
@@ -1758,8 +1773,187 @@ Important rules:
 
 
 # ============================================================
-# HEALTH CHECK
+# PRIVATE JOURNAL - SAVE ENTRY
 # ============================================================
+
+@app.post("/journal")
+def save_journal_entry(
+    request: JournalEntryRequest,
+    db: Session = Depends(get_db)
+):
+
+    content = request.content.strip()
+
+    # --------------------------------------------------------
+    # Validate content
+    # --------------------------------------------------------
+
+    if not content:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Journal entry cannot be empty."
+        )
+
+    if len(content) > 10000:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Journal entry is too long."
+        )
+
+    # --------------------------------------------------------
+    # Verify employee exists
+    # --------------------------------------------------------
+
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == request.employee_id
+        )
+        .first()
+    )
+
+    if not employee:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found."
+        )
+
+    # --------------------------------------------------------
+    # Create private journal entry
+    #
+    # IMPORTANT:
+    # This is intentionally NOT connected to:
+    # - calculate_risk()
+    # - RiskCase
+    # - HR
+    # - Responder
+    # - Talk & Share AI
+    # --------------------------------------------------------
+
+    entry = JournalEntry(
+
+        employee_id=request.employee_id,
+
+        content=content
+    )
+
+    db.add(entry)
+    db.commit()
+    db.refresh(entry)
+
+    return {
+
+        "message":
+            "Journal entry saved privately.",
+
+        "entry_id":
+            entry.id,
+
+        "created_at":
+            entry.created_at
+    }
+
+
+# ============================================================
+# PRIVATE JOURNAL - GET ENTRIES
+# ============================================================
+
+@app.get("/journal/{employee_id}")
+def get_journal_entries(
+    employee_id: int,
+    db: Session = Depends(get_db)
+):
+
+    # --------------------------------------------------------
+    # Verify employee exists
+    # --------------------------------------------------------
+
+    employee = (
+        db.query(Employee)
+        .filter(
+            Employee.id == employee_id
+        )
+        .first()
+    )
+
+    if not employee:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found."
+        )
+
+    # --------------------------------------------------------
+    # Get only this employee's journal entries
+    # --------------------------------------------------------
+
+    entries = (
+        db.query(JournalEntry)
+        .filter(
+            JournalEntry.employee_id ==
+            employee_id
+        )
+        .order_by(
+            JournalEntry.created_at.desc()
+        )
+        .all()
+    )
+
+    return [
+
+        {
+            "id":
+                entry.id,
+
+            "content":
+                entry.content,
+
+            "created_at":
+                entry.created_at
+        }
+
+        for entry in entries
+    ]
+
+
+# ============================================================
+# PRIVATE JOURNAL - DELETE ENTRY
+# ============================================================
+
+@app.delete("/journal/{entry_id}")
+def delete_journal_entry(
+    entry_id: int,
+    db: Session = Depends(get_db)
+):
+
+    entry = (
+        db.query(JournalEntry)
+        .filter(
+            JournalEntry.id == entry_id
+        )
+        .first()
+    )
+
+    if not entry:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Journal entry not found."
+        )
+
+    db.delete(entry)
+    db.commit()
+
+    return {
+
+        "message":
+            "Journal entry deleted."
+    }
+
+
 # ============================================================
 # CHECK-IN - GET CASE DETAILS
 # ============================================================
@@ -1928,7 +2122,6 @@ def submit_checkin(
 
     else:
 
-        # Continue support
         case.status = "in_progress"
 
     db.commit()
@@ -1962,6 +2155,11 @@ def submit_checkin(
             case.resolved_at
     }
 
+
+# ============================================================
+# HEALTH CHECK
+# ============================================================
+
 @app.get("/health")
 def health():
 
@@ -1976,3 +2174,4 @@ def health():
         "ai_enabled":
             client is not None
     }
+

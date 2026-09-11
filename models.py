@@ -225,3 +225,34 @@ class RiskCase(Base):
         DateTime,
         nullable=True
     )
+
+# =====================================================
+# PRIVATE JOURNAL
+# =====================================================
+
+class JournalEntry(Base):
+
+    __tablename__ = "journal_entries"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    # Employee who owns the journal entry
+    employee_id = Column(
+        Integer,
+        nullable=False
+    )
+
+    # Private journal content
+    content = Column(
+        Text,
+        nullable=False
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -301,7 +302,7 @@ nav {
 
 
 /* =====================================================
-   THREE CHOICES
+   MAIN CHOICES
 ===================================================== */
 
 .choices {
@@ -309,7 +310,7 @@ nav {
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(4, 1fr);
 
     gap: 20px;
 
@@ -384,6 +385,44 @@ nav {
 .choice-btn:hover {
 
     opacity: 0.9;
+}
+
+
+/* =====================================================
+   PRIVATE JOURNAL
+===================================================== */
+
+.journal-card {
+
+    border: 1px solid #ecebfa;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #faf9ff
+        );
+}
+
+.journal-card:hover {
+
+    border-color: #dcdafa;
+}
+
+.journal-card .choice-icon {
+
+    color: #5f5bd8;
+}
+
+.journal-note {
+
+    font-size: 12px;
+
+    color: #999;
+
+    margin-top: 10px;
+
+    line-height: 1.4;
 }
 
 
@@ -523,12 +562,6 @@ nav {
     margin-bottom: 30px;
 }
 
-
-/*
-   Fixed height makes sure bars have a visible area
-   even when the score is small.
-*/
-
 .bars {
 
     height: 270px;
@@ -554,11 +587,6 @@ nav {
         1px solid #eeeeee;
 }
 
-
-/*
-   Each activity gets its own vertical area.
-*/
-
 .bar-wrapper {
 
     text-align: center;
@@ -578,11 +606,6 @@ nav {
     align-items: center;
 }
 
-
-/*
-   Score shown above the bar.
-*/
-
 .bar-value {
 
     font-size: 12px;
@@ -593,11 +616,6 @@ nav {
 
     margin-bottom: 6px;
 }
-
-
-/*
-   Actual graph bar.
-*/
 
 .bar {
 
@@ -619,11 +637,6 @@ nav {
     flex-shrink: 0;
 }
 
-
-/*
-   Day
-*/
-
 .day {
 
     font-size: 11px;
@@ -632,11 +645,6 @@ nav {
 
     margin-top: 8px;
 }
-
-
-/*
-   Activity name
-*/
 
 .activity-name {
 
@@ -656,11 +664,6 @@ nav {
 
     text-overflow: ellipsis;
 }
-
-
-/*
-   No data message
-*/
 
 .no-activity {
 
@@ -699,6 +702,16 @@ nav {
 /* =====================================================
    MOBILE
 ===================================================== */
+
+@media (max-width: 1000px) {
+
+    .choices {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
 
 @media (max-width: 850px) {
 
@@ -743,7 +756,6 @@ nav {
 
         justify-content: flex-start;
     }
-
 }
 
 </style>
@@ -767,8 +779,6 @@ nav {
     </div>
 
 
-    <!-- NAVBAR RIGHT SIDE -->
-
     <div class="nav-right">
 
         <div
@@ -780,8 +790,6 @@ nav {
 
         </div>
 
-
-        <!-- LOGOUT BUTTON -->
 
         <button
             class="logout-btn"
@@ -952,7 +960,7 @@ nav {
 
 
     <!-- =================================================
-         THREE MAIN CHOICES
+         MAIN CHOICES
     ================================================== -->
 
     <h2 class="section-title">
@@ -1068,6 +1076,49 @@ nav {
                 Relax →
 
             </button>
+
+        </div>
+
+
+        <!-- PRIVATE JOURNAL -->
+
+        <div class="choice-card journal-card">
+
+            <div class="choice-icon">
+
+                📝
+
+            </div>
+
+            <h3>
+
+                Private Journal
+
+            </h3>
+
+            <p>
+
+                Write down what's on your mind.
+                You don't have to explain everything
+                or share it with anyone.
+
+            </p>
+
+            <button
+                class="choice-btn"
+                onclick="openJournal()"
+            >
+
+                Open Journal →
+
+            </button>
+
+            <div class="journal-note">
+
+                🔒 Your journal is separate from
+                wellbeing activity signals.
+
+            </div>
 
         </div>
 
@@ -1418,19 +1469,9 @@ else {
 
 function logout() {
 
-    /*
-     * Remove the logged-in user
-     * from browser storage.
-     */
-
     localStorage.removeItem(
         "mindwell_user"
     );
-
-
-    /*
-     * Return to the login page.
-     */
 
     window.location.href = "/";
 
@@ -1838,7 +1879,6 @@ function createTrend(results) {
         ).textContent =
             "Your activity pattern will appear here after you complete an activity.";
 
-
         return;
 
     }
@@ -1888,11 +1928,6 @@ function createTrend(results) {
                     )
                 );
 
-
-            /*
-             * Convert score 0-100
-             * into visible height.
-             */
 
             const barHeight =
                 Math.max(
@@ -2189,6 +2224,18 @@ function relax() {
 
     window.location.href =
         "/relax";
+
+}
+
+
+/* =====================================================
+   PRIVATE JOURNAL
+===================================================== */
+
+function openJournal() {
+
+    window.location.href =
+        "/journal";
 
 }
 

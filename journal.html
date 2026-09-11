@@ -1,0 +1,2151 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Wellora - Private Journal</title>
+
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7f8fc,
+            #f3f2ff
+        );
+
+    color: #222;
+
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+nav {
+
+    height: 70px;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 50px;
+
+    box-shadow:
+        0 2px 12px rgba(0,0,0,0.05);
+}
+
+.logo {
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #5f5bd8;
+}
+
+.nav-right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.user {
+
+    color: #666;
+
+    font-size: 14px;
+}
+
+.back-nav-btn {
+
+    border: 1px solid #e3e3e3;
+
+    background: white;
+
+    color: #555;
+
+    padding: 9px 15px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.back-nav-btn:hover {
+
+    background: #f5f5ff;
+
+    color: #5f5bd8;
+
+    border-color: #dcdafa;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.container {
+
+    max-width: 950px;
+
+    margin: 45px auto;
+
+    padding: 0 25px;
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.back-section {
+
+    margin-bottom: 25px;
+}
+
+.back-btn {
+
+    border: none;
+
+    background: transparent;
+
+    color: #5f5bd8;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    padding: 5px 0;
+}
+
+.back-btn:hover {
+
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.journal-header {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.journal-header .icon {
+
+    font-size: 48px;
+
+    margin-bottom: 12px;
+}
+
+.journal-header h1 {
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+
+    color: #29283d;
+}
+
+.journal-header p {
+
+    color: #777;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    max-width: 650px;
+
+    margin: auto;
+}
+
+
+/* =====================================================
+   PRIVACY BANNER
+===================================================== */
+
+.privacy-banner {
+
+    background: #f0f1ff;
+
+    border: 1px solid #e3e2fa;
+
+    padding: 16px 18px;
+
+    border-radius: 14px;
+
+    margin-bottom: 25px;
+
+    color: #555;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.privacy-banner strong {
+
+    color: #4d49bd;
+}
+
+
+/* =====================================================
+   JOURNAL CARD
+===================================================== */
+
+.journal-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.06);
+
+    border: 1px solid #eeeeF5;
+
+    margin-bottom: 35px;
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+.entry-top {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.entry-label {
+
+    color: #666;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.entry-date {
+
+    color: #999;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   OPTIONAL DEAR SELF
+===================================================== */
+
+.dear-self {
+
+    font-size: 14px;
+
+    color: #777;
+
+    margin-bottom: 10px;
+}
+
+
+/* =====================================================
+   TEXT AREA
+===================================================== */
+
+textarea {
+
+    width: 100%;
+
+    min-height: 300px;
+
+    resize: vertical;
+
+    border: none;
+
+    outline: none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 31px,
+            #eeeeee 32px
+        );
+
+    padding: 5px 5px 5px 2px;
+
+    font-size: 15px;
+
+    line-height: 32px;
+
+    color: #333;
+}
+
+textarea::placeholder {
+
+    color: #aaa;
+
+    line-height: 32px;
+}
+
+
+/* =====================================================
+   CHARACTER COUNT
+===================================================== */
+
+.editor-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-top: 15px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+.character-count {
+
+    color: #999;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.button-group {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.clear-btn {
+
+    padding: 11px 18px;
+
+    border: 1px solid #e3e3e3;
+
+    background: white;
+
+    color: #666;
+
+    border-radius: 9px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.clear-btn:hover {
+
+    background: #f7f7f7;
+}
+
+.save-btn {
+
+    padding: 11px 20px;
+
+    border: none;
+
+    background: #5f5bd8;
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.save-btn:hover {
+
+    opacity: 0.9;
+
+    transform: translateY(-1px);
+}
+
+.save-btn:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message {
+
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.message.success {
+
+    display: block;
+
+    background: #edf8f1;
+
+    color: #28764b;
+}
+
+.message.error {
+
+    display: block;
+
+    background: #fff2f3;
+
+    color: #a33a45;
+}
+
+
+/* =====================================================
+   SAVED MESSAGE
+===================================================== */
+
+.saved-message {
+
+    display: none;
+
+    background: #f5f5ff;
+
+    padding: 15px 18px;
+
+    border-radius: 12px;
+
+    color: #5a5685;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin-bottom: 30px;
+}
+
+
+/* =====================================================
+   PREVIOUS ENTRIES
+===================================================== */
+
+.previous-section {
+
+    margin-top: 40px;
+}
+
+.previous-header {
+
+    margin-bottom: 18px;
+}
+
+.previous-header h2 {
+
+    font-size: 21px;
+
+    margin-bottom: 5px;
+}
+
+.previous-header p {
+
+    color: #888;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   ENTRY LIST
+===================================================== */
+
+.entries {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.entry-item {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 18px 20px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.04);
+
+    border: 1px solid #eeeeF5;
+}
+
+.entry-item-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.entry-item-date {
+
+    color: #777;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.entry-actions {
+
+    display: flex;
+
+    gap: 8px;
+}
+
+.view-btn,
+.delete-btn {
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.view-btn {
+
+    color: #5f5bd8;
+}
+
+.delete-btn {
+
+    color: #a45c66;
+}
+
+.view-btn:hover,
+.delete-btn:hover {
+
+    text-decoration: underline;
+}
+
+.entry-preview {
+
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-state {
+
+    text-align: center;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 35px 20px;
+
+    color: #888;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.04);
+}
+
+.empty-state .empty-icon {
+
+    font-size: 35px;
+
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+
+    color: #555;
+
+    font-size: 17px;
+
+    margin-bottom: 7px;
+}
+
+.empty-state p {
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   FOOTER NOTE
+===================================================== */
+
+.footer-note {
+
+    text-align: center;
+
+    margin-top: 40px;
+
+    color: #999;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    padding-bottom: 30px;
+}
+
+
+/* =====================================================
+   VIEW ENTRY MODAL
+===================================================== */
+
+.modal {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(25,25,45,0.35);
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+.modal.show {
+
+    display: flex;
+}
+
+.modal-content {
+
+    background: white;
+
+    width: 100%;
+
+    max-width: 650px;
+
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+
+    font-size: 19px;
+}
+
+.close-btn {
+
+    border: none;
+
+    background: #f4f4f7;
+
+    width: 32px;
+
+    height: 32px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    color: #666;
+}
+
+.modal-date {
+
+    color: #999;
+
+    font-size: 12px;
+
+    margin-bottom: 15px;
+}
+
+.modal-text {
+
+    color: #444;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    nav {
+
+        padding: 0 20px;
+    }
+
+    .logo {
+
+        font-size: 21px;
+    }
+
+    .user {
+
+        display: none;
+    }
+
+    .container {
+
+        margin: 30px auto;
+
+        padding: 0 16px;
+    }
+
+    .journal-header h1 {
+
+        font-size: 25px;
+    }
+
+    .journal-card {
+
+        padding: 20px;
+    }
+
+    textarea {
+
+        min-height: 260px;
+    }
+
+    .editor-footer {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 15px;
+    }
+
+    .button-group {
+
+        width: 100%;
+    }
+
+    .clear-btn,
+    .save-btn {
+
+        flex: 1;
+    }
+
+    .entry-item-top {
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav>
+
+    <div class="logo">
+
+        🧠Wellora
+
+    </div>
+
+
+    <div class="nav-right">
+
+        <div
+            class="user"
+            id="userInfo"
+        >
+
+            Loading...
+
+        </div>
+
+
+        <button
+            class="back-nav-btn"
+            onclick="goBack()"
+        >
+
+            Dashboard
+
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="container">
+
+
+    <!-- =================================================
+         BACK
+    ================================================== -->
+
+    <div class="back-section">
+
+        <button
+            class="back-btn"
+            onclick="goBack()"
+        >
+
+            ← Back to Dashboard
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <div class="journal-header">
+
+        <div class="icon">
+
+            📝
+
+        </div>
+
+        <h1>
+
+            A space just for you.
+
+        </h1>
+
+        <p>
+
+            You don't have to explain everything.
+            Write whatever is on your mind —
+            how you're feeling, what happened today,
+            or simply what you can't say out loud.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         PRIVACY
+    ================================================== -->
+
+    <div class="privacy-banner">
+
+        🔒
+        <strong>Private Journal</strong>
+
+        — This space is separate from your wellbeing
+        activity signals. Your journal entries are not
+        shown through the HR or responder wellbeing
+        dashboards.
+
+    </div>
+
+
+
+    <!-- =================================================
+         SAVED MESSAGE
+    ================================================== -->
+
+    <div
+        class="saved-message"
+        id="savedMessage"
+    >
+
+        🤍 Your thoughts are saved privately.
+        Sometimes putting things into words is enough
+        for today.
+
+    </div>
+
+
+
+    <!-- =================================================
+         JOURNAL EDITOR
+    ================================================== -->
+
+    <div class="journal-card">
+
+
+        <div class="entry-top">
+
+            <div class="entry-label">
+
+                Today's Journal
+
+            </div>
+
+            <div
+                class="entry-date"
+                id="todayDate"
+            >
+
+                Loading date...
+
+            </div>
+
+        </div>
+
+
+        <div class="dear-self">
+
+            Dear self,
+
+        </div>
+
+
+        <textarea
+            id="journalText"
+            maxlength="10000"
+            placeholder="Start writing...
+
+You can write about anything.
+
+How your day went...
+Something that is on your mind...
+Something you don't want to say out loud...
+Or simply whatever you're feeling right now."
+        ></textarea>
+
+
+        <div class="editor-footer">
+
+            <div
+                class="character-count"
+                id="characterCount"
+            >
+
+                0 / 10000
+
+            </div>
+
+
+            <div class="button-group">
+
+                <button
+                    class="clear-btn"
+                    onclick="clearJournal()"
+                >
+
+                    Clear
+
+                </button>
+
+
+                <button
+                    class="save-btn"
+                    id="saveButton"
+                    onclick="saveJournal()"
+                >
+
+                    Save Entry
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="message"
+        ></div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         PREVIOUS ENTRIES
+    ================================================== -->
+
+    <div class="previous-section">
+
+
+        <div class="previous-header">
+
+            <h2>
+
+                Your Previous Entries
+
+            </h2>
+
+            <p>
+
+                These are your saved journal entries.
+
+            </p>
+
+        </div>
+
+
+        <div
+            class="entries"
+            id="entries"
+        >
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+
+                    🌱
+
+                </div>
+
+                <h3>
+
+                    Your journal is waiting.
+
+                </h3>
+
+                <p>
+
+                    Write your first entry whenever
+                    you feel ready.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <div class="footer-note">
+
+        You don't have to share every thought
+        to take care of yourself. 🌱
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     VIEW ENTRY MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="entryModal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h3>
+
+                📝 Journal Entry
+
+            </h3>
+
+
+            <button
+                class="close-btn"
+                onclick="closeModal()"
+            >
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="modal-date"
+            id="modalDate"
+        >
+
+        </div>
+
+
+        <div
+            class="modal-text"
+            id="modalText"
+        >
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   GET LOGGED-IN USER
+===================================================== */
+
+const user = JSON.parse(
+    localStorage.getItem("mindwell_user")
+);
+
+
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
+if (!user) {
+
+    window.location.href = "/";
+
+}
+
+
+/* =====================================================
+   DISPLAY USER
+===================================================== */
+
+if (user) {
+
+    document.getElementById(
+        "userInfo"
+    ).textContent =
+        `${user.name} · ${user.role}`;
+
+}
+
+
+/* =====================================================
+   TODAY'S DATE
+===================================================== */
+
+function displayTodayDate() {
+
+    const today =
+        new Date();
+
+    document.getElementById(
+        "todayDate"
+    ).textContent =
+        today.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            }
+        );
+
+}
+
+
+/* =====================================================
+   CHARACTER COUNT
+===================================================== */
+
+const journalText =
+    document.getElementById(
+        "journalText"
+    );
+
+
+journalText.addEventListener(
+    "input",
+    function() {
+
+        document.getElementById(
+            "characterCount"
+        ).textContent =
+            `${this.value.length} / 10000`;
+
+    }
+);
+
+
+/* =====================================================
+   SHOW MESSAGE
+===================================================== */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        `message ${type}`;
+
+
+    setTimeout(
+        () => {
+
+            message.className =
+                "message";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =====================================================
+   CLEAR JOURNAL
+===================================================== */
+
+function clearJournal() {
+
+    const text =
+        document.getElementById(
+            "journalText"
+        );
+
+
+    if (!text.value.trim()) {
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Clear what you've written?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    text.value = "";
+
+
+    document.getElementById(
+        "characterCount"
+    ).textContent =
+        "0 / 10000";
+
+}
+
+
+/* =====================================================
+   SAVE JOURNAL
+===================================================== */
+
+async function saveJournal() {
+
+    if (!user) {
+
+        return;
+
+    }
+
+
+    const content =
+        journalText.value.trim();
+
+
+    /* ---------------------------------------------
+       VALIDATION
+    --------------------------------------------- */
+
+    if (!content) {
+
+        showMessage(
+            "Write something first. Even a few words are enough. 🌱",
+            "error"
+        );
+
+        journalText.focus();
+
+        return;
+
+    }
+
+
+    if (content.length > 10000) {
+
+        showMessage(
+            "Your entry is too long. Please keep it under 10,000 characters.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const saveButton =
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    saveButton.disabled =
+        true;
+
+
+    saveButton.textContent =
+        "Saving...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/journal",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        employee_id:
+                            user.employee_id,
+
+                        content:
+                            content
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to save journal entry."
+            );
+
+        }
+
+
+        /* -----------------------------------------
+           SUCCESS
+        ----------------------------------------- */
+
+        journalText.value = "";
+
+
+        document.getElementById(
+            "characterCount"
+        ).textContent =
+            "0 / 10000";
+
+
+        const savedMessage =
+            document.getElementById(
+                "savedMessage"
+            );
+
+
+        savedMessage.style.display =
+            "block";
+
+
+        setTimeout(
+            () => {
+
+                savedMessage.style.display =
+                    "none";
+
+            },
+            5000
+        );
+
+
+        showMessage(
+            "Your journal entry was saved privately. 🤍",
+            "success"
+        );
+
+
+        await loadEntries();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Journal save error:",
+            error
+        );
+
+
+        showMessage(
+            error.message ||
+            "Something went wrong while saving your entry.",
+            "error"
+        );
+
+    }
+
+
+    finally {
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.textContent =
+            "Save Entry";
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD JOURNAL ENTRIES
+===================================================== */
+
+async function loadEntries() {
+
+    if (!user) {
+
+        return;
+
+    }
+
+
+    const entriesContainer =
+        document.getElementById(
+            "entries"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/journal/${user.employee_id}`
+            );
+
+
+        const entries =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                entries.detail ||
+                "Unable to load journal entries."
+            );
+
+        }
+
+
+        renderEntries(entries);
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Journal loading error:",
+            error
+        );
+
+
+        entriesContainer.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+
+                    🌿
+
+                </div>
+
+                <h3>
+
+                    Unable to load entries
+
+                </h3>
+
+                <p>
+
+                    Please refresh the page and try again.
+
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER ENTRIES
+===================================================== */
+
+function renderEntries(entries) {
+
+    const container =
+        document.getElementById(
+            "entries"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !Array.isArray(entries) ||
+        entries.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+
+                    🌱
+
+                </div>
+
+                <h3>
+
+                    Your journal is waiting.
+
+                </h3>
+
+                <p>
+
+                    Write your first entry whenever
+                    you feel ready.
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    entries.forEach(
+        entry => {
+
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "entry-item";
+
+
+            /* -----------------------------------------
+               TOP
+            ----------------------------------------- */
+
+            const top =
+                document.createElement(
+                    "div"
+                );
+
+
+            top.className =
+                "entry-item-top";
+
+
+            const date =
+                document.createElement(
+                    "div"
+                );
+
+
+            date.className =
+                "entry-item-date";
+
+
+            date.textContent =
+                formatDate(
+                    entry.created_at
+                );
+
+
+            /* -----------------------------------------
+               ACTIONS
+            ----------------------------------------- */
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+
+            actions.className =
+                "entry-actions";
+
+
+            const viewButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            viewButton.className =
+                "view-btn";
+
+
+            viewButton.textContent =
+                "View";
+
+
+            viewButton.onclick =
+                () => viewEntry(entry);
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            deleteButton.className =
+                "delete-btn";
+
+
+            deleteButton.textContent =
+                "Delete";
+
+
+            deleteButton.onclick =
+                () =>
+                    deleteEntry(
+                        entry.id
+                    );
+
+
+            actions.appendChild(
+                viewButton
+            );
+
+
+            actions.appendChild(
+                deleteButton
+            );
+
+
+            top.appendChild(
+                date
+            );
+
+
+            top.appendChild(
+                actions
+            );
+
+
+            /* -----------------------------------------
+               PREVIEW
+            ----------------------------------------- */
+
+            const preview =
+                document.createElement(
+                    "div"
+                );
+
+
+            preview.className =
+                "entry-preview";
+
+
+            preview.textContent =
+                createPreview(
+                    entry.content
+                );
+
+
+            item.appendChild(
+                top
+            );
+
+
+            item.appendChild(
+                preview
+            );
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(
+    dateString
+) {
+
+    if (!dateString) {
+
+        return "Saved entry";
+
+    }
+
+
+    const date =
+        new Date(
+            dateString
+        );
+
+
+    if (
+        isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "Saved entry";
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CREATE PREVIEW
+===================================================== */
+
+function createPreview(
+    content
+) {
+
+    if (!content) {
+
+        return "";
+
+    }
+
+
+    const cleanContent =
+        content.trim();
+
+
+    if (
+        cleanContent.length <= 180
+    ) {
+
+        return cleanContent;
+
+    }
+
+
+    return (
+        cleanContent.substring(
+            0,
+            180
+        ) +
+        "..."
+    );
+
+}
+
+
+/* =====================================================
+   VIEW ENTRY
+===================================================== */
+
+function viewEntry(entry) {
+
+    document.getElementById(
+        "modalDate"
+    ).textContent =
+        formatDate(
+            entry.created_at
+        );
+
+
+    document.getElementById(
+        "modalText"
+    ).textContent =
+        entry.content;
+
+
+    document.getElementById(
+        "entryModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal() {
+
+    document.getElementById(
+        "entryModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   DELETE ENTRY
+===================================================== */
+
+async function deleteEntry(
+    entryId
+) {
+
+    const confirmed =
+        confirm(
+            "Delete this journal entry? This cannot be undone."
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/journal/${entryId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Unable to delete entry."
+            );
+
+        }
+
+
+        showMessage(
+            "Journal entry deleted.",
+            "success"
+        );
+
+
+        await loadEntries();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Journal delete error:",
+            error
+        );
+
+
+        showMessage(
+            error.message ||
+            "Unable to delete journal entry.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   GO BACK
+===================================================== */
+
+function goBack() {
+
+    window.location.href =
+        "/employee";
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+===================================================== */
+
+document.getElementById(
+    "entryModal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === this
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ESC KEY CLOSE MODAL
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+if (user) {
+
+    displayTodayDate();
+
+    loadEntries();
+
+}
+
+</script>
+
+
+</body>
+
+</html>
+```
