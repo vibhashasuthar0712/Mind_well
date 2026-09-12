@@ -280,7 +280,8 @@ Rather than treating detection as the end of the process, Wellora explores a wor
 ### 🏠 Employee Dashboard
 
 <p align="center">
-  <img src="assets/screenshots/employee-dashboard.png" alt="Wellora Employee Dashboard" width="850">
+<img width="1286" height="625" alt="Screenshot (514)" src="https://github.com/user-attachments/assets/e99018af-08aa-4e71-878c-392c12b92960" />
+
 </p>
 
 ---
@@ -288,23 +289,16 @@ Rather than treating detection as the end of the process, Wellora explores a wor
 ### 🎮 Play & Check
 
 <p align="center">
-  <img src="assets/screenshots/play-check.png" alt="Wellora Play and Check" width="850">
+<img width="1278" height="637" alt="Screenshot (517)" src="https://github.com/user-attachments/assets/34346918-de29-44d5-ac7f-e053f593230b" />
+
 </p>
 
 ---
-
-### 💬 Talk & Share
-
-<p align="center">
-  <img src="assets/screenshots/talk-share.png" alt="Wellora Talk and Share" width="850">
-</p>
-
----
-
 ### 🧘 Relax & Reset
 
 <p align="center">
-  <img src="assets/screenshots/relax-reset.png" alt="Wellora Relax and Reset" width="850">
+ <img width="1263" height="614" alt="Screenshot (518)" src="https://github.com/user-attachments/assets/51da8fce-989f-4d72-a400-85a0e0edf45a" />
+
 </p>
 
 ---
@@ -312,7 +306,8 @@ Rather than treating detection as the end of the process, Wellora explores a wor
 ### 📔 Private Journal
 
 <p align="center">
-  <img src="assets/screenshots/private-journal.png" alt="Wellora Private Journal" width="850">
+ <img width="1221" height="581" alt="Screenshot (519)" src="https://github.com/user-attachments/assets/bf9abd5a-9e16-49aa-9e6b-ed83af092831" />
+
 </p>
 
 ---
@@ -320,7 +315,11 @@ Rather than treating detection as the end of the process, Wellora explores a wor
 ### 🚨 Responder Dashboard
 
 <p align="center">
-  <img src="assets/screenshots/responder-dashboard.png" alt="Wellora Responder Dashboard" width="850">
+ <img width="1335" height="629" alt="Screenshot (522)" src="https://github.com/user-attachments/assets/17de62b3-7659-4bec-923c-c576db49f15e" />
+
+
+<img width="1310" height="603" alt="Screenshot (523)" src="https://github.com/user-attachments/assets/deb5f557-864a-494d-9ea0-07a2ac6b5e54" />
+
 </p>
 
 ---
